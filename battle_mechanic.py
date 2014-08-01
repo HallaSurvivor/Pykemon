@@ -12,14 +12,6 @@ import images
 import battle_functions
 import battle_blitting
 
-
-#four_box_list = battle_blitting.render_4_boxes()
-
-#box1 = four_box_list[0]
-#box2 = four_box_list[1]
-#box3 = four_box_list[2]
-#box4 = four_box_list[3]
-
 '''
 TO DO LIST
 
@@ -56,17 +48,17 @@ def choose_box_color():
             required_lists.box_colors[0] = images.BOX
 
         if move_choices[1] != "":
-            required_lists.box_colors[1] = select_box(player_pokemon.moveset[1])
+            required_lists.box_colors[1] = battle_blitting.select_box(player_pokemon.moveset[1])
         else:
             required_lists.box_colors[1] = images.BOX
 
         if move_choices[2] != "":
-            required_lists.box_colors[2] = select_box(player_pokemon.moveset[2])
+            required_lists.box_colors[2] = battle_blitting.select_box(player_pokemon.moveset[2])
         else:
             required_lists.box_colors[2] = images.BOX
 
         if move_choices[3] != "":
-            required_lists.box_colors[3] = select_box(player_pokemon.moveset[3])
+            required_lists.box_colors[3] = battle_blitting.select_box(player_pokemon.moveset[3])
         else:
             required_lists.box_colors[3] = images.BOX
 
@@ -144,15 +136,12 @@ def blit_back_button():
 pygame.init()
 pygame.display.set_caption("Pokemon!")
 player_pokemon = battle_functions.auto_choose_pokemon()
-box5data = ""
 
 screen = images.SCREEN
 
 player_to_do = 0
 
 while in_battle == True:
-    battle_blitting.define_text_boxes()
-
     battle_blitting.render_background()
 
     choose_box_color()
@@ -177,14 +166,26 @@ while in_battle == True:
 
     blit_back_button()
 
+    box1 = required_lists.four_boxes[0]
+    box2 = required_lists.four_boxes[1]
+    box3 = required_lists.four_boxes[2]
+    box4 = required_lists.four_boxes[3]
+
+    boxa = required_lists.six_boxes[0]
+    boxb = required_lists.six_boxes[1]
+    boxc = required_lists.six_boxes[2]
+    boxd = required_lists.six_boxes[3]
+    boxe = required_lists.six_boxes[4]
+    boxf = required_lists.six_boxes[5]
+
     if game_state == "move list":
-        if box1data != "":
+        if required_lists.box_data[0] != "":
             blit_pp_1()
-        if box2data != "":
+        if required_lists.box_data[1] != "":
             blit_pp_2()
-        if box3data != "":
+        if required_lists.box_data[2] != "":
             blit_pp_3()
-        if box4data != "":
+        if required_lists.box_data[3] != "":
             blit_pp_4()
 
     while priority == "start":
@@ -205,7 +206,7 @@ while in_battle == True:
             if len(required_lists.to_print) > 0:
                 box5data = required_lists.to_print[0]
                 if event.type == pygame.KEYDOWN:
-                    update_box_5()
+                    battle_blitting.update_box_5(player_pokemon, enemy_pokemon)
             else:
                 box5data = ""
                 game_state = "first select"
@@ -225,10 +226,10 @@ while in_battle == True:
                             move_choices.append(player_pokemon.moveset[i].name)
                         while len(move_choices) != 4:
                             move_choices.append("")
-                        box1data = move_choices[0]
-                        box2data = move_choices[1]
-                        box3data = move_choices[2]
-                        box4data = move_choices[3]
+                        required_lists.box_data[0] = move_choices[0]
+                        required_lists.box_data[1] = move_choices[1]
+                        required_lists.box_data[2] = move_choices[2]
+                        required_lists.box_data[3] = move_choices[3]
                         game_state = "move list"
 
                     elif box3.collidepoint(pos):
@@ -259,28 +260,28 @@ while in_battle == True:
 #if you're on the move list screen
             elif game_state == "move list":
                 player_to_do = 5
-                if box1.collidepoint(pos) and box1data != "":
+                if box1.collidepoint(pos) and required_lists.box_data[0] != "":
                     player_to_do = 0
                     select_action = 1
                     game_state = "wait for prompt"
-                    reset_labels()
-                elif box2.collidepoint(pos) and box2data != "":
+                    battle_blitting.reset_labels()
+                elif box2.collidepoint(pos) and required_lists.box_data[1] != "":
                     player_to_do = 1
                     select_action = 1
                     game_state = "wait for prompt"
-                    reset_labels()
-                elif box3.collidepoint(pos) and box3data != "":
+                    battle_blitting.reset_labels()
+                elif box3.collidepoint(pos) and required_lists.box_data[2] != "":
                     player_to_do = 2
                     select_action = 1
                     game_state = "wait for prompt"
-                    reset_labels()
-                elif box4.collidepoint(pos) and box4data != "":
+                    battle_blitting.reset_labels()
+                elif box4.collidepoint(pos) and required_lists.box_data[3] != "":
                     player_to_do = 3
                     select_action = 1
                     game_state = "wait for prompt"
-                    reset_labels()
+                    battle_blitting.reset_labels()
                 elif back_button.collidepoint(pos):
-                    reset_labels()
+                    battle_blitting.reset_labels()
                     game_state = "first select"
 
 #if you're on the pokemon list screen

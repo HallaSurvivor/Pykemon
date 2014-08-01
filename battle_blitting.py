@@ -14,7 +14,7 @@ def render_background():
 
 def reset_labels():
     '''Resets the text in the available boxes.'''
-    return ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""]
+    required_lists.box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""]
 
 def define_text_boxes():
     '''Renders the text that goes in each box, and defines a rectangle around each block of text.'''
@@ -67,7 +67,7 @@ def render_4_boxes():
     text_list[1][3].center = box4.center
     screen.blit(text_list[0][3], text_list[1][3])
 
-    return[box1, box2, box3, box4]
+    required_lists.four_boxes = [box1, box2, box3, box4]
 
 def render_6_boxes():
     '''Blit the 6 boxes, with corrosponding pokemon, to the screen.'''
@@ -97,6 +97,8 @@ def render_6_boxes():
     text_list[1][9].center = boxf.center
     screen.blit(text_list[0][9], text_list[1][9])
 
+    required_lists.six_boxes = [boxa, boxb, boxc, boxd, boxe, boxf]
+
 
 def render_box_5():
     '''Blits the info box to the screen, along with its corrosponding text.'''
@@ -107,7 +109,7 @@ def render_box_5():
     box5_text_rect.top = box5.top + 15
     screen.blit(box5_text_image, box5_text_rect)
 
-def update_box_5():
+def update_box_5(player_pokemon, enemy_pokemon):
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
     if len(required_lists.to_damage) != len(required_lists.to_print):
         del required_lists.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...

@@ -58,3 +58,7 @@ box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2,
 box5data = ""
 
 box_colors = [0, 0, 0, 0]
+
+four_boxes = [0, 0, 0, 0]
+
+six_boxes = [0, 0, 0, 0, 0, 0]
