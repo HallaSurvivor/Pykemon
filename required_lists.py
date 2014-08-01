@@ -50,3 +50,5 @@ to_damage = [] #added to every time to_print is added to. calls one of three thi
 to_damage_count = []
 
 to_print_immediate = []
+
+current_enemy = object

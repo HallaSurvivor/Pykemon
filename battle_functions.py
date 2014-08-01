@@ -4,6 +4,12 @@ import enemies
 import required_lists
 from random import randint
 
+def auto_choose_pokemon():
+    '''Automatically selects the first pokemon in the player's party with hp > 0.'''
+    for i in range(len(player_party.player_party)):
+        if player_party.player_party[i].hp > 0:
+            return player_party.player_party[i]
+
 def check_status(pokemon):
     '''Checks the status of a pokemon, and deals damage or decrements a turn counter accordingly.'''
     if pokemon.status_nonvolatile == "burned":
@@ -152,3 +158,44 @@ def check_speed(player, enemy, player_choice, enemy_choice):
     else:
         use_attack(enemy, player, enemy_choice)
         use_attack(player, enemy, player_choice)
+
+def check_player_health(player):
+    '''Check if the player hp is > 0, if not, have the user select another pokemon.'''
+    if player.hp <= 0:
+        required_lists.to_print_immediate.append("{0} feinted!".format(player.name))
+        #animation?
+        #make this not deal damage to the enemy if he switches and the previous pokemon had a status ailment
+        watch_count = 0
+        for i in range(len(player_party.player_party)):
+            if player_party.player_party[i].hp > 0:
+                game_state = "pokemon select"
+            else:
+                watch_count += 1
+        else:
+            if watch_count == len(player_party.player_party):
+                required_lists.to_print_immediate.append("{0} is out of usable pokemon!".format("Player"))
+                required_lists.to_print_immediate.append("{0} whited out!".format("Player"))
+
+def get_money():
+    '''Give the player money after winning a battle.'''
+    pass
+
+def check_enemy_health(player, enemy):
+    '''Check if the enemy healtlh is > 0, if not, return the next pokemon and give experience.'''
+    if enemy.hp <= 0:
+        required_lists.to_print_immediate.append("{0} feinted!".format(enemy.name))
+        for i in range(len(required_lists.current_enemy.party)):
+            if required_lists.current_enemy.party[i].hp > 0:
+                required_lists.to_print_immediate.append("{0} sent out {1}!".format(required_lists.current_enemy.name, required_lists.current_enemy.party[i].name))
+                return required_lists.current_enemy.party[i]
+        else:
+            required_lists.to_print_immediate.append("{0} has run out of usable pokemon!")
+            get_money()
+        print player.exp
+        print player.ev
+        player_party.generator.pokemon_list.pokemon_functions.get_exp(player, enemy)
+        player_party.generator.pokemon_list.pokemon_functions.get_ev(player, enemy)
+        print player.exp
+        print player.ev
+
+

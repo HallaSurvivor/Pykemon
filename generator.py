@@ -31,11 +31,11 @@ def choose_iv():
 def generate(wild_pokemon, moveset = [move_list.poison_powder, move_list.growl, move_list.swords_dance, move_list.tackle], trainer = "wild"):
     '''Generate a pokemon of type wild_pokemon with a movoeset of moveset (list of moves from move_list).'''
     if wild_pokemon == "mudkip":
-                            new_pokemon = pokemon_list.Mudkip("mudkip", 100, 5, moveset, choose_nature(),
+                            new_pokemon = pokemon_list.Mudkip("mudkip", 5, 5, moveset, choose_nature(),
                             choose_iv())
                             new_pokemon.trainer = trainer
     elif wild_pokemon == "bulbasaur":
-                            new_pokemon = pokemon_list.Bulbasaur("bulbasaur", 100, 5, moveset, choose_nature(),
+                            new_pokemon = pokemon_list.Bulbasaur("bulbasaur", 5, 5, moveset, choose_nature(),
                             choose_iv())
                             new_pokemon.trainer = trainer
     pokemon_list.pokemon_functions.get_pp(new_pokemon)

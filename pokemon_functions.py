@@ -34,25 +34,31 @@ def choose_gender(gender_ratio):
     else:
         return "female"
 
-def choose_shiney(pokemon):
+def choose_shiny(pokemon):
     if randint(0, 8192) == 1:
-        pokemon.shiney = True
+        pokemon.shiny = True
     else:
-        pokemon.shiney = False
+        pokemon.shiny = False
 
 
 def get_ev(player_pokemon, enemy_pokemon):
-    player_pokemon.ev += enemy_pokemon.ev_yield
+    for i in range(6):
+        player_pokemon.ev[i] += enemy_pokemon.ev_yield[i]
     calculate_real_stats(player_pokemon)
 
 
-def get_current_exp(pokemon, enemy_pokemon):
+def level_up(pokemon):
+    pokemon.level += 1
+    calculate_real_stats(pokemon)
+
+
+def get_exp(pokemon, enemy_pokemon):
     if pokemon.level < 100:
         #formula for exp gain uses variables from bulbapedia for convenience reasons on my end
         #it's pretty clear what they do from the if statements, though.
         #if you need to know, you can always look it up :)
 
-        if enemy_pokemon.wild == True:
+        if enemy_pokemon.trainer == "wild":
             a = 1
         else:
             a = 1.5
@@ -72,10 +78,11 @@ def get_current_exp(pokemon, enemy_pokemon):
             s = 1
 
         given_exp = a*b*e*L/(7*s) #t is discluded, as there isn't another player to trade with
-        print "Player gained %d experience!" %given_exp
+        given_exp = int(given_exp)
+        print "{0} gained {1} experience!".format(pokemon.name, given_exp)
         pokemon.exp += given_exp
         if pokemon.exp >= pokemon.needed_exp:
-            pokemon.level_up()
+            level_up(pokemon)
 
 
 
@@ -117,12 +124,6 @@ def get_needed_exp(pokemon):
             needed_exp = n**3*(floor(n/2)+32)/50
 
     return needed_exp
-
-
-
-def level_up(pokemon):
-    pokemon.level += 1
-    calculate_stats(pokemon)
 
 
 def get_pp(pokemon):

@@ -27,48 +27,8 @@ in_battle = True
 priority = "start"
 game_state = "first select"
 select_action = 0
-enemy_pokemon = enemies.enemy1.party[0]
-
-
-#automatic pokemon selection at start of battle
-def choose_pokemon():
-    global player_pokemon
-    for i in range(len(player_party.player_party)):
-        if player_party.player_party[i].hp > 0:
-            player_pokemon = player_party.player_party[i]
-
-
-#manual pokemon choice after feinting
-
-
-
-
-#roll out next enemy pokemon
-def next_enemy(enemy):
-    global enemy_pokemon
-    for i in range(len(enemy.party)):
-        if enemy.party[i].hp > 0:
-            enemy_pokemon = enemy.party[i]
-            required_lists.to_print.append("{0} sent out {1}".format(enemy.name, enemy_pokemon.name))
-            required_lists.to_damage.append("NULL")
-            return True
-    else:
-        return False
-
-
-def check_health(player, enemy):
-    if player.hp <= 0:
-        #make a list of "immediate to print" that will override the current gamestate if len(list) > 0
-        #append "player's %pokemon_name feinted!"
-        #force select
-        #animation?
-        game_state = "pokemon select"
-    elif enemy.hp <= 0:
-        return next_enemy(enemies.enemy1)
-        get_exp(player, enemy)
-    else:
-        return True
-
+required_lists.current_enemy = enemies.enemy1
+enemy_pokemon = required_lists.current_enemy.party[0]
 
 
 def open_bag():
@@ -137,6 +97,8 @@ def update_box_5():
         del required_lists.to_damage[0]
         del required_lists.to_damage_count[0]
     del required_lists.to_print[0]
+    battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
+    battle_functions.check_player_health(player_pokemon)
 
 
 def render_background():
@@ -366,7 +328,7 @@ def blit_back_button():
 
 pygame.init()
 pygame.display.set_caption("Pokemon!")
-choose_pokemon()
+player_pokemon = battle_functions.auto_choose_pokemon()
 reset_labels()
 box5data = ""
 
@@ -412,7 +374,6 @@ while in_battle == True:
             blit_pp_4()
 
     while priority == "start":
-        choose_pokemon()
         player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(player_pokemon)
         player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(enemy_pokemon)
         priority = 8
@@ -657,7 +618,6 @@ while in_battle == True:
             battle_functions.check_status(enemy_pokemon)
             battle_functions.check_volatile_status(player_pokemon)
             battle_functions.check_volatile_status(enemy_pokemon)
-            in_battle = check_health(player_pokemon, enemy_pokemon)
             priority = 8
             select_action = 0
 
