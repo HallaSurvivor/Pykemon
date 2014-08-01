@@ -1,0 +1,221 @@
+'''All of the functions dealing with moves, as well as its overarching class.'''
+
+from random import randint
+from random import uniform
+from math import floor
+import type_chain
+import required_lists
+
+
+def calc_damage(user, target, move):
+    '''Calculates the damage of a move.'''
+    if move.move_type == (user.type1 or user.type2):
+        stab = 1.5
+    else:
+        stab = 1
+    type_bonus1 = type_chain.type_comparison[move.move_type][target.type1]
+    type_bonus2 = type_chain.type_comparison[move.move_type][target.type2]
+    net_type_bonus = type_bonus1 * type_bonus2
+    if net_type_bonus > 1:
+        required_lists.to_print.append("It was super effective!")
+        required_lists.to_damage.append("NULL")
+    elif net_type_bonus < 1:
+        required_lists.to_print.append("It was not very effective!")
+        required_lists.to_damage.append("NULL")
+
+    modifier = stab * net_type_bonus * uniform(.85, 1)
+    #implement items, crits, abilities, etc. later
+
+    if move.category == "physical":
+        damage_ratio = float(user.battle_atk) / float(target.battle_defs)
+
+    elif move.category == "special":
+        damage_ratio = float(user.battle_sp_atk) / float(target.battle_sp_defs)
+
+    damage = int(floor( ( (2 * user.level + 10) * damage_ratio * move.power + 2) * modifier / float(250) ) )
+    return damage
+
+
+def calc_recoil(damage, move):
+    '''Calculates the recoil that a move will deal to the user.'''
+    return int(float(move.recoil)/100*damage)
+
+
+def modify_stats(move, target):
+    '''Modifies stats and prints the change to the screen.'''
+    #printing
+    for i in range(5):
+
+        if move.modify_list[i] == 1:
+            required_lists.to_damage.append("NULL")
+            if target.stages[i] == 6:
+                required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+            else:
+                required_lists.to_print.append("{0}'s {1} rose".format(target.name, required_lists.stat_list[i]))
+
+        elif move.modify_list[i] == 2:
+            required_lists.to_damage.append("NULL")
+            if target.stages[i] == 6:
+                required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+            else:
+                required_lists.to_print.append("{0}'s {1} sharply rose".format(target.name, required_lists.stat_list[i]))
+
+        elif move.modify_list[i] == 3:
+            required_lists.to_damage.append("NULL")
+            if target.stages[i] == 6:
+                required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+            else:
+                required_lists.to_print.append("{0}'s {1} drastically rose".format(target.name, required_lists.stat_list[i]))
+
+
+        elif move.modify_list[i] == -1:
+            required_lists.to_damage.append("NULL")
+            if target.stages[i] == -6:
+                required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+            else:
+                required_lists.to_print.append("{0}'s {1} fell".format(target.name, required_lists.stat_list[i]))
+
+        elif move.modify_list[i] == -2:
+            required_lists.to_damage.append("NULL")
+            if target.stages[i] == -6:
+                required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+            else:
+                required_lists.to_print.append("{0}'s {1} harshly fell".format(target.name, required_lists.stat_list[i]))
+
+        elif move.modify_list[i] == -3:
+            required_lists.to_damage.append("NULL")
+            if target.stages[i] == -6:
+                required_lists.to_print("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+            else:
+                required_lists.to_print.append("{0}'s {1} drastically fell".format(target.name, required_lists.stat_list[i]))
+
+    #calculation
+    for i in range(5):
+        if target.stages[i] + move.modify_list[i] > 6:
+            target.stages[i] = 6
+        elif target.stages[i] + move.modify_list[i] < -6:
+            target.stages[i] = -6
+        else:
+            target.stages[i] += move.modify_list[i]
+
+
+
+def cause_status(move, target):
+    '''Induces a status effect on the target.'''
+    for i in range(len(required_lists.nonvolatile)):
+        if move.status == required_lists.nonvolatile[i]:
+            if target.status_nonvolatile == "healthy":
+
+                target.status_counter = 1 #status_counter is used for a variety of things depending upon the status
+                target.status_nonvolatile = move.status
+                required_lists.to_print.append("{0} was {1}".format(target.name, move.status))
+                required_lists.to_damage.append("NULL")
+            else:
+                required_lists.to_print.append("{0} is already {1}".format(target.name, target.status_nonvolatile))
+                required_lists.to_damage.append("NULL")
+
+    for i in range(len(required_lists.volatile)):
+        if move.status == required_lists.volatile[i]:
+            if target.volatile[move.status] == False:
+                target.volatile[move.status] = True
+                required_lists.to_print.append("{0} was {1}".format(target.name, move.status))
+                required_lists.to_damage.append("NULL")
+            else:
+                required_lists.to_print.append("{0} was already {1}".format(target.name, move.status))
+                required_lists.to_damage.append("NULL")
+
+    if move.status == "badly poisoned":
+        target.status_counter = 1
+
+    elif move.status == "alseep":
+        target.status_counter = randint(1, 3)
+
+
+
+
+class Attack(object):
+
+    def __init__(self, name, category, power, move_type, pp_full, pp_max,
+                contact = True, accuracy = 100, priority = 0, recoil = 0,
+                modify_list = [0, 0, 0, 0, 0],
+                modify_percent = 0, modify_target = "user", status = "none", stat_percent = 0,
+                cause_skip = False, multiple_attacks = False, regain_health = False):
+
+        self.name = name
+        self.category = category
+        self.power = power
+        self.move_type = move_type
+        self.pp_full = pp_full
+        self.pp_max = pp_max
+        self.contact = contact
+        self.accuracy = accuracy
+        self.priority = priority
+        self.recoil = recoil
+        self.modify_list = modify_list
+        self.modify_perect = modify_percent
+        self.modify_target = modify_target
+        self.status = status
+        self.stat_percent = stat_percent
+        self.cause_skip = cause_skip
+        self.multiple_attacks = multiple_attacks
+        self.regain_health = regain_health
+
+    def use(self, user, target):
+        P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
+        required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
+        required_lists.to_damage.append("NULL")
+
+        if randint(1, 100) <= P or P == 0:
+            if self.category == "status":
+                if self.status != "none":
+                    cause_status(self, target)
+                else:
+                    if self.modify_target == "user":
+                        modify_stats(self, user)
+                    else:
+                        modify_stats(self, target)
+
+            else:
+                damage = calc_damage(user, target, self)
+
+                recoil_damage = calc_recoil(damage, self)
+                if user.trainer == "player":
+                    required_lists.to_damage.append("enemy")
+                else:
+                    required_lists.to_damage.append("player")
+                required_lists.to_damage_count.append(damage)
+
+                if recoil_damage != 0:
+                    required_lists.to_print.append("{0} was hurt by recoil!".format(user.name))
+                    required_lists.to_damage_count.append(recoil_damage)
+                    required_lists.to_damage.append(user.trainer)
+
+                if self.modify_perect != 0:
+                    if randint(0, 100) <= self.modify_perect:
+                        if self.modify_target == "user":
+                            modify_stats(self, user)
+                        else:
+                            modify_stats(self, target)
+
+                if self.stat_percent != 0:
+                    if randint(0, 100) <= self.stat_percent:
+                        cause_status(self, target)
+
+                if self.regain_health == True:
+                    regained_health = int(float(damage) / 2)
+                    required_lists.to_print.append("{0} had its energy drained".format(target.name))
+                    required_lists.to_damage.append(user.trainer)
+                    required_lists.to_damage_count.append(-regained_health)
+
+            if self.cause_skip == True:
+                user.skip_turn = True
+
+        else:
+            required_lists.to_print.append("It missed!")
+            required_lists.to_damage.append("NULL")
+
+
+
+
+
+
