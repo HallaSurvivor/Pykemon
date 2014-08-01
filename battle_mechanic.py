@@ -10,7 +10,15 @@ import required_lists
 import items
 import images
 import battle_functions
+import battle_blitting
 
+
+#four_box_list = battle_blitting.render_4_boxes()
+
+#box1 = four_box_list[0]
+#box2 = four_box_list[1]
+#box3 = four_box_list[2]
+#box4 = four_box_list[3]
 
 '''
 TO DO LIST
@@ -25,7 +33,7 @@ a megaevolve button, and a pokemon-status indicator on the bottom of the screen
 
 in_battle = True
 priority = "start"
-game_state = "first select"
+game_state = battle_blitting.game_state
 select_action = 0
 required_lists.current_enemy = enemies.enemy1
 enemy_pokemon = required_lists.current_enemy.party[0]
@@ -34,232 +42,39 @@ enemy_pokemon = required_lists.current_enemy.party[0]
 def open_bag():
     global bag
 
-
-def reset_labels():
-    global box1data, box2data, box3data, box4data, boxadata, boxbdata, boxcdata, boxddata, boxedata, boxfdata
-    box1data = "Fight"
-    box2data = "Bag"
-    box3data = "Pokemon"
-    box4data = "Run"
-    boxadata = ""
-    boxbdata = ""
-    boxcdata = ""
-    boxddata = ""
-    boxedata = ""
-    boxfdata = ""
-
-reset_labels()
-def define_text_boxes():
-    global box1data, box2data, box3data, box4data, boxadata, boxbdata, boxcdata, boxddata, boxedata, boxfdata
-    global box1text, box2text, box3text, box4text, box5text, boxatext, boxbtext, boxctext, boxdtext, boxetext, boxftext
-    global box1text_rect, box2text_rect, box3text_rect, box4text_rect, box5text_rect, boxatext_rect, boxbtext_rect, boxctext_rect, boxdtext_rect, boxetext_rect, boxftext_rect
-
-    box1text = images.render_text(box1data)
-    box2text = images.render_text(box2data)
-    box3text = images.render_text(box3data)
-    box4text = images.render_text(box4data)
-    box5text = images.render_text(box5data, images.WHITE)
-
-    box1text_rect = box1text.get_rect()
-    box2text_rect = box2text.get_rect()
-    box3text_rect = box3text.get_rect()
-    box4text_rect = box4text.get_rect()
-    box5text_rect = box4text.get_rect()
-
-    boxatext = images.render_text(boxadata)
-    boxbtext = images.render_text(boxbdata)
-    boxctext = images.render_text(boxcdata)
-    boxdtext = images.render_text(boxddata)
-    boxetext = images.render_text(boxedata)
-    boxftext = images.render_text(boxfdata)
-
-    boxatext_rect = boxatext.get_rect()
-    boxbtext_rect = boxbtext.get_rect()
-    boxctext_rect = boxctext.get_rect()
-    boxdtext_rect = boxdtext.get_rect()
-    boxetext_rect = boxetext.get_rect()
-    boxftext_rect = boxftext.get_rect()
-
-
-def update_box_5():
-    '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
-    if len(required_lists.to_damage) != len(required_lists.to_print):
-        del required_lists.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...
-
-    if required_lists.to_damage[0] == "NULL":
-        del required_lists.to_damage[0]
-    elif required_lists.to_damage[0] == "player":
-        player_pokemon.hp -= required_lists.to_damage_count[0]
-        del required_lists.to_damage[0]
-        del required_lists.to_damage_count[0]
-    else:
-        enemy_pokemon.hp -= required_lists.to_damage_count[0]
-        del required_lists.to_damage[0]
-        del required_lists.to_damage_count[0]
-    del required_lists.to_print[0]
-    battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
-    battle_functions.check_player_health(player_pokemon)
-
-
-def render_background():
-    global screen
-    screen.fill(images.WHITE)
-    screen.blit(images.GRASS_BATTLE, images.TOPLEFT)
-
-def render_4_boxes():
-    global box1, box2, box3, box4, box5
-
-    box1 = screen.blit(box_1_var, images.BOX1POS)
-    box1text_rect.center = box1.center
-    screen.blit(box1text, box1text_rect)
-
-    box2 = screen.blit(box_2_var, images.BOX2POS)
-    box2text_rect.center = box2.center
-    screen.blit(box2text, box2text_rect)
-
-    box3 = screen.blit(box_3_var, images.BOX3POS)
-    box3text_rect.center = box3.center
-    screen.blit(box3text, box3text_rect)
-
-    box4 = screen.blit(box_4_var, images.BOX4POS)
-    box4text_rect.center = box4.center
-    screen.blit(box4text, box4text_rect)
-
-def render_6_boxes():
-    global boxa, boxb, boxc, boxd, boxe, boxf
-    boxa = screen.blit(images.POKEMONBOX, images.BOXAPOS)
-    boxatext_rect.center = boxa.center
-    screen.blit(boxatext, boxatext_rect)
-
-    boxb = screen.blit(images.POKEMONBOX, images.BOXBPOS)
-    boxbtext_rect.center = boxb.center
-    screen.blit(boxbtext, boxbtext_rect)
-
-    boxc = screen.blit(images.POKEMONBOX, images.BOXCPOS)
-    boxctext_rect.center = boxc.center
-    screen.blit(boxctext, boxctext_rect)
-
-    boxd = screen.blit(images.POKEMONBOX, images.BOXDPOS)
-    boxdtext_rect.center = boxd.center
-    screen.blit(boxdtext, boxdtext_rect)
-
-    boxe = screen.blit(images.POKEMONBOX, images.BOXEPOS)
-    boxetext_rect.center = boxe.center
-    screen.blit(boxetext, boxetext_rect)
-
-    boxf = screen.blit(images.POKEMONBOX, images.BOXFPOS)
-    boxftext_rect.center = boxf.center
-    screen.blit(boxftext, boxftext_rect)
-
-def render_box_5():
-    global box5
-    box5 = screen.blit(images.TEXTBOX, images.BOX5POS)
-    box5text_rect.left = box5.left + 15
-    box5text_rect.top = box5.top + 15
-    screen.blit(box5text, box5text_rect)
-
-def render_choice_boxes():
-    render_box_5()
-    if game_state != "pokemon list":
-        render_4_boxes()
-    else:
-        render_6_boxes()
-
-
-def render_hp_boxes():
-    global screen
-    screen.blit(images.PLAYER_HP_BOX, images.PLAYERHPPOS)
-    screen.blit(images.ENEMY_HP_BOX, images.ENEMYHPPOS)
-
-def render_player_hp():
-    hp_percent = float(player_pokemon.hp)/float(player_pokemon.hp_full)
-    hp_to_render = hp_percent * 84 #hp bar is 84px wide
-    hp_to_render = int(hp_to_render)
-    for hp in range(hp_to_render):
-        screen.blit(images.HP_GREEN, (275+hp, 174))
-
-def render_enemy_hp():
-    hp_percent = float(enemy_pokemon.hp)/float(enemy_pokemon.hp_full)
-    hp_to_render = hp_percent * 86 #hp bar is 86px wide
-    hp_to_render = int(hp_to_render)
-    for hp in range(hp_to_render):
-        screen.blit(images.HP_GREEN, (74+hp, 40))
-
-
-def select_box(move):
-    if move.move_type == "normal":
-        box = images.NORMAL_BOX
-    elif move.move_type == "fighting":
-        box = images.FIGHTING_BOX
-    elif move.move_type == "flying":
-        box = images.FLYING_BOX
-    elif move.move_type == "poison":
-        box = images.POISON_BOX
-    elif move.move_type == "ground":
-        box = images.GROUND_BOX
-    elif move.move_type == "rock":
-        box = images.ROCK_BOX
-    elif move.move_type == "bug":
-        box = images.BUG_BOX
-    elif move.move_type == "ghost":
-        box = images.GHOST_BOX
-    elif move.move_type == "steel":
-        box = images.STEEL_BOX
-    elif move.move_type == "fire":
-        box = images.FIRE_BOX
-    elif move.move_type == "water":
-        box = images.WATER_BOX
-    elif move.move_type == "grass":
-        box = images.GRASS_BOX
-    elif move.move_type == "electric":
-        box = images.ELECTRIC_BOX
-    elif move.move_type == "psychic":
-        box = images.PSYCHIC_BOX
-    elif move.move_type == "ice":
-        box = images.ICE_BOX
-    elif move.move_type == "dragon":
-        box = images.DRAGON_BOX
-    elif move.move_type == "dark":
-        box = images.DARK_BOX
-    elif move.move_type == "fairy":
-        box = images.FAIRY_BOX
-    else:
-        box = images.TEXTBOX
-    return box
-
 def choose_box_color():
-    global box_1_var, box_2_var, box_3_var, box_4_var
     if game_state == "first select":
-        box_1_var = images.BOX
-        box_2_var = images.BOX
-        box_3_var = images.BOX
-        box_4_var = images.BOX
+        required_lists.box_colors[0] = images.BOX
+        required_lists.box_colors[1] = images.BOX
+        required_lists.box_colors[2] = images.BOX
+        required_lists.box_colors[3] = images.BOX
+
     elif game_state == "move list":
         if move_choices[0] != "":
-            box_1_var = select_box(player_pokemon.moveset[0])
+            required_lists.box_colors[0] = battle_blitting.select_box(player_pokemon.moveset[0])
         else:
-            box_1_var = images.BOX
+            required_lists.box_colors[0] = images.BOX
 
         if move_choices[1] != "":
-            box_2_var = select_box(player_pokemon.moveset[1])
+            required_lists.box_colors[1] = select_box(player_pokemon.moveset[1])
         else:
-            box_1_var = images.BOX
+            required_lists.box_colors[1] = images.BOX
 
         if move_choices[2] != "":
-            box_3_var = select_box(player_pokemon.moveset[2])
+            required_lists.box_colors[2] = select_box(player_pokemon.moveset[2])
         else:
-            box_1_var = images.BOX
+            required_lists.box_colors[2] = images.BOX
 
         if move_choices[3] != "":
-            box_4_var = select_box(player_pokemon.moveset[3])
+            required_lists.box_colors[3] = select_box(player_pokemon.moveset[3])
         else:
-            box_1_var = images.BOX
+            required_lists.box_colors[3] = images.BOX
 
     elif game_state == "wait for prompt":
-        box_1_var = images.BOX
-        box_2_var = images.BOX
-        box_3_var = images.BOX
-        box_4_var = images.BOX
+        required_lists.box_colors[0] = images.BOX
+        required_lists.box_colors[1] = images.BOX
+        required_lists.box_colors[2] = images.BOX
+        required_lists.box_colors[3] = images.BOX
 
 def blit_pokemon():
     screen.blit(player_pokemon.player_sprite, images.BOTTOMLEFT)
@@ -329,7 +144,6 @@ def blit_back_button():
 pygame.init()
 pygame.display.set_caption("Pokemon!")
 player_pokemon = battle_functions.auto_choose_pokemon()
-reset_labels()
 box5data = ""
 
 screen = images.SCREEN
@@ -337,19 +151,19 @@ screen = images.SCREEN
 player_to_do = 0
 
 while in_battle == True:
-    define_text_boxes()
+    battle_blitting.define_text_boxes()
 
-    render_background()
+    battle_blitting.render_background()
 
     choose_box_color()
 
-    render_choice_boxes()
+    battle_blitting.render_correct_boxes()
 
-    render_hp_boxes()
+    battle_blitting.render_hp_boxes()
 
-    render_player_hp()
+    battle_blitting.render_player_hp(player_pokemon)
 
-    render_enemy_hp()
+    battle_blitting.render_enemy_hp(enemy_pokemon)
 
     blit_pokemon()
 

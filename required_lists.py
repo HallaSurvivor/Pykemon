@@ -52,3 +52,9 @@ to_damage_count = []
 to_print_immediate = []
 
 current_enemy = object
+
+box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2, 3, 4, a, b, c, d, e, f
+
+box5data = ""
+
+box_colors = [0, 0, 0, 0]
