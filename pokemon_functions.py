@@ -5,7 +5,18 @@ from random import randint
 from math import floor
 import required_lists
 
+
 class Pokemon(object):
+
+    def calculate_real_stats(self):
+            self.hp_full = ((self.iv[0] + (2*self.base_hp)      + (self.ev[0]/4) + 100)*self.level/100 + 10)*required_lists.nature_modifiers[self.nature][0]
+            self.hp      = ((self.iv[0] + (2*self.base_hp)      + (self.ev[0]/4) + 100)*self.level/100 + 10)*required_lists.nature_modifiers[self.nature][0]
+            self.atk     = ((self.iv[1] + (2*self.base_atk)     + (self.ev[1]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][1]
+            self.defs    = ((self.iv[2] + (2*self.base_defs)    + (self.ev[2]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][2]
+            self.sp_atk  = ((self.iv[3] + (2*self.base_sp_atk)  + (self.ev[3]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][3]
+            self.sp_defs = ((self.iv[4] + (2*self.base_sp_defs) + (self.ev[4]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][4]
+            self.speed   = ((self.iv[5] + (2*self.base_speed)   + (self.ev[5]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][5]
+
     def __init__(self,
 
     ability, type1, type2,
@@ -20,7 +31,9 @@ class Pokemon(object):
 
     TM_list, move_tutor_list, breeding_move_list,
 
-    player_sprite, enemy_sprite, pokedex_color):
+    player_sprite, enemy_sprite, pokedex_color,
+
+    iv_list, name, level, exp, moveset, trainer, item):
 
         self.ability = ability
         self.type1 = type1
@@ -51,109 +64,111 @@ class Pokemon(object):
         self.enemy_sprite = enemy_sprite
         self.pokedex_color = pokedex_color
 
-        self.status_nonvolatile = "healthy"
+        self.name = name
+        self.level = level
+        self.exp = exp
+        self.moveset = moveset
+        self.nature = required_lists.nature_list[randint(0, 24)]
+        print self.name
+        print self.nature
+        self.trainer = trainer
+        self.item = item #held item
 
+        self.status_nonvolatile = "healthy"
         self.volatile = {"confused":False, "cursed":False, "embargo":False,
                         "encore":False, "flinch":False, "healblock":False,
                         "identification":False, "infatuated":False,
                         "nightmare":False, "partially trapped":False,
                         "parish song":False, "seeded":False, "taunt":False,
-                        "telekenetic levitation":False, "torment":False}
-
+                        "telekenetic levitation":False, "torment":False
+                        }
         self.skip_turn = False
-
         self.status_counter = 1 #changes depending on status. paralz: can attack or no. frzn/sleep: time to cure. badly poisoned: used to tell what turn of poison to calc damage
-        self.gender = "male"
+
+        if self.gender_ratio == -1:
+            self.gender = "genderless"
+        elif randint(1, 100) <= gender_ratio:
+            self.gender =  "male"
+        else:
+            self.gender =  "female"
+
+        if randint(0, 8192) == 1:
+            self.shiny = True
+        else:
+            self.shiny = False
+
+        self.iv = iv_list
+        self.ev = [0, 0, 0, 0, 0, 0]
+        self.stages = [0, 0, 0, 0, 0, 0]
+        self.accuracy_stage = 0
+        self.evasion_stage = 0
+
+        self.pp_list = []
+
+        self.calculate_real_stats()
+
+    def calculate_in_battle_stats(self):
+        self.battle_atk = int(floor(self.atk * (required_lists.stage_conversion[self.stages[0]+6])))
+        self.battle_defs = int(floor(self.defs * (required_lists.stage_conversion[self.stages[1]+6])))
+        self.battle_sp_atk = int(floor(self.sp_atk * (required_lists.stage_conversion[self.stages[2]+6])))
+        self.battle_sp_defs = int(floor(self.sp_defs * (required_lists.stage_conversion[self.stages[3]+6])))
+        self.battle_speed = int(floor(self.speed * (required_lists.stage_conversion[self.stages[4]+6])))
+        self.accuracy = required_lists.accuracy_conversion[self.accuracy_stage + 6]
+        self.evasion = required_lists.accuracy_conversion[self.evasion_stage + 6]
+        if self.status_nonvolatile == "burned":
+            self.battle_atk /= 2
+
+    def get_ev(player_self, enemy_self):
+        for i in range(6):
+            player_self.ev[i] += enemy_self.ev_yield[i]
+        calculate_real_stats(player_self)
 
 
+    def level_up(self):
+        self.level += 1
+        required_lists.to_print_immediate.append("{0} leveled up!".format(self.name))
+        #blit a new box filled with stats
+        self.calculate_real_stats
 
 
-
-
-def calculate_real_stats(pokemon):
-        pokemon.hp_full = ((pokemon.iv[0] + (2*pokemon.base_hp)      + (pokemon.ev[0]/4) + 100)*pokemon.level/100 + 10)*required_lists.nature_modifiers[pokemon.nature][0]
-        pokemon.hp      = ((pokemon.iv[0] + (2*pokemon.base_hp)      + (pokemon.ev[0]/4) + 100)*pokemon.level/100 + 10)*required_lists.nature_modifiers[pokemon.nature][0]
-        pokemon.atk     = ((pokemon.iv[1] + (2*pokemon.base_atk)     + (pokemon.ev[1]/4)      )*pokemon.level/100 +  5)*required_lists.nature_modifiers[pokemon.nature][1]
-        pokemon.defs    = ((pokemon.iv[2] + (2*pokemon.base_defs)    + (pokemon.ev[2]/4)      )*pokemon.level/100 +  5)*required_lists.nature_modifiers[pokemon.nature][2]
-        pokemon.sp_atk  = ((pokemon.iv[3] + (2*pokemon.base_sp_atk)  + (pokemon.ev[3]/4)      )*pokemon.level/100 +  5)*required_lists.nature_modifiers[pokemon.nature][3]
-        pokemon.sp_defs = ((pokemon.iv[4] + (2*pokemon.base_sp_defs) + (pokemon.ev[4]/4)      )*pokemon.level/100 +  5)*required_lists.nature_modifiers[pokemon.nature][4]
-        pokemon.speed   = ((pokemon.iv[5] + (2*pokemon.base_speed)   + (pokemon.ev[5]/4)      )*pokemon.level/100 +  5)*required_lists.nature_modifiers[pokemon.nature][5]
-
-def calculate_in_battle_stats(pokemon):
-    pokemon.battle_atk = int(floor(pokemon.atk * (required_lists.stage_conversion[pokemon.stages[0]+6])))
-    pokemon.battle_defs = int(floor(pokemon.defs * (required_lists.stage_conversion[pokemon.stages[1]+6])))
-    pokemon.battle_sp_atk = int(floor(pokemon.sp_atk * (required_lists.stage_conversion[pokemon.stages[2]+6])))
-    pokemon.battle_sp_defs = int(floor(pokemon.sp_defs * (required_lists.stage_conversion[pokemon.stages[3]+6])))
-    pokemon.battle_speed = int(floor(pokemon.speed * (required_lists.stage_conversion[pokemon.stages[4]+6])))
-    pokemon.accuracy = required_lists.accuracy_conversion[pokemon.accuracy_stage + 6]
-    pokemon.evasion = required_lists.accuracy_conversion[pokemon.evasion_stage + 6]
-    if pokemon.status_nonvolatile == "burned":
-        pokemon.battle_atk /= 2
-
-def choose_gender(gender_ratio):
-    if gender_ratio == -1:
-        return "genderless"
-    elif randint(1, 100) <= gender_ratio:
-        return "male"
-    else:
-        return "female"
-
-def choose_shiny(pokemon):
-    if randint(0, 8192) == 1:
-        pokemon.shiny = True
-    else:
-        pokemon.shiny = False
-
-
-def get_ev(player_pokemon, enemy_pokemon):
-    for i in range(6):
-        player_pokemon.ev[i] += enemy_pokemon.ev_yield[i]
-    calculate_real_stats(player_pokemon)
-
-
-def level_up(pokemon):
-    pokemon.level += 1
-    calculate_real_stats(pokemon)
-
-
-def get_exp(pokemon, enemy_pokemon):
-    if pokemon.level < 100:
+def get_exp(self, enemy_self):
+    if self.level < 100:
         #formula for exp gain uses variables from bulbapedia for convenience reasons on my end
         #it's pretty clear what they do from the if statements, though.
         #if you need to know, you can always look it up :)
 
-        if enemy_pokemon.trainer == "wild":
+        if enemy_self.trainer == "wild":
             a = 1
         else:
             a = 1.5
 
-        b = enemy_pokemon.exp_yield
+        b = enemy_self.exp_yield
 
-        if pokemon.item == "lucky egg":
+        if self.item == "lucky egg":
             e = 1.5
         else:
             e = 1
 
-        L = enemy_pokemon.level
+        L = enemy_self.level
 
-        if pokemon.item == "exp share":
+        if self.item == "exp share":
             s = 2
         else:
             s = 1
 
         given_exp = a*b*e*L/(7*s) #t is discluded, as there isn't another player to trade with
         given_exp = int(given_exp)
-        print "{0} gained {1} experience!".format(pokemon.name, given_exp)
-        pokemon.exp += given_exp
-        if pokemon.exp >= pokemon.needed_exp:
-            level_up(pokemon)
+        print "{0} gained {1} experience!".format(self.name, given_exp)
+        self.exp += given_exp
+        if self.exp >= self.needed_exp:
+            level_up(self)
 
 
 
 #experience functions
-def get_needed_exp(pokemon):
-    n = pokemon.level
-    exp_type = pokemon.growth_rate
+def get_needed_exp(self):
+    n = self.level
+    exp_type = self.growth_rate
 
     if exp_type == "erratic":
         if n<= 50:
@@ -190,27 +205,27 @@ def get_needed_exp(pokemon):
     return needed_exp
 
 
-def get_pp(pokemon):
-    for i in range(len(pokemon.moveset)):
-        pokemon.pp_list.append(pokemon.moveset[i].pp_full)
+def get_pp(self):
+    for i in range(len(self.moveset)):
+        self.pp_list.append(self.moveset[i].pp_full)
 
 
-def lower_pp(pokemon, move_name):
-    for i in range(len(pokemon.moveset)):
-        if move_name == pokemon.moveset[i].name:
-            pokemon.pp_list[i] -= 1
+def lower_pp(self, move_name):
+    for i in range(len(self.moveset)):
+        if move_name == self.moveset[i].name:
+            self.pp_list[i] -= 1
 
-def set_volatile_status(pokemon):
-    pokemon.cursed = False #loses 1/4 hp_full per turn. can't un-cursed except by switching out
-    pokemon.embargo = False #unable to use held items or items for 5 turns
-    pokemon.encore = False #repeats last attack for 3 turns
-    pokemon.flinch = False #kings rock, razor fang cause flinch.
-    pokemon.healblock = False #cannot heal for 5 turns. items can still be used. absorb etc. will deal damage, won't restore health. leftovers negated
-    pokemon.identification = False #ghost types can be effected, dark types too
-    pokemon.infatuated = False #cannot attack 50% of the time, against all pokemon
-    pokemon.nightmare = False #sleeping pkmn loses 1/4 max hp per turn
-    pokemon.parish_song = False #after 3 turns, all pokemon who heard parishsong will feint (includes user)
-    pokemon.seeded = False #infected pkmn loses 1/8 max hp, opponent is healed by same amount. grass pkmn can't be seeded
-    pokemon.taunt = False #taunted pkmn cannot use non damaging moves for 3 turns
-    pokemon.telekinetic_levitation = False #immune to ground type, spikes, toxic spikes, and arena traps for 3 turns. All moves hit, regardless of accuracy/evasion, gravity forces False
-    pokemon.torment = False #cannot use same move twice in a row. struggle forced every other turn
+def set_volatile_status(self):
+    self.cursed = False #loses 1/4 hp_full per turn. can't un-cursed except by switching out
+    self.embargo = False #unable to use held items or items for 5 turns
+    self.encore = False #repeats last attack for 3 turns
+    self.flinch = False #kings rock, razor fang cause flinch.
+    self.healblock = False #cannot heal for 5 turns. items can still be used. absorb etc. will deal damage, won't restore health. leftovers negated
+    self.identification = False #ghost types can be effected, dark types too
+    self.infatuated = False #cannot attack 50% of the time, against all self
+    self.nightmare = False #sleeping pkmn loses 1/4 max hp per turn
+    self.parish_song = False #after 3 turns, all self who heard parishsong will feint (includes user)
+    self.seeded = False #infected pkmn loses 1/8 max hp, opponent is healed by same amount. grass pkmn can't be seeded
+    self.taunt = False #taunted pkmn cannot use non damaging moves for 3 turns
+    self.telekinetic_levitation = False #immune to ground type, spikes, toxic spikes, and arena traps for 3 turns. All moves hit, regardless of accuracy/evasion, gravity forces False
+    self.torment = False #cannot use same move twice in a row. struggle forced every other turn

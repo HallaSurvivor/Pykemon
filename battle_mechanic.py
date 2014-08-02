@@ -75,8 +75,6 @@ pygame.init()
 pygame.display.set_caption("Pokemon!")
 player_pokemon = battle_functions.auto_choose_pokemon()
 
-screen = images.SCREEN
-
 player_to_do = 0
 
 wait_timer = 0
@@ -142,8 +140,8 @@ while in_battle == True:
             battle_blitting.reset_labels()
 
     while priority == "start":
-        player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(player_pokemon)
-        player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(enemy_pokemon)
+        player_pokemon.calculate_in_battle_stats()
+        enemy_pokemon.calculate_in_battle_stats()
         priority = 8
 
     enemy_to_do = randint(0, 3)

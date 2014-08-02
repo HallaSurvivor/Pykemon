@@ -2,6 +2,13 @@ stage_conversion = [.25, .29, .33, .4, .5, .66, 1, 1.5, 2, 2.5, 3, 3.5, 4]
 
 accuracy_conversion = [.33, .38, .43, .50, .60, .75, 1, 1.33, 1.67, 2, 2.33, 2.67, 3]
 
+nature_list = ["adamant", "bashful", "bold", "brave",
+                "calm", "careful", "docile", "gentle",
+                "hardy", "hasty", "impish", "jolly",
+                "lax", "lonely", "mild", "modest",
+                "naive", "naughty", "quiet", "quirky",
+                "rash", "relaxed", "sassy", "serious",
+                "timid"]
 
 nature_modifiers = {
 #nature[hp, atk, def, sp atk, sp def, spd]

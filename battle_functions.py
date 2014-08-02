@@ -120,8 +120,8 @@ def use_attack(user, target, move):
                     else:
                         if user.pp_list[move] > 0:
                             user.moveset[move].use(user, target)
-                            player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(user)
-                            player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(target)
+                            user.calculate_in_battle_stats()
+                            target.calculate_in_battle_stats()
                             user.pp_list[move] -= 1
                         else:
                             required_lists.to_print.append(user.moveset[move].name + " has no PP left")
