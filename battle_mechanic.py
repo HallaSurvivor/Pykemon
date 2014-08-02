@@ -67,70 +67,11 @@ def choose_box_color():
         required_lists.box_colors[2] = images.BOX
         required_lists.box_colors[3] = images.BOX
 
-def blit_pokemon():
-    screen.blit(player_pokemon.player_sprite, images.BOTTOMLEFT)
-    screen.blit(enemy_pokemon.enemy_sprite, images.TOPRIGHT)
-
-def blit_numerical_hp():
-    numerical_hp = images.render_small_text(str(player_pokemon.hp))
-    numerical_hp_full = images.render_small_text("/  " + str(player_pokemon.hp_full))
-    screen.blit(numerical_hp, images.HPTEXTPOS)
-    screen.blit(numerical_hp_full, images.FULLHPTEXTPOS)
-
-def blit_player_name():
-    player_name = images.render_small_text(str(player_pokemon.name))
-    screen.blit(player_name, images.PLAYERNAMEPOS)
-    player_name_rect = player_name.get_rect()
-    gender_rect = images.MALE.get_rect()
-    gender_rect.center = player_name_rect.center
-    screen.blit(images.MALE, gender_rect)
-
-def blit_enemy_name():
-    enemy_name = images.render_small_text(str(enemy_pokemon.name))
-    screen.blit(enemy_name, images.ENEMYNAMEPOS)
-
-def blit_status_ailment():
-    for i in range(len(required_lists.nonvolatile)):
-        if player_pokemon.status_nonvolatile == required_lists.nonvolatile[i]:
-            screen.blit(images.status_icons[i], images.PLAYER_STATUS_POS)
-
-        if enemy_pokemon.status_nonvolatile == required_lists.nonvolatile[i]:
-            screen.blit(images.status_icons[i], images.ENEMY_STATUS_POS)
-
 def blit_exp():
     exp_percent = float(player_pokemon.exp) / float(player_pokemon.needed_exp)
     exp_percent = int(exp_percent)
     for exp in exp_percent:
         screen.blit(EXP_BAR, (300+exp, 200) )
-
-def blit_pp_1():
-    pp1 = images.render_small_text(str(player_pokemon.pp_list[0]) + "  /  "+str(player_pokemon.moveset[0].pp_full))
-    pp1_rect = pp1.get_rect()
-    pp1_rect.center = images.PP1POS
-    screen.blit(pp1, pp1_rect)
-
-def blit_pp_2():
-    pp2 = images.render_small_text(str(player_pokemon.pp_list[1]) + "  /  "+str(player_pokemon.moveset[1].pp_full))
-    pp2_rect = pp2.get_rect()
-    pp2_rect.center = images.PP2POS
-    screen.blit(pp2, pp2_rect)
-
-def blit_pp_3():
-    pp3 = images.render_small_text(str(player_pokemon.pp_list[2]) + "  /  "+str(player_pokemon.moveset[2].pp_full))
-    pp3_rect = pp3.get_rect()
-    pp3_rect.center = images.PP3POS
-    screen.blit(pp3, pp3_rect)
-
-def blit_pp_4():
-    pp4 = images.render_small_text(str(player_pokemon.pp_list[3]) + "  /  "+str(player_pokemon.moveset[3].pp_full))
-    pp4_rect = pp4.get_rect()
-    pp4_rect.center = images.PP4POS
-    screen.blit(pp4, pp4_rect)
-
-def blit_back_button():
-    global back_button
-    back_button = screen.blit(images.BACK, images.BACKBUTTONPOS)
-
 
 pygame.init()
 pygame.display.set_caption("Pokemon!")
@@ -155,17 +96,20 @@ while in_battle == True:
 
     battle_blitting.render_enemy_hp(enemy_pokemon)
 
-    blit_pokemon()
+    battle_blitting.blit_pokemon(player_pokemon, enemy_pokemon)
 
-    blit_numerical_hp()
+    battle_blitting.blit_numerical_hp(player_pokemon)
 
-    blit_player_name()
+    battle_blitting.blit_player_name(player_pokemon)
 
-    blit_enemy_name()
+    battle_blitting.blit_enemy_name(enemy_pokemon)
+    if required_lists.nonvolatile_test_player == True:
+        battle_blitting.blit_player_status_ailment(player_pokemon)
 
-    blit_status_ailment()
+    if required_lists.nonvolatile_test_enemy == True:
+        battle_blitting.blit_enemy_status_ailment(enemy_pokemon)
 
-    blit_back_button()
+    battle_blitting.blit_back_button()
 
     box1 = required_lists.four_boxes[0]
     box2 = required_lists.four_boxes[1]
@@ -181,13 +125,13 @@ while in_battle == True:
 
     if battle_blitting.game_state == "move list":
         if required_lists.box_data[0] != "":
-            blit_pp_1()
+            battle_blitting.blit_pp_1(player_pokemon)
         if required_lists.box_data[1] != "":
-            blit_pp_2()
+            battle_blitting.blit_pp_2(player_pokemon)
         if required_lists.box_data[2] != "":
-            blit_pp_3()
+            battle_blitting.blit_pp_3(player_pokemon)
         if required_lists.box_data[3] != "":
-            blit_pp_4()
+            battle_blitting.blit_pp_4(player_pokemon)
 
     if battle_blitting.game_state == "wait for prompt":
         if len(required_lists.to_print) > 0:
@@ -295,7 +239,7 @@ while in_battle == True:
                     battle_blitting.game_state = "wait for prompt"
                     battle_blitting.reset_labels()
                     battle_blitting.print_ask_for_space()
-                elif back_button.collidepoint(pos):
+                elif required_lists.back_button.collidepoint(pos):
                     battle_blitting.reset_labels()
                     battle_blitting.game_state = "first select"
 
@@ -369,7 +313,7 @@ while in_battle == True:
                             battle_blitting.reset_labels()
 
 
-                elif back_button.collidepoint(pos):
+                elif required_lists.back_button.collidepoint(pos):
                     battle_blitting.reset_labels()
                     battle_blitting.game_state = "first select"
 

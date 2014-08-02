@@ -9,6 +9,7 @@ screen = images.SCREEN
 game_state = "first select"
 
 def render_background():
+    '''Fill the background with white to make sure the battle screen blits on a clean surface.'''
     screen.fill(images.WHITE)
     screen.blit(images.GRASS_BATTLE, images.TOPLEFT)
 
@@ -118,15 +119,20 @@ def update_box_5(player_pokemon, enemy_pokemon):
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
     if len(required_lists.to_damage) != len(required_lists.to_print):
         del required_lists.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...
-    print required_lists.to_print
-    print required_lists.to_damage
-    print required_lists.to_damage_count
     if len(required_lists.to_print_immediate) != 0:
         required_lists.box5data = required_lists.to_print_immediate[0]
     else:
         required_lists.box5data = required_lists.to_print[0]
 
     if required_lists.to_damage[0] == "NULL":
+        del required_lists.to_damage[0]
+    elif required_lists.to_damage[0] == "player status":
+        blit_player_status_ailment(player_pokemon)
+        required_lists.nonvolatile_test_player = True
+        del required_lists.to_damage[0]
+    elif required_lists.to_damage[0] == "enemy status":
+        blit_enemy_status_ailment(enemy_pokemon)
+        required_lists.nonvolatile_test_enemy = True
         del required_lists.to_damage[0]
     elif required_lists.to_damage[0] == "player":
         player_pokemon.hp -= required_lists.to_damage_count[0]
@@ -213,4 +219,73 @@ def select_box(move):
         box = images.TEXTBOX
     return box
 
+def blit_pokemon(player_pokemon, enemy_pokemon):
+    '''Blit the actual pokemon sprites in their proper places.'''
+    screen.blit(player_pokemon.player_sprite, images.BOTTOMLEFT)
+    screen.blit(enemy_pokemon.enemy_sprite, images.TOPRIGHT)
 
+def blit_numerical_hp(player_pokemon):
+    '''Blit the actual hp value to the screen for the player pokemon.'''
+    numerical_hp = images.render_small_text(str(player_pokemon.hp))
+    numerical_hp_full = images.render_small_text("/  " + str(player_pokemon.hp_full))
+    screen.blit(numerical_hp, images.HPTEXTPOS)
+    screen.blit(numerical_hp_full, images.FULLHPTEXTPOS)
+
+def blit_player_name(player_pokemon):
+    '''Blit the player's name to the screen.'''
+    player_name = images.render_small_text(str(player_pokemon.name))
+    screen.blit(player_name, images.PLAYERNAMEPOS)
+    player_name_rect = player_name.get_rect()
+    gender_rect = images.MALE.get_rect()
+    gender_rect.center = player_name_rect.center
+    screen.blit(images.MALE, gender_rect)
+
+def blit_enemy_name(enemy_pokemon):
+    '''Blit the enemy pokemon's name to the screen.'''
+    enemy_name = images.render_small_text(str(enemy_pokemon.name))
+    screen.blit(enemy_name, images.ENEMYNAMEPOS)
+
+def blit_player_status_ailment(player_pokemon):
+    '''Check for a nonvolatile status ailment on the player, and blit its image to the screen if it exists.'''
+    for i in range(len(required_lists.nonvolatile)):
+        if player_pokemon.status_nonvolatile == required_lists.nonvolatile[i]:
+            screen.blit(images.status_icons[i], images.PLAYER_STATUS_POS)
+
+def blit_enemy_status_ailment(enemy_pokemon):
+    '''Check for a nonvolatile status ailment on the enemy, and blit its image to the screen if it exists.'''
+    for i in range(len(required_lists.nonvolatile)):
+        if enemy_pokemon.status_nonvolatile == required_lists.nonvolatile[i]:
+            screen.blit(images.status_icons[i], images.ENEMY_STATUS_POS)
+
+def blit_pp_1(player_pokemon):
+    '''Blit the pp of the player's first move.'''
+    pp1 = images.render_small_text(str(player_pokemon.pp_list[0]) + "  /  "+str(player_pokemon.moveset[0].pp_full))
+    pp1_rect = pp1.get_rect()
+    pp1_rect.center = images.PP1POS
+    screen.blit(pp1, pp1_rect)
+
+def blit_pp_2(player_pokemon):
+    '''Blit the pp of the player's second move.'''
+    pp2 = images.render_small_text(str(player_pokemon.pp_list[1]) + "  /  "+str(player_pokemon.moveset[1].pp_full))
+    pp2_rect = pp2.get_rect()
+    pp2_rect.center = images.PP2POS
+    screen.blit(pp2, pp2_rect)
+
+def blit_pp_3(player_pokemon):
+    '''Blit the pp of the player's third move.'''
+    pp3 = images.render_small_text(str(player_pokemon.pp_list[2]) + "  /  "+str(player_pokemon.moveset[2].pp_full))
+    pp3_rect = pp3.get_rect()
+    pp3_rect.center = images.PP3POS
+    screen.blit(pp3, pp3_rect)
+
+def blit_pp_4(player_pokemon):
+    '''Blit the pp of the player's fourth move.'''
+    pp4 = images.render_small_text(str(player_pokemon.pp_list[3]) + "  /  "+str(player_pokemon.moveset[3].pp_full))
+    pp4_rect = pp4.get_rect()
+    pp4_rect.center = images.PP4POS
+    screen.blit(pp4, pp4_rect)
+
+
+def blit_back_button():
+    '''Blit a back button to the screen.'''
+    required_lists.back_button = screen.blit(images.BACK, images.BACKBUTTONPOS)

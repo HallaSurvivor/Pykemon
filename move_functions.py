@@ -109,7 +109,10 @@ def cause_status(move, target):
                 target.status_counter = 1 #status_counter is used for a variety of things depending upon the status
                 target.status_nonvolatile = move.status
                 required_lists.to_print.append("{0} was {1}".format(target.name, move.status))
-                required_lists.to_damage.append("NULL")
+                if target.trainer =="player":
+                    required_lists.to_damage.append("player status")
+                else:
+                    required_lists.to_damage.append("enemy status")
             else:
                 required_lists.to_print.append("{0} is already {1}".format(target.name, target.status_nonvolatile))
                 required_lists.to_damage.append("NULL")
