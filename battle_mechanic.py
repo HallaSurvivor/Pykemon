@@ -1,6 +1,4 @@
-__author__ = 'HallaSurvivor'
-
-#Thanks to stackoverflow for the basis of this code
+'''Handles everything that happens during a single battle sequence.'''
 from random import randint
 import pygame
 import sys

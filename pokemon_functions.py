@@ -5,6 +5,70 @@ from random import randint
 from math import floor
 import required_lists
 
+class Pokemon(object):
+    def __init__(self,
+
+    ability, type1, type2,
+
+    egg1, egg2, egg_cycles,
+
+    capture_rate, height, weight, gender_ratio, growth_rate,
+
+    evolution_level, evolution, exp_yield, ev_yield,
+
+    base_hp, base_atk, base_defs, base_sp_atk, base_sp_defs, base_speed,
+
+    TM_list, move_tutor_list, breeding_move_list,
+
+    player_sprite, enemy_sprite, pokedex_color):
+
+        self.ability = ability
+        self.type1 = type1
+        self.type2 = type2
+        self.egg1 = egg1
+        self.egg2 = egg2
+        self.egg_cycles = egg_cycles
+        self.capture_rate = capture_rate
+        self.height = height
+        self.weight = weight
+        self.gender_ratio = gender_ratio #percent male, if genderless, -1
+        self.growth_rate = growth_rate
+        self.evolution_level = evolution_level
+        self.evolution = evolution
+        self.base_hp = base_hp
+        self.base_atk = base_atk
+        self.base_defs = base_defs
+        self.base_sp_atk = base_sp_atk
+        self.base_sp_defs = base_sp_defs
+        self.base_speed = base_speed
+        self.base_happiness = 70
+        self.TM_list = TM_list
+        self.move_tutor_list = move_tutor_list
+        self.breeding_move_list = breeding_move_list
+        self.exp_yield = exp_yield
+        self.ev_yield = ev_yield
+        self.player_sprite = player_sprite
+        self.enemy_sprite = enemy_sprite
+        self.pokedex_color = pokedex_color
+
+        self.status_nonvolatile = "healthy"
+
+        self.volatile = {"confused":False, "cursed":False, "embargo":False,
+                        "encore":False, "flinch":False, "healblock":False,
+                        "identification":False, "infatuated":False,
+                        "nightmare":False, "partially trapped":False,
+                        "parish song":False, "seeded":False, "taunt":False,
+                        "telekenetic levitation":False, "torment":False}
+
+        self.skip_turn = False
+
+        self.status_counter = 1 #changes depending on status. paralz: can attack or no. frzn/sleep: time to cure. badly poisoned: used to tell what turn of poison to calc damage
+        self.gender = "male"
+
+
+
+
+
 
 def calculate_real_stats(pokemon):
         pokemon.hp_full = ((pokemon.iv[0] + (2*pokemon.base_hp)      + (pokemon.ev[0]/4) + 100)*pokemon.level/100 + 10)*required_lists.nature_modifiers[pokemon.nature][0]
@@ -137,8 +201,6 @@ def lower_pp(pokemon, move_name):
             pokemon.pp_list[i] -= 1
 
 def set_volatile_status(pokemon):
-    pokemon.volatile = {"confused":False, "cursed":False, "embargo":False, "encore":False, "flinch":False, "healblock":False, "identification":False, "infatuated":False, "nightmare":False, "partially trapped":False, "parish song":False, "seeded":False, "taunt":False, "telekenetic levitation":False, "torment":False}
-
     pokemon.cursed = False #loses 1/4 hp_full per turn. can't un-cursed except by switching out
     pokemon.embargo = False #unable to use held items or items for 5 turns
     pokemon.encore = False #repeats last attack for 3 turns
