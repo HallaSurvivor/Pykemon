@@ -15,6 +15,11 @@ def render_background():
 def reset_labels():
     '''Resets the text in the available boxes.'''
     required_lists.box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""]
+    required_lists.box5data = "What would you like to do?"
+
+def print_ask_for_space():
+    '''Tell the user to push a button to continue.'''
+    required_lists.box5data = "Press any key to continue."
 
 def define_text_boxes():
     '''Renders the text that goes in each box, and defines a rectangle around each block of text.'''
@@ -113,11 +118,13 @@ def update_box_5(player_pokemon, enemy_pokemon):
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
     if len(required_lists.to_damage) != len(required_lists.to_print):
         del required_lists.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...
-
-    if len(required_lists.to_print_immediate) == 0:
-        required_lists.box5data = required_lists.to_print[0]
-    else:
+    print required_lists.to_print
+    print required_lists.to_damage
+    print required_lists.to_damage_count
+    if len(required_lists.to_print_immediate) != 0:
         required_lists.box5data = required_lists.to_print_immediate[0]
+    else:
+        required_lists.box5data = required_lists.to_print[0]
 
     if required_lists.to_damage[0] == "NULL":
         del required_lists.to_damage[0]
@@ -132,6 +139,8 @@ def update_box_5(player_pokemon, enemy_pokemon):
     del required_lists.to_print[0]
     battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
     battle_functions.check_player_health(player_pokemon)
+    if len(required_lists.to_print) == 0:
+        required_lists.box5data = "What would you like to do?"
 
 def render_correct_boxes():
     '''Blits either 4 or 6 boxes depending on the game state, always blits box5.'''

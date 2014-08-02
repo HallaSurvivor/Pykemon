@@ -55,7 +55,7 @@ current_enemy = object
 
 box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2, 3, 4, a, b, c, d, e, f
 
-box5data = ""
+box5data = "What would you like to do?"
 
 box_colors = [0, 0, 0, 0]
 
