@@ -117,34 +117,45 @@ def render_box_5():
 
 def update_box_5(player_pokemon, enemy_pokemon):
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
-    if len(required_lists.to_damage) != len(required_lists.to_print):
+    if len(required_lists.to_damage) > len(required_lists.to_print):
         del required_lists.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...
+
     if len(required_lists.to_print_immediate) != 0:
         required_lists.box5data = required_lists.to_print_immediate[0]
+        del required_lists.to_print_immediate[0]
     else:
         required_lists.box5data = required_lists.to_print[0]
+        del required_lists.to_print[0]
 
-    if required_lists.to_damage[0] == "NULL":
-        del required_lists.to_damage[0]
-    elif required_lists.to_damage[0] == "player status":
-        blit_player_status_ailment(player_pokemon)
-        required_lists.nonvolatile_test_player = True
-        del required_lists.to_damage[0]
-    elif required_lists.to_damage[0] == "enemy status":
-        blit_enemy_status_ailment(enemy_pokemon)
-        required_lists.nonvolatile_test_enemy = True
-        del required_lists.to_damage[0]
-    elif required_lists.to_damage[0] == "player":
-        player_pokemon.hp -= required_lists.to_damage_count[0]
-        del required_lists.to_damage[0]
-        del required_lists.to_damage_count[0]
-    else:
-        enemy_pokemon.hp -= required_lists.to_damage_count[0]
-        del required_lists.to_damage[0]
-        del required_lists.to_damage_count[0]
-    del required_lists.to_print[0]
-    battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
-    battle_functions.check_player_health(player_pokemon)
+        if required_lists.to_damage[0] == "NULL":
+            del required_lists.to_damage[0]
+
+        elif required_lists.to_damage[0] == "player status":
+            blit_player_status_ailment(player_pokemon)
+            required_lists.nonvolatile_test_player = True
+            del required_lists.to_damage[0]
+
+        elif required_lists.to_damage[0] == "enemy status":
+            blit_enemy_status_ailment(enemy_pokemon)
+            required_lists.nonvolatile_test_enemy = True
+            del required_lists.to_damage[0]
+
+        elif required_lists.to_damage[0] == "player":
+            player_pokemon.hp -= required_lists.to_damage_count[0]
+            del required_lists.to_damage[0]
+            del required_lists.to_damage_count[0]
+
+        else: #enemy
+            enemy_pokemon.hp -= required_lists.to_damage_count[0]
+            del required_lists.to_damage[0]
+            del required_lists.to_damage_count[0]
+
+        battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
+        battle_functions.check_player_health(player_pokemon)
+
+    print required_lists.to_print
+    print required_lists.to_damage
+
     if len(required_lists.to_print) == 0:
         required_lists.box5data = "What would you like to do?"
 
@@ -176,6 +187,13 @@ def render_enemy_hp(pokemon):
     hp_to_render = int(hp_to_render)
     for hp in range(hp_to_render):
         screen.blit(images.HP_GREEN, (74+hp, 40))
+
+def blit_exp(player_pokemon):
+    '''Blit the correct length experience bar to the screen.'''
+    exp_percent = float(player_pokemon.exp) / float(player_pokemon.needed_exp)
+    exp_percent = int(exp_percent)
+    for exp in range(exp_percent):
+        screen.blit(EXP_BAR, (300+exp, 200) )
 
 def select_box(move):
     '''Selects which color box to blit to make it corrospond to that move's type.'''

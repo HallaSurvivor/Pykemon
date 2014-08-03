@@ -4,11 +4,19 @@ import enemies
 import required_lists
 from random import randint
 
+player_pokemon = 0
+
+required_lists.current_enemy = enemies.enemy1
+
+enemy_pokemon = required_lists.current_enemy.party[0]
+
 def auto_choose_pokemon():
     '''Automatically selects the first pokemon in the player's party with hp > 0.'''
+    global player_pokemon
     for i in range(len(player_party.player_party)):
         if player_party.player_party[i].hp > 0:
-            return player_party.player_party[i]
+            player_pokemon = player_party.player_party[i]
+            break
 
 def check_status(pokemon):
     '''Checks the status of a pokemon, and deals damage or decrements a turn counter accordingly.'''
@@ -182,20 +190,31 @@ def get_money():
 
 def check_enemy_health(player, enemy):
     '''Check if the enemy healtlh is > 0, if not, return the next pokemon and give experience.'''
+    global enemy_pokemon
     if enemy.hp <= 0:
         required_lists.to_print_immediate.append("{0} feinted!".format(enemy.name))
         for i in range(len(required_lists.current_enemy.party)):
             if required_lists.current_enemy.party[i].hp > 0:
                 required_lists.to_print_immediate.append("{0} sent out {1}!".format(required_lists.current_enemy.name, required_lists.current_enemy.party[i].name))
-                return required_lists.current_enemy.party[i]
+                enemy_pokemon = required_lists.current_enemy.party[i]
+
+                to_delete = 0
+                for i in range(len(required_lists.to_damage)):
+                    if required_lists.to_print[i] == enemy_pokemon.name:
+                        del required_lists.to_print[i]
+                        del required_lists.to_damage[i]
+                        del required_lists.to_damage_count[to_delete]
+                    else:
+                        to_delete += 1
+                break
         else:
             required_lists.to_print_immediate.append("{0} has run out of usable pokemon!")
             get_money()
+
+        player.get_exp(enemy)
+        player.get_ev(enemy)
         print player.exp
         print player.ev
-        player_party.generator.pokemon_list.pokemon_functions.get_exp(player, enemy)
-        player_party.generator.pokemon_list.pokemon_functions.get_ev(player, enemy)
-        print player.exp
-        print player.ev
+        print "\n"
 
 

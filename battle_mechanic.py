@@ -24,8 +24,6 @@ a megaevolve button, and a pokemon-status indicator on the bottom of the screen
 in_battle = True
 priority = "start"
 select_action = 0
-required_lists.current_enemy = enemies.enemy1
-enemy_pokemon = required_lists.current_enemy.party[0]
 
 
 def open_bag():
@@ -65,21 +63,21 @@ def choose_box_color():
         required_lists.box_colors[2] = images.BOX
         required_lists.box_colors[3] = images.BOX
 
-def blit_exp():
-    exp_percent = float(player_pokemon.exp) / float(player_pokemon.needed_exp)
-    exp_percent = int(exp_percent)
-    for exp in exp_percent:
-        screen.blit(EXP_BAR, (300+exp, 200) )
-
 pygame.init()
 pygame.display.set_caption("Pokemon!")
-player_pokemon = battle_functions.auto_choose_pokemon()
 
 player_to_do = 0
 
 wait_timer = 0
 
+battle_functions.auto_choose_pokemon()
+
+
 while in_battle == True:
+
+    player_pokemon = battle_functions.player_pokemon
+    enemy_pokemon = battle_functions.enemy_pokemon
+
     battle_blitting.render_background()
 
     choose_box_color()
@@ -99,6 +97,9 @@ while in_battle == True:
     battle_blitting.blit_player_name(player_pokemon)
 
     battle_blitting.blit_enemy_name(enemy_pokemon)
+
+    battle_blitting.blit_exp(player_pokemon)
+
     if required_lists.nonvolatile_test_player == True:
         battle_blitting.blit_player_status_ailment(player_pokemon)
 
@@ -106,6 +107,9 @@ while in_battle == True:
         battle_blitting.blit_enemy_status_ailment(enemy_pokemon)
 
     battle_blitting.blit_back_button()
+
+    player_pokemon.calculate_in_battle_stats()
+    enemy_pokemon.calculate_in_battle_stats()
 
     box1 = required_lists.four_boxes[0]
     box2 = required_lists.four_boxes[1]
