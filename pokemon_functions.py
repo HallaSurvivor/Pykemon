@@ -107,6 +107,18 @@ class Pokemon(object):
 
         self.calculate_real_stats()
 
+
+    def get_pp(self):
+        for i in range(len(self.moveset)):
+            self.pp_list.append(self.moveset[i].pp_full)
+
+
+    def lower_pp(self, move_name):
+        for i in range(len(self.moveset)):
+            if move_name == self.moveset[i].name:
+                self.pp_list[i] -= 1
+
+
     def calculate_in_battle_stats(self):
         self.battle_atk = int(floor(self.atk * (required_lists.stage_conversion[self.stages[0]+6])))
         self.battle_defs = int(floor(self.defs * (required_lists.stage_conversion[self.stages[1]+6])))
@@ -131,37 +143,37 @@ class Pokemon(object):
         self.calculate_real_stats
 
 
-def get_exp(self, enemy_self):
-    if self.level < 100:
-        #formula for exp gain uses variables from bulbapedia for convenience reasons on my end
-        #it's pretty clear what they do from the if statements, though.
-        #if you need to know, you can always look it up :)
+    def get_exp(self, enemy_self):
+        if self.level < 100:
+            #formula for exp gain uses variables from bulbapedia for convenience reasons on my end
+            #it's pretty clear what they do from the if statements, though.
+            #if you need to know, you can always look it up :)
 
-        if enemy_self.trainer == "wild":
-            a = 1
-        else:
-            a = 1.5
+            if enemy_self.trainer == "wild":
+                a = 1
+            else:
+                a = 1.5
 
-        b = enemy_self.exp_yield
+            b = enemy_self.exp_yield
 
-        if self.item == "lucky egg":
-            e = 1.5
-        else:
-            e = 1
+            if self.item == "lucky egg":
+                e = 1.5
+            else:
+                e = 1
 
-        L = enemy_self.level
+            L = enemy_self.level
 
-        if self.item == "exp share":
-            s = 2
-        else:
-            s = 1
+            if self.item == "exp share":
+                s = 2
+            else:
+                s = 1
 
-        given_exp = a*b*e*L/(7*s) #t is discluded, as there isn't another player to trade with
-        given_exp = int(given_exp)
-        print "{0} gained {1} experience!".format(self.name, given_exp)
-        self.exp += given_exp
-        if self.exp >= self.needed_exp:
-            level_up(self)
+            given_exp = a*b*e*L/(7*s) #t is discluded, as there isn't another player to trade with
+            given_exp = int(given_exp)
+            print "{0} gained {1} experience!".format(self.name, given_exp)
+            self.exp += given_exp
+            if self.exp >= self.needed_exp:
+                level_up(self)
 
 
 
@@ -203,17 +215,6 @@ def get_needed_exp(self):
             needed_exp = n**3*(floor(n/2)+32)/50
 
     return needed_exp
-
-
-def get_pp(self):
-    for i in range(len(self.moveset)):
-        self.pp_list.append(self.moveset[i].pp_full)
-
-
-def lower_pp(self, move_name):
-    for i in range(len(self.moveset)):
-        if move_name == self.moveset[i].name:
-            self.pp_list[i] -= 1
 
 def set_volatile_status(self):
     self.cursed = False #loses 1/4 hp_full per turn. can't un-cursed except by switching out

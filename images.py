@@ -1,4 +1,5 @@
-__author__ = "HallaSurvivor"
+'''Import all the sprites and store them as public variables.'''
+#Thanks to pokemondb for the majority of these sprites. :)
 import pygame
 import os
 
@@ -10,6 +11,10 @@ pygame.init()
 #pokemon
 BULBASAUR_BACK = load("bulbasaur_back.png")
 BULBASAUR_FRONT = load("bulbasaur_front.png")
+
+IVYSAUR_BACK = load("ivysaur_back.png")
+IVYSAUR_FRONT = load("ivysaur_front.png")
+
 MUDKIP_FRONT = load("mudkip_front.png")
 MUDKIP_BACK = load("mudkip_back.png")
 
