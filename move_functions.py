@@ -23,8 +23,25 @@ def calc_damage(user, target, move):
         required_lists.to_print.append("It was not very effective!")
         required_lists.to_damage.append("NULL")
 
-    modifier = stab * net_type_bonus * uniform(.85, 1)
-    #implement items, crits, abilities, etc. later
+    if user.crit_stage == 0:
+        crit_percent = .0625
+    elif user.crit_stage == 1:
+        crit_percent = .125
+    elif user.crit_stage == 2:
+        crit_percent = .50
+    else:
+        crit_percent = 1.00
+
+    if uniform(0, 1) <= crit_percent:
+        crit = 1.5
+        required_lists.to_print.append("It was a critical hit!")
+        required_lists.to_damage.append("NULL")
+    else:
+        crit = 1
+
+
+    modifier = stab * net_type_bonus * crit * uniform(.85, 1)
+    #implement items, abilities, etc. later
 
     if move.category == "physical":
         damage_ratio = float(user.battle_atk) / float(target.battle_defs)
@@ -179,39 +196,54 @@ class Attack(object):
                         modify_stats(self, target)
 
             else:
-                damage = calc_damage(user, target, self)
-
-                recoil_damage = calc_recoil(damage, self)
-                if user.trainer == "player":
-                    required_lists.to_damage.append("enemy")
+                if self.multiple_attacks == False:
+                    number_attacks = 1
                 else:
-                    required_lists.to_damage.append("player")
-                required_lists.to_damage_count.append(damage)
+                    if randint(0, 1000) <= 333:
+                        number_attacks = 2
+                    elif 333 < randint(0, 1000) <= 666:
+                        number_attacks = 3
+                    elif 666 < randint(0, 1000) <= 833:
+                        number_attacks = 4
+                    elif 833 < randint(0, 1000) <= 1000:
+                        number_attacks = 5
+                    for i in range(number_attacks):
+                        required_lists.to_print.append("It hit {0} times!".format(number_attacks))
 
-                if recoil_damage != 0:
-                    required_lists.to_print.append("{0} was hurt by recoil!".format(user.name))
-                    required_lists.to_damage_count.append(recoil_damage)
-                    required_lists.to_damage.append(user.trainer)
+                for i in range(number_attacks):
+                    damage = calc_damage(user, target, self)
 
-                if self.modify_perect != 0:
-                    if randint(0, 100) <= self.modify_perect:
-                        if self.modify_target == "user":
-                            modify_stats(self, user)
-                        else:
-                            modify_stats(self, target)
+                    recoil_damage = calc_recoil(damage, self)
+                    if user.trainer == "player":
+                        required_lists.to_damage.append("enemy")
+                    else:
+                        required_lists.to_damage.append("player")
+                    required_lists.to_damage_count.append(damage)
 
-                if self.stat_percent != 0:
-                    if randint(0, 100) <= self.stat_percent:
-                        cause_status(self, target)
+                    if recoil_damage != 0:
+                        required_lists.to_print.append("{0} was hurt by recoil!".format(user.name))
+                        required_lists.to_damage_count.append(recoil_damage)
+                        required_lists.to_damage.append(user.trainer)
 
-                if self.regain_health == True:
-                    regained_health = int(float(damage) / 2)
-                    required_lists.to_print.append("{0} had its energy drained".format(target.name))
-                    required_lists.to_damage.append(user.trainer)
-                    required_lists.to_damage_count.append(-regained_health)
+                    if self.modify_perect != 0:
+                        if randint(0, 100) <= self.modify_perect:
+                            if self.modify_target == "user":
+                                modify_stats(self, user)
+                            else:
+                                modify_stats(self, target)
 
-            if self.cause_skip == True:
-                user.skip_turn = True
+                    if self.stat_percent != 0:
+                        if randint(0, 100) <= self.stat_percent:
+                            cause_status(self, target)
+
+                    if self.regain_health == True:
+                        regained_health = int(float(damage) / 2)
+                        required_lists.to_print.append("{0} had its energy drained".format(target.name))
+                        required_lists.to_damage.append(user.trainer)
+                        required_lists.to_damage_count.append(-regained_health)
+
+                if self.cause_skip == True:
+                    user.skip_turn = True
 
         else:
             required_lists.to_print.append("It missed!")

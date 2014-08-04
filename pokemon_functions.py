@@ -70,6 +70,8 @@ class Pokemon(object):
 
         base_hp, base_atk, base_defs, base_sp_atk, base_sp_defs, base_speed,
 
+        level_up_moves,
+
         TM_list, move_tutor_list, breeding_move_list,
 
         player_sprite, enemy_sprite, pokedex_color,
@@ -143,6 +145,7 @@ class Pokemon(object):
         self.iv = iv_list
         self.ev = [0, 0, 0, 0, 0, 0]
         self.stages = [0, 0, 0, 0, 0, 0]
+        self.crit_stage = 0
         self.accuracy_stage = 0
         self.evasion_stage = 0
 

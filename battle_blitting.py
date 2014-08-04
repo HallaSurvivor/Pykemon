@@ -193,7 +193,7 @@ def blit_exp(player_pokemon):
     exp_percent = float(player_pokemon.exp) / float(player_pokemon.needed_exp)
     exp_percent = int(exp_percent)
     for exp in range(exp_percent):
-        screen.blit(EXP_BAR, (300+exp, 200) )
+        screen.blit(images.EXP_BAR, (300+exp, 200) )
 
 def select_box(move):
     '''Selects which color box to blit to make it corrospond to that move's type.'''

@@ -13,6 +13,8 @@ Parameters listed below:
 
     base_hp, base_atk, base_defs, base_sp_atk, base_sp_defs, base_speed,
 
+
+
     player_sprite, enemy_sprite, pokedex_color,
 
     iv_list, name, level, exp, moveset, trainer, item)
@@ -39,6 +41,8 @@ class Bulbasaur(Pokemon):
 
         45, 49, 49, 65, 65, 45,
 
+        [],
+
         ["Tackle"], ["Tackle"], ["Tackle"],
 
         images.BULBASAUR_BACK, images.BULBASAUR_FRONT, images.GREEN,
@@ -59,6 +63,8 @@ class Ivysaur(Pokemon):
         32, "Venusaur", 142, [0, 0, 0, 1, 1, 0],
 
         60, 62, 63, 80, 80, 60,
+
+        [],
 
         ["Tackle"], ["Tackle"], ["Tackle"],
 

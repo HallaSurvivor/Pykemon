@@ -1,4 +1,4 @@
-__author__ = 'HallaSurvivor'
+'''All of the moves in the game.'''
 from move_functions import Attack
 
 #name, category, power, move_type, pp full, pp max, contact=True, acc=100, priority=0, recoil=0, user mod=[], enemy mod=[], mod perc=0, status=none
@@ -19,3 +19,4 @@ confusion = Attack("Confusion", "special", 50, "psychic", 25, 40, contact = Fals
 giga_impact = Attack("Giga Impact", "physical", 150, "normal", 5, 8, accuracy = 90, cause_skip = True)
 bind = Attack("Bind", "physical", 15, "normal", 20, 32, accuracy = 85, status = "partially trapped", stat_percent = 100)
 absorb = Attack("Absorb", "special", 20, "grass", 20, 32, contact = False, regain_health = True)
+arm_thrust = Attack("Arm Thrust", "physical", 15, "fighting", 20, 32, multiple_attacks = True)

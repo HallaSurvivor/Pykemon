@@ -76,6 +76,7 @@ battle_functions.auto_choose_pokemon()
 while in_battle == True:
 
     player_pokemon = battle_functions.player_pokemon
+
     enemy_pokemon = battle_functions.enemy_pokemon
 
     battle_blitting.render_background()

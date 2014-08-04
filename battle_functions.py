@@ -2,6 +2,7 @@
 import player_party
 import enemies
 import required_lists
+import move_list
 from random import randint
 
 player_pokemon = 0
@@ -113,8 +114,8 @@ def use_attack(user, target, move):
 
                                     if user.pp_list[move] > 0:
                                         user.moveset[move].use(user, target)
-                                        player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(user)
-                                        player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(target)
+                                        user.caclulate_in_battle_stats()
+                                        target.calculate_in_battle_stats()
                                         user.pp_list[move] -= 1
                                     else:
                                         required_lists.to_print.append(user.moveset[move].name + " has no PP left")
@@ -145,14 +146,14 @@ def use_attack(user, target, move):
 
         else:
             if randint(0, 1) == 0:
-                confused_attack.use(user, user)
+                move_list.confused_attack.use(user, user)
                 required_lists.to_print.append("{0} hurt itself in its confusion!".format(user.name))
                 required_lists.to_damage.append("NULL")
             else:
                 if user.pp_list[move] > 0:
                     user.moveset[move].use(user, target)
-                    player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(user)
-                    player_party.generator.pokemon_list.pokemon_functions.calculate_in_battle_stats(target)
+                    user.calculate_in_battle_stats()
+                    target.calculate_in_battle_stats()
                 else:
                     required_lists.to_print.append(user.moveset[move].name + " has no PP left")
                     required_lists.to_damage.append("NULL")
@@ -172,7 +173,6 @@ def check_player_health(player):
     if player.hp <= 0:
         required_lists.to_print_immediate.append("{0} feinted!".format(player.name))
         #animation?
-        #make this not deal damage to the enemy if he switches and the previous pokemon had a status ailment
         watch_count = 0
         for i in range(len(player_party.player_party)):
             if player_party.player_party[i].hp > 0:

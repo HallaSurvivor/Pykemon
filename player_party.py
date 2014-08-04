@@ -3,7 +3,7 @@ import generator
 import move_list
 
 
-Creighton = generator.generate("bulbasaur", [move_list.confusion, move_list.tackle, move_list.toxic, move_list.hydro_pump], "player")
+Creighton = generator.generate("bulbasaur", [move_list.confusion, move_list.arm_thrust, move_list.toxic, move_list.hydro_pump], "player")
 Creighton.name = "Creighton"
 
 Jessica = generator.generate("bulbasaur", [move_list.swords_dance, move_list.giga_impact, move_list.toxic, move_list.absorb], "player")
@@ -15,4 +15,4 @@ Mary.name = "Mary"
 Jason = generator.generate("mudkip", [move_list.absorb, move_list.hydro_pump, move_list.dragon_dance], "player")
 Jason.name = "Jason"
 
-player_party = [Mary, Creighton, Jessica, Jason]
+player_party = [Creighton, Mary, Jessica, Jason]
