@@ -28,7 +28,7 @@ def check_status(pokemon):
 
     elif pokemon.status_nonvolatile == "frozen":
         if randint(0, 100) <= 20:
-            pokemon.status_nonvolatle == "healthy"
+            pokemon.status_nonvolatile == "healthy"
             required_lists.to_print.append("{0} has thawed out".format(pokemon.name))
             required_lists.to_damage.append("NULL")
 
@@ -114,7 +114,7 @@ def use_attack(user, target, move):
 
                                     if user.pp_list[move] > 0:
                                         user.moveset[move].use(user, target)
-                                        user.caclulate_in_battle_stats()
+                                        user.calculate_in_battle_stats()
                                         target.calculate_in_battle_stats()
                                         user.pp_list[move] -= 1
                                     else:
@@ -122,7 +122,7 @@ def use_attack(user, target, move):
                                         required_lists.to_damage.append("NULL")
 
                         else:
-                            required_lists.to_print.append("{0} was paralyzed and unable to move!".format(user.name))
+                            required_lists.to_print.append("{0} was paralyzed and unable to move!".format(user.name)) #Put on two lines
                             required_lists.to_damage.append("NULL")
 
             #use move if not paralyzed
@@ -187,6 +187,7 @@ def check_player_health(player):
 def get_money():
     '''Give the player money after winning a battle.'''
     pass
+    #money_recieved += required_lists.payday_count * Meowth.level (or Purrloin.level)
 
 def check_enemy_health(player, enemy):
     '''Check if the enemy healtlh is > 0, if not, return the next pokemon and give experience.'''

@@ -74,3 +74,5 @@ nonvolatile_test_player = False
 nonvolatile_test_enemy = False
 
 six_boxes = [0, 0, 0, 0, 0, 0]
+
+payday_count = 0

@@ -14,8 +14,11 @@ import battle_blitting
 TO DO LIST
 
 implement volatile and battle volatile
+make it possible to print to multiple lines
+add in attack animations
 make held items do things
 make abilities a thing
+make everything in move_functions a method
 
 a megaevolve button, and a pokemon-status indicator on the bottom of the screen
 

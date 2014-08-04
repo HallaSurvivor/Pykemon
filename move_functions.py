@@ -23,11 +23,15 @@ def calc_damage(user, target, move):
         required_lists.to_print.append("It was not very effective!")
         required_lists.to_damage.append("NULL")
 
-    if user.crit_stage == 0:
+    crit_stage = user.crit_stage
+    if move.increased_crit == True:
+        crit_stage += 1
+
+    if crit_stage == 0:
         crit_percent = .0625
-    elif user.crit_stage == 1:
+    elif crit_stage == 1:
         crit_percent = .125
-    elif user.crit_stage == 2:
+    elif crit_stage == 2:
         crit_percent = .50
     else:
         crit_percent = 1.00
@@ -159,7 +163,7 @@ class Attack(object):
                 contact = True, accuracy = 100, priority = 0, recoil = 0,
                 modify_list = [0, 0, 0, 0, 0],
                 modify_percent = 0, modify_target = "user", status = "none", stat_percent = 0,
-                cause_skip = False, multiple_attacks = False, regain_health = False):
+                cause_skip = False, multiple_attacks = False, regain_health = False, increased_crit = False):
 
         self.name = name
         self.category = category
@@ -179,11 +183,15 @@ class Attack(object):
         self.cause_skip = cause_skip
         self.multiple_attacks = multiple_attacks
         self.regain_health = regain_health
+        self.increased_crit = increased_crit
 
     def use(self, user, target):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
         required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
         required_lists.to_damage.append("NULL")
+
+        if self.name == "Pay Day":
+            required_lists.payday_count += 1
 
         if randint(1, 100) <= P or P == 0:
             if self.category == "status":
@@ -248,6 +256,34 @@ class Attack(object):
         else:
             required_lists.to_print.append("It missed!")
             required_lists.to_damage.append("NULL")
+
+
+class OHKO(Attack):
+    def __init__(self, name, move_type, contact):
+        super(OHKO, self).__init__(name, "physical", 100, move_type, 5, 8)
+        self.contact = contact
+
+    def use(self, user, target):
+        P = 30 + (user.level - target.level)
+
+        required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
+        required_lists.to_damage.append("NULL")
+
+        if randint(1, 100) <= P:
+            required_lists.to_print.append("It's a one-hit KO!")
+            required_lists.to_damage.append("NULL")
+            damage = target.hp
+
+            if user.trainer == "player":
+                required_lists.to_damage.append("enemy")
+            else:
+                required_lists.to_damage.append("player")
+            required_lists.to_damage_count.append(damage)
+
+        else:
+            required_lists.to_print.append("It missed!")
+            required_lists.to_damage.append("NULL")
+
 
 
 

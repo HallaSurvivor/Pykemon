@@ -12,7 +12,7 @@ Jessica.name ="Jessica"
 Mary = generator.generate("bulbasaur", [move_list.hyper_beam, move_list.bind, move_list.fire_punch, move_list.takedown], "player")
 Mary.name = "Mary"
 
-Jason = generator.generate("mudkip", [move_list.absorb, move_list.hydro_pump, move_list.dragon_dance], "player")
+Jason = generator.generate("mudkip", [move_list.thunder_punch, move_list.ice_punch, move_list.fire_punch, move_list.guillotine], "player")
 Jason.name = "Jason"
 
-player_party = [Creighton, Mary, Jessica, Jason]
+player_party = [Jason, Creighton, Mary, Jessica]

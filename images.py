@@ -62,7 +62,7 @@ SLP = load("slp.png")
 MALE = load("male.png")
 
 
-status_icons = [BRN, PAR, FRZ, PSN, PSN, SLP]
+status_icons = [BRN, FRZ, PAR, PSN, PSN, SLP]
 
 box_1_var = BOX
 box_2_var = BOX
