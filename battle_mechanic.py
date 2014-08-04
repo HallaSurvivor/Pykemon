@@ -13,14 +13,16 @@ import battle_blitting
 '''
 TO DO LIST
 
-implement volatile and battle volatile
+flinch
+make everything in move_functions a method
+make the pokemon selection menu an iteration
+
 make it possible to print to multiple lines
 add in attack animations
 make held items do things
 make abilities a thing
-make everything in move_functions a method
 
-make the pokemon selection menu an iteration
+
 
 a megaevolve button, and a pokemon-status indicator on the bottom of the screen
 
@@ -35,6 +37,7 @@ def open_bag():
     global bag
 
 def choose_box_color():
+    '''Choose the correct box color based on game state.'''
     if battle_blitting.game_state == "first select":
         required_lists.box_colors[0] = images.BOX
         required_lists.box_colors[1] = images.BOX
@@ -67,6 +70,7 @@ def choose_box_color():
         required_lists.box_colors[1] = images.BOX
         required_lists.box_colors[2] = images.BOX
         required_lists.box_colors[3] = images.BOX
+
 
 pygame.init()
 pygame.display.set_caption("Pokemon!")

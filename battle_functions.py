@@ -85,6 +85,7 @@ def check_volatile_status(pokemon):
         required_lists.to_print.append("{0} was hurt by {1}".format(pokemon.name, "bind")) #make "bind" a general case
         required_lists.to_damage.append(pokemon.trainer)
         required_lists.to_damage_count.append(float(pokemon.hp_full) / 8)
+        #pokemon.status_volatile_counter -= 1
 
     if pokemon.volatile["parish song"] == True:
         pass

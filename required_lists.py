@@ -48,7 +48,7 @@ stat_list = ["attack", "defense", "special attack", "special defense", "speed"]
 
 nonvolatile = ["burned", "frozen", "paralyzed", "poisoned", "badly poisoned", "asleep"]
 
-volatile = ["confused", "cursed", "embargo", "encore", "flinch", "healblocK", "identification", "infatuation", "nightmare", "partially trapped", "parish song", "seeded", "taunt", "telekenetic levitation", "torment"]
+volatile = ["confused", "cursed", "embargo", "encore", "flinch", "healblock", "identification", "infatuation", "nightmare", "partially trapped", "parish song", "seeded", "taunt", "telekenetic levitation", "torment"]
 
 to_print = []
 

@@ -129,6 +129,7 @@ class Pokemon(object):
 
         self.skip_turn = False
         self.status_counter = 1 #changes depending on status. paralz: can attack or no. frzn/sleep: time to cure. badly poisoned: used to tell what turn of poison to calc damage
+        self.stats_volatile_counter = 1
 
         if self.gender_ratio == -1:
             self.gender = "genderless"

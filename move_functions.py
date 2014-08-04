@@ -208,6 +208,10 @@ class Attack(object):
             else:
                 if self.multiple_attacks == False:
                     number_attacks = 1
+                elif (self.name == "Bonemerang") or (self.name == "Double Hit") or (self.name == "Double Kick") or (self.name == "Dual Chop") or (self.name == "Gear Grind") or (self.name == "Twineedle"):
+                    number_attacks = 2
+                elif self.name == "Triple Kick":
+                    number_attacks = 3
                 else:
                     if randint(0, 1000) <= 333:
                         number_attacks = 2
@@ -285,10 +289,11 @@ class OHKO(Attack):
         else:
             required_lists.to_print.append("It missed!")
             required_lists.to_damage.append("NULL")
-
-#class TwoTurn(Attack):
-#def use(self, user, target):
 '''
+class TwoTurn(Attack):
+    def __init__()
+    def use(self, user, target):
+
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
         required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
         required_lists.to_damage.append("NULL")

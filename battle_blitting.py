@@ -8,6 +8,7 @@ screen = images.SCREEN
 
 game_state = "first select"
 
+
 def render_background():
     '''Fill the background with white to make sure the battle screen blits on a clean surface.'''
     screen.fill(images.WHITE)
