@@ -169,6 +169,13 @@ class Pokemon(object):
             if move_name == self.moveset[i].name:
                 self.pp_list[i] -= 1
 
+    def reset_in_battle_stats(self):
+        '''Set all the stages equal to zero when sending out a new pokemon.'''
+        self.stages = [0, 0, 0, 0, 0, 0]
+        self.accuracy_stage = 0
+        self.evasion_stage = 0
+        self.crit_stage = 0
+
 
     def calculate_in_battle_stats(self):
         '''Calculate the stats based on the stage of each stat.'''

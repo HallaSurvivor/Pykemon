@@ -20,6 +20,8 @@ make held items do things
 make abilities a thing
 make everything in move_functions a method
 
+make the pokemon selection menu an iteration
+
 a megaevolve button, and a pokemon-status indicator on the bottom of the screen
 
 '''
@@ -254,10 +256,12 @@ while in_battle == True:
                 if boxa.collidepoint(pos):
                     if required_lists.box_data[4] != "":
                         if player_pokemon.name != required_lists.box_data[4]:
-                            player_pokemon = player_party.player_party[0]
+                            battle_functions.player_pokemon = player_party.player_party[0]
                             select_action = 1
-                            required_lists.to_print.append("{0}, I choose you!".format(player_pokemon.name))
+                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
+                            battle_functions.player_pokemon.reset_in_battle_stats()
+                            battle_functions.player_pokemon.calculate_in_battle_stats()
                             battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
@@ -265,10 +269,12 @@ while in_battle == True:
                 elif boxb.collidepoint(pos):
                     if required_lists.box_data[5] != "":
                         if player_pokemon.name != required_lists.box_data[5]:
-                            player_pokemon = player_party.player_party[1]
+                            battle_functions.player_pokemon = player_party.player_party[1]
                             select_action = 1
-                            required_lists.to_print.append("{0}, I choose you!".format(player_pokemon.name))
+                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
+                            battle_functions.player_pokemon.reset_in_battle_stats()
+                            battle_functions.player_pokemon.calculate_in_battle_stats()
                             battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
@@ -276,10 +282,12 @@ while in_battle == True:
                 elif boxc.collidepoint(pos):
                     if required_lists.box_data[6] != "":
                         if player_pokemon.name != required_lists.box_data[6]:
-                            player_pokemon = player_party.player_party[2]
+                            battle_functions.player_pokemon = player_party.player_party[2]
                             select_action = 1
-                            required_lists.to_print.append("{0}, I choose you!".format(player_pokemon.name))
+                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
+                            battle_functions.player_pokemon.reset_in_battle_stats()
+                            battle_functions.player_pokemon.calculate_in_battle_stats()
                             battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
@@ -287,10 +295,12 @@ while in_battle == True:
                 elif boxd.collidepoint(pos):
                     if required_lists.box_data[7] != "":
                         if player_pokemon.name != required_lists.box_data[7]:
-                            player_pokemon = player_party.player_party[3]
+                            battle_functions.player_pokemon = player_party.player_party[3]
                             select_action = 1
-                            required_lists.to_print.append("{0}, I choose you!".format(player_pokemon.name))
+                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
+                            battle_functions.player_pokemon.reset_in_battle_stats()
+                            battle_functions.player_pokemon.calculate_in_battle_stats()
                             battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
@@ -298,10 +308,12 @@ while in_battle == True:
                 elif boxe.collidepoint(pos):
                     if required_lists.box_data[8] != "":
                         if player_pokemon.name != required_lists.box_data[8]:
-                            player_pokemon = player_party.player_party[4]
+                            battle_functions.player_pokemon = player_party.player_party[4]
                             select_action = 1
-                            required_lists.to_print.append("{0}, I choose you!".format(player_pokemon.name))
+                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
+                            battle_functions.player_pokemon.reset_in_battle_stats()
+                            battle_functions.player_pokemon.calculate_in_battle_stats()
                             battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
@@ -309,10 +321,12 @@ while in_battle == True:
                 elif boxf.collidepoint(pos):
                     if required_lists.box_data[9] != "":
                         if player_pokemon.name != required_lists.box_data[9]:
-                            player_pokemon = player_party.player_party[5]
+                            battle_functions.player_pokemon = player_party.player_party[5]
                             select_action = 1
-                            required_lists.to_print.append("{0}, I choose you!".format(player_pokemon.name))
+                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
+                            battle_functions.player_pokemon.reset_in_battle_stats()
+                            battle_functions.player_pokemon.calculate_in_battle_stats()
                             battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 

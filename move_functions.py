@@ -7,60 +7,6 @@ import type_chain
 import required_lists
 
 
-def calc_damage(user, target, move):
-    '''Calculates the damage of a move.'''
-    if move.move_type == (user.type1 or user.type2):
-        stab = 1.5
-    else:
-        stab = 1
-    type_bonus1 = type_chain.type_comparison[move.move_type][target.type1]
-    type_bonus2 = type_chain.type_comparison[move.move_type][target.type2]
-    net_type_bonus = type_bonus1 * type_bonus2
-    if net_type_bonus > 1:
-        required_lists.to_print.append("It was super effective!")
-        required_lists.to_damage.append("NULL")
-    elif net_type_bonus < 1:
-        required_lists.to_print.append("It was not very effective!")
-        required_lists.to_damage.append("NULL")
-
-    crit_stage = user.crit_stage
-    if move.increased_crit == True:
-        crit_stage += 1
-
-    if crit_stage == 0:
-        crit_percent = .0625
-    elif crit_stage == 1:
-        crit_percent = .125
-    elif crit_stage == 2:
-        crit_percent = .50
-    else:
-        crit_percent = 1.00
-
-    if uniform(0, 1) <= crit_percent:
-        crit = 1.5
-        required_lists.to_print.append("It was a critical hit!")
-        required_lists.to_damage.append("NULL")
-    else:
-        crit = 1
-
-
-    modifier = stab * net_type_bonus * crit * uniform(.85, 1)
-    #implement items, abilities, etc. later
-
-    if move.category == "physical":
-        damage_ratio = float(user.battle_atk) / float(target.battle_defs)
-
-    elif move.category == "special":
-        damage_ratio = float(user.battle_sp_atk) / float(target.battle_sp_defs)
-
-    damage = int(floor( ( (2 * user.level + 10) * damage_ratio * move.power + 2) * modifier / float(250) ) )
-    return damage
-
-
-def calc_recoil(damage, move):
-    '''Calculates the recoil that a move will deal to the user.'''
-    return int(float(move.recoil)/100*damage)
-
 
 def modify_stats(move, target):
     '''Modifies stats and prints the change to the screen.'''
@@ -185,6 +131,62 @@ class Attack(object):
         self.regain_health = regain_health
         self.increased_crit = increased_crit
 
+
+
+    def calc_recoil(self, damage):
+        '''Calculates the recoil that a move will deal to the user.'''
+        return int(float(self.recoil)/100*damage)
+
+    def calc_damage(self, user, target):
+        '''Calculates the damage of a move.'''
+        if self.move_type == (user.type1 or user.type2):
+            stab = 1.5
+        else:
+            stab = 1
+        type_bonus1 = type_chain.type_comparison[self.move_type][target.type1]
+        type_bonus2 = type_chain.type_comparison[self.move_type][target.type2]
+        net_type_bonus = type_bonus1 * type_bonus2
+        if net_type_bonus > 1:
+            required_lists.to_print.append("It was super effective!")
+            required_lists.to_damage.append("NULL")
+        elif net_type_bonus < 1:
+            required_lists.to_print.append("It was not very effective!")
+            required_lists.to_damage.append("NULL")
+
+        crit_stage = user.crit_stage
+        if self.increased_crit == True:
+            crit_stage += 1
+
+        if crit_stage == 0:
+            crit_percent = .0625
+        elif crit_stage == 1:
+            crit_percent = .125
+        elif crit_stage == 2:
+            crit_percent = .50
+        else:
+            crit_percent = 1.00
+
+        if uniform(0, 1) <= crit_percent:
+            crit = 1.5
+            required_lists.to_print.append("It was a critical hit!")
+            required_lists.to_damage.append("NULL")
+        else:
+            crit = 1
+
+
+        modifier = stab * net_type_bonus * crit * uniform(.85, 1)
+        #implement items, abilities, etc. later
+
+        if self.category == "physical":
+            damage_ratio = float(user.battle_atk) / float(target.battle_defs)
+
+        elif self.category == "special":
+            damage_ratio = float(user.battle_sp_atk) / float(target.battle_sp_defs)
+
+        damage = int(floor( ( (2 * user.level + 10) * damage_ratio * self.power + 2) * modifier / float(250) ) )
+        return damage
+
+
     def use(self, user, target):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
         required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
@@ -219,9 +221,9 @@ class Attack(object):
                         required_lists.to_print.append("It hit {0} times!".format(number_attacks))
 
                 for i in range(number_attacks):
-                    damage = calc_damage(user, target, self)
+                    damage = self.calc_damage(user, target)
 
-                    recoil_damage = calc_recoil(damage, self)
+                    recoil_damage = self.calc_recoil(damage)
                     if user.trainer == "player":
                         required_lists.to_damage.append("enemy")
                     else:
@@ -283,6 +285,31 @@ class OHKO(Attack):
         else:
             required_lists.to_print.append("It missed!")
             required_lists.to_damage.append("NULL")
+
+#class TwoTurn(Attack):
+#def use(self, user, target):
+'''
+        P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
+        required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
+        required_lists.to_damage.append("NULL")
+
+                    required_lists.to_print.append("It hit {0} times!".format(number_attacks))
+
+                damage = calc_damage(user, target, self)
+
+                if user.trainer == "player":
+                    required_lists.to_damage.append("enemy")
+                else:
+                    required_lists.to_damage.append("player")
+                required_lists.to_damage_count.append(damage)
+
+            if self.cause_skip == True:
+                user.skip_turn = True
+
+    else:
+        required_lists.to_print.append("It missed!")
+        required_lists.to_damage.append("NULL")
+'''
 
 
 
