@@ -16,6 +16,7 @@ TO DO LIST
 flinch
 make everything in move_functions a method
 make the pokemon selection menu an iteration
+make a move with no PP stay on the selection screen instead of wasting a turn
 
 make it possible to print to multiple lines
 add in attack animations

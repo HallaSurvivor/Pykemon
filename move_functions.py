@@ -66,43 +66,6 @@ def modify_stats(move, target):
             target.stages[i] += move.modify_list[i]
 
 
-
-def cause_status(move, target):
-    '''Induces a status effect on the target.'''
-    for i in range(len(required_lists.nonvolatile)):
-        if move.status == required_lists.nonvolatile[i]:
-            if target.status_nonvolatile == "healthy":
-
-                target.status_counter = 1 #status_counter is used for a variety of things depending upon the status
-                target.status_nonvolatile = move.status
-                required_lists.to_print.append("{0} was {1}".format(target.name, move.status))
-                if target.trainer =="player":
-                    required_lists.to_damage.append("player status")
-                else:
-                    required_lists.to_damage.append("enemy status")
-            else:
-                required_lists.to_print.append("{0} is already {1}".format(target.name, target.status_nonvolatile))
-                required_lists.to_damage.append("NULL")
-
-    for i in range(len(required_lists.volatile)):
-        if move.status == required_lists.volatile[i]:
-            if target.volatile[move.status] == False:
-                target.volatile[move.status] = True
-                required_lists.to_print.append("{0} was {1}".format(target.name, move.status))
-                required_lists.to_damage.append("NULL")
-            else:
-                required_lists.to_print.append("{0} was already {1}".format(target.name, move.status))
-                required_lists.to_damage.append("NULL")
-
-    if move.status == "badly poisoned":
-        target.status_counter = 1
-
-    elif move.status == "alseep":
-        target.status_counter = randint(1, 3)
-
-
-
-
 class Attack(object):
 
     def __init__(self, name, category, power, move_type, pp_full, pp_max,
@@ -131,11 +94,39 @@ class Attack(object):
         self.regain_health = regain_health
         self.increased_crit = increased_crit
 
+    def cause_status(self, target):
+        '''Induces a status effect on the target.'''
+        for i in range(len(required_lists.nonvolatile)):
+            if self.status == required_lists.nonvolatile[i]:
+                if target.status_nonvolatile == "healthy":
 
+                    target.status_counter = 1 #status_counter is used for a variety of things depending upon the status
+                    target.status_nonvolatile = self.status
+                    required_lists.to_print.append("{0} was {1}".format(target.name, self.status))
+                    if target.trainer =="player":
+                        required_lists.to_damage.append("player status")
+                    else:
+                        required_lists.to_damage.append("enemy status")
+                else:
+                    required_lists.to_print.append("{0} is already {1}".format(target.name, target.status_nonvolatile))
+                    required_lists.to_damage.append("NULL")
 
-    def calc_recoil(self, damage):
-        '''Calculates the recoil that a move will deal to the user.'''
-        return int(float(self.recoil)/100*damage)
+        for i in range(len(required_lists.volatile)):
+            if self.status == required_lists.volatile[i]:
+                if target.volatile[self.status] == False:
+                    target.volatile[self.status] = True
+                    required_lists.to_print.append("{0} was {1}".format(target.name, self.status))
+                    required_lists.to_damage.append("NULL")
+                else:
+                    required_lists.to_print.append("{0} was already {1}".format(target.name, self.status))
+                    required_lists.to_damage.append("NULL")
+
+        if self.status == "badly poisoned":
+            target.status_counter = 1
+
+        elif self.status == "alseep":
+            target.status_counter = randint(1, 3)
+
 
     def calc_damage(self, user, target):
         '''Calculates the damage of a move.'''
@@ -186,6 +177,10 @@ class Attack(object):
         damage = int(floor( ( (2 * user.level + 10) * damage_ratio * self.power + 2) * modifier / float(250) ) )
         return damage
 
+    def calc_recoil(self, damage):
+        '''Calculates the recoil that a move will deal to the user.'''
+        return int(float(self.recoil)/100*damage)
+
 
     def use(self, user, target):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
@@ -198,7 +193,7 @@ class Attack(object):
         if randint(1, 100) <= P or P == 0:
             if self.category == "status":
                 if self.status != "none":
-                    cause_status(self, target)
+                    self.cause_status(target)
                 else:
                     if self.modify_target == "user":
                         modify_stats(self, user)
@@ -208,7 +203,12 @@ class Attack(object):
             else:
                 if self.multiple_attacks == False:
                     number_attacks = 1
-                elif (self.name == "Bonemerang") or (self.name == "Double Hit") or (self.name == "Double Kick") or (self.name == "Dual Chop") or (self.name == "Gear Grind") or (self.name == "Twineedle"):
+                elif (self.name == "Bonemerang") or \
+                (self.name == "Double Hit") or \
+                (self.name == "Double Kick") or \
+                (self.name == "Dual Chop") or \
+                (self.name == "Gear Grind") or \
+                (self.name == "Twineedle"):
                     number_attacks = 2
                 elif self.name == "Triple Kick":
                     number_attacks = 3
@@ -248,7 +248,7 @@ class Attack(object):
 
                     if self.stat_percent != 0:
                         if randint(0, 100) <= self.stat_percent:
-                            cause_status(self, target)
+                            self.cause_status(target)
 
                     if self.regain_health == True:
                         regained_health = int(float(damage) / 2)
@@ -289,6 +289,10 @@ class OHKO(Attack):
         else:
             required_lists.to_print.append("It missed!")
             required_lists.to_damage.append("NULL")
+
+class MultiStrike(Attack):
+    def __init__(self, name, category, power, move_type, pp_full, pp_max, accuracy = 100, contact = False):
+        pass
 '''
 class TwoTurn(Attack):
     def __init__()
