@@ -16,7 +16,7 @@ TO DO LIST
 flinch
 make everything in move_functions a method
 make the pokemon selection menu an iteration
-make a move with no PP stay on the selection screen instead of wasting a turn
+make a move with no PP stay on the selection screen instead of wasting a turn.
 
 make it possible to print to multiple lines
 add in attack animations
@@ -30,8 +30,7 @@ a megaevolve button, and a pokemon-status indicator on the bottom of the screen
 '''
 
 in_battle = True
-priority = "start"
-select_action = 0
+priority = 8
 
 
 def open_bag():
@@ -134,59 +133,22 @@ while in_battle == True:
     boxe = required_lists.six_boxes[4]
     boxf = required_lists.six_boxes[5]
 
-    if battle_blitting.game_state == "move list":
-        if required_lists.box_data[0] != "":
-            battle_blitting.blit_pp_1(player_pokemon)
-        if required_lists.box_data[1] != "":
-            battle_blitting.blit_pp_2(player_pokemon)
-        if required_lists.box_data[2] != "":
-            battle_blitting.blit_pp_3(player_pokemon)
-        if required_lists.box_data[3] != "":
-            battle_blitting.blit_pp_4(player_pokemon)
 
-    if battle_blitting.game_state == "wait for prompt":
-        if len(required_lists.to_print) > 0:
-            wait_timer += 1
-            if wait_timer == 100:
-                battle_blitting.update_box_5(player_pokemon, enemy_pokemon)
-                wait_timer = 0
-        else:
-            battle_blitting.game_state = "first select"
-            battle_blitting.reset_labels()
-
-    while priority == "start":
-        player_pokemon.calculate_in_battle_stats()
-        enemy_pokemon.calculate_in_battle_stats()
-        priority = 8
-
-    enemy_to_do = randint(0, 3)
-
-#get events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit(0)
-
-#if you're printing stuff to box5
-        if battle_blitting.game_state == "wait for prompt":
-            if len(required_lists.to_print) > 0:
-                box5data = required_lists.to_print[0]
-                if event.type == pygame.KEYDOWN:
-                    wait_timer = 0
-                    battle_blitting.update_box_5(player_pokemon, enemy_pokemon)
-            else:
-                battle_blitting.game_state = "first select"
+    if battle_blitting.game_state == "first select":
 
 
-#if the user clicks
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
 
-#if you're on the main screen (fight/bag/pkmn/run):
-            if battle_blitting.game_state == "first select":
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                pos = pygame.mouse.get_pos()
+
                 player_to_do = 5
                 if player_pokemon.skip_turn == False:
                     move_choices = []
+
                     if box1.collidepoint(pos):
                         for i in range(len(player_pokemon.moveset)):
                             move_choices.append(player_pokemon.moveset[i].name)
@@ -220,54 +182,81 @@ while in_battle == True:
                     required_lists.to_print.append("{0} must recharge".format(player_pokemon.name))
                     required_lists.to_damage.append("NULL")
                     player_pokemon.skip_turn = False
-                    battle_blitting.game_state = "wait for prompt"
-                    select_action = 1
+                    battle_blitting.game_state = "executing"
 
-#if you're on the move list screen
-            elif battle_blitting.game_state == "move list":
+
+
+    elif battle_blitting.game_state == "move list":
+
+
+
+        if required_lists.box_data[0] != "":
+            battle_blitting.blit_pp_1(player_pokemon)
+        if required_lists.box_data[1] != "":
+            battle_blitting.blit_pp_2(player_pokemon)
+        if required_lists.box_data[2] != "":
+            battle_blitting.blit_pp_3(player_pokemon)
+        if required_lists.box_data[3] != "":
+            battle_blitting.blit_pp_4(player_pokemon)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
+
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                pos = pygame.mouse.get_pos()
+
                 player_to_do = 5
                 if box1.collidepoint(pos) and required_lists.box_data[0] != "":
                     player_to_do = 0
-                    select_action = 1
-                    battle_blitting.game_state = "wait for prompt"
+                    battle_blitting.game_state = "executing"
                     battle_blitting.reset_labels()
                     battle_blitting.print_ask_for_space()
                 elif box2.collidepoint(pos) and required_lists.box_data[1] != "":
                     player_to_do = 1
-                    select_action = 1
-                    battle_blitting.game_state = "wait for prompt"
+                    battle_blitting.game_state = "executing"
                     battle_blitting.reset_labels()
                     battle_blitting.print_ask_for_space()
                 elif box3.collidepoint(pos) and required_lists.box_data[2] != "":
                     player_to_do = 2
-                    select_action = 1
-                    battle_blitting.game_state = "wait for prompt"
+                    battle_blitting.game_state = "executing"
                     battle_blitting.reset_labels()
                     battle_blitting.print_ask_for_space()
                 elif box4.collidepoint(pos) and required_lists.box_data[3] != "":
                     player_to_do = 3
-                    select_action = 1
-                    battle_blitting.game_state = "wait for prompt"
+                    battle_blitting.game_state = "executing"
                     battle_blitting.reset_labels()
                     battle_blitting.print_ask_for_space()
                 elif required_lists.back_button.collidepoint(pos):
                     battle_blitting.reset_labels()
                     battle_blitting.game_state = "first select"
 
-#if you're on the pokemon list screen
-            elif battle_blitting.game_state == "pokemon list":
+
+
+    elif battle_blitting.game_state == "pokemon list":
+
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
+
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                pos = pygame.mouse.get_pos()
+
                 player_to_do = 5
                 #make the box a greyed out color for the current pkmn, and a red color if feinted
                 if boxa.collidepoint(pos):
                     if required_lists.box_data[4] != "":
                         if player_pokemon.name != required_lists.box_data[4]:
                             battle_functions.player_pokemon = player_party.player_party[0]
-                            select_action = 1
+                            battle_blitting.game_state = "executing"
                             required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
                             battle_functions.player_pokemon.reset_in_battle_stats()
                             battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
 
@@ -275,12 +264,11 @@ while in_battle == True:
                     if required_lists.box_data[5] != "":
                         if player_pokemon.name != required_lists.box_data[5]:
                             battle_functions.player_pokemon = player_party.player_party[1]
-                            select_action = 1
+                            battle_blitting.game_state = "executing"
                             required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
                             battle_functions.player_pokemon.reset_in_battle_stats()
                             battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
 
@@ -288,12 +276,11 @@ while in_battle == True:
                     if required_lists.box_data[6] != "":
                         if player_pokemon.name != required_lists.box_data[6]:
                             battle_functions.player_pokemon = player_party.player_party[2]
-                            select_action = 1
+                            battle_blitting.game_state = "executing"
                             required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
                             battle_functions.player_pokemon.reset_in_battle_stats()
                             battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
 
@@ -301,12 +288,11 @@ while in_battle == True:
                     if required_lists.box_data[7] != "":
                         if player_pokemon.name != required_lists.box_data[7]:
                             battle_functions.player_pokemon = player_party.player_party[3]
-                            select_action = 1
+                            battle_blitting.game_state = "executing"
                             required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
                             battle_functions.player_pokemon.reset_in_battle_stats()
                             battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
 
@@ -314,12 +300,11 @@ while in_battle == True:
                     if required_lists.box_data[8] != "":
                         if player_pokemon.name != required_lists.box_data[8]:
                             battle_functions.player_pokemon = player_party.player_party[4]
-                            select_action = 1
+                            battle_blitting.game_state = "executing"
                             required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
                             battle_functions.player_pokemon.reset_in_battle_stats()
                             battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
 
@@ -327,12 +312,11 @@ while in_battle == True:
                     if required_lists.box_data[9] != "":
                         if player_pokemon.name != required_lists.box_data[9]:
                             battle_functions.player_pokemon = player_party.player_party[5]
-                            select_action = 1
+                            battle_blitting.game_state = "executing"
                             required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
                             required_lists.to_damage.append("NULL")
                             battle_functions.player_pokemon.reset_in_battle_stats()
                             battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.game_state = "wait for prompt"
                             battle_blitting.reset_labels()
 
 
@@ -340,7 +324,42 @@ while in_battle == True:
                     battle_blitting.reset_labels()
                     battle_blitting.game_state = "first select"
 
-    while select_action == 1:
+
+
+    elif battle_blitting.game_state == "wait for prompt":
+
+
+
+        if len(required_lists.to_print) > 0:
+            wait_timer += 1
+            if wait_timer == 100:
+                battle_blitting.update_box_5(player_pokemon, enemy_pokemon)
+                wait_timer = 0
+        else:
+            battle_blitting.game_state = "first select"
+            battle_blitting.reset_labels()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
+
+            elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (event.type == pygame.KEYDOWN):
+
+                if len(required_lists.to_print) > 0:
+                    box5data = required_lists.to_print[0]
+                    wait_timer = 0
+                    battle_blitting.update_box_5(player_pokemon, enemy_pokemon)
+                else:
+                    battle_blitting.game_state = "first select"
+
+
+
+    elif battle_blitting.game_state == "executing":
+
+
+
+        enemy_to_do = randint(0, 3)
     #priority 8 through -8 execute in descending order, then the loop repeats
         while priority == 8:
             #custap berry
@@ -416,7 +435,7 @@ while in_battle == True:
             battle_functions.check_volatile_status(player_pokemon)
             battle_functions.check_volatile_status(enemy_pokemon)
             priority = 8
-            select_action = 0
+            battle_blitting.game_state = "wait for prompt"
 
 
     pygame.display.flip()
