@@ -44,12 +44,17 @@ thrash = Attack("Thrash", "physical", 120, "normal", 10, 16) #make class for for
 double_edge = Attack("Double Edge", "physical", 120, "normal", 15, 24, recoil = 33)
 tail_whip = Attack("Tail Whip", "status", 0, "normal", 30, 48, modify_list = [0, -1, 0, 0, 0], modify_target = "enemy", modify_percent = 100)
 poison_sting = Attack("Poison Sting", "physical", 15, "poison", 35, 56, status = "poisoned", stat_percent = 30, contact = False)
-
+twineedle = Attack("Twineedle", "physical", 25, "bug", 20, 32, status = "poisoned", stat_percent = 20, contact = False, multiple_attacks = True)
+leer = Attack("Leer", "status", 0, "normal", 30, 48, modify_list = [0, -1, 0, 0, 0], modify_target = "enemy", modify_percent = 100, contact = False)
+bite = Attack("Bite", "physical", 60, "dark", 25, 40, status = "flinch", stat_percent = 10)
+growl = Attack("Growl", "status", 0, "normal", 40, 52, modify_list = [-1, 0, 0, 0, 0], modify_target = "enemy", contact = False)
+#roar = Attack("Roar", "status", )
+sing = Attack("Sing", "status", 0, "normal", 15, 24, status = "alseep", contact = False)
 
 
 poison_powder = Attack("Poison Powder", "status", 0, "poison", 35, 54, contact = False, accuracy = 75, status = "poisoned")
 confide = Attack("Confide", "status", 0, "normal", 20, 32, modify_list = [0, 0, -1, 0, 0], modify_target = "enemy", contact = False)
-growl = Attack("Growl", "status", 0, "normal", 40, 52, modify_list = [-1, 0, 0, 0, 0], modify_target = "enemy", contact = False)
+
 will_o_wisp = Attack("Will-O-Wisp", "status", 0, "fire", 15, 24, status = "burned", accuracy = 85)
 toxic = Attack("Toxic", "status", 0, "poison", 10, 16, status = "badly poisoned", accuracy = 90)
 dragon_dance = Attack("Dragon Dance", "status", 0, "dragon", 20, 32, modify_list = [1, 0, 0, 0, 1], modify_target = "user", accuracy = 0)

@@ -290,9 +290,6 @@ class OHKO(Attack):
             required_lists.to_print.append("It missed!")
             required_lists.to_damage.append("NULL")
 
-class MultiStrike(Attack):
-    def __init__(self, name, category, power, move_type, pp_full, pp_max, accuracy = 100, contact = False):
-        pass
 '''
 class TwoTurn(Attack):
     def __init__()
