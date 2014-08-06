@@ -189,7 +189,7 @@ while in_battle == True:
     elif battle_blitting.game_state == "move list":
 
 
-
+#make this a list and iterate?
         if required_lists.box_data[0] != "":
             battle_blitting.blit_pp_1(player_pokemon)
         if required_lists.box_data[1] != "":
@@ -208,29 +208,17 @@ while in_battle == True:
                 pos = pygame.mouse.get_pos()
 
                 player_to_do = 5
-                if box1.collidepoint(pos) and required_lists.box_data[0] != "":
-                    player_to_do = 0
-                    battle_blitting.game_state = "executing"
-                    battle_blitting.reset_labels()
-                    battle_blitting.print_ask_for_space()
-                elif box2.collidepoint(pos) and required_lists.box_data[1] != "":
-                    player_to_do = 1
-                    battle_blitting.game_state = "executing"
-                    battle_blitting.reset_labels()
-                    battle_blitting.print_ask_for_space()
-                elif box3.collidepoint(pos) and required_lists.box_data[2] != "":
-                    player_to_do = 2
-                    battle_blitting.game_state = "executing"
-                    battle_blitting.reset_labels()
-                    battle_blitting.print_ask_for_space()
-                elif box4.collidepoint(pos) and required_lists.box_data[3] != "":
-                    player_to_do = 3
-                    battle_blitting.game_state = "executing"
-                    battle_blitting.reset_labels()
-                    battle_blitting.print_ask_for_space()
-                elif required_lists.back_button.collidepoint(pos):
+
+                if required_lists.back_button.collidepoint(pos):
                     battle_blitting.reset_labels()
                     battle_blitting.game_state = "first select"
+
+                for num in range(len(player_pokemon.moveset)):
+                    if required_lists.four_boxes[num].collidepoint(pos):
+                        player_to_do = num
+                        battle_blitting.game_state = "executing"
+                        battle_blitting.reset_labels()
+                        battle_blitting.print_ask_for_space()
 
 
 
@@ -247,82 +235,24 @@ while in_battle == True:
                 pos = pygame.mouse.get_pos()
 
                 player_to_do = 5
-                #make the box a greyed out color for the current pkmn, and a red color if feinted
-                if boxa.collidepoint(pos):
-                    if required_lists.box_data[4] != "":
-                        if player_pokemon.name != required_lists.box_data[4]:
-                            battle_functions.player_pokemon = player_party.player_party[0]
-                            battle_blitting.game_state = "executing"
-                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
-                            required_lists.to_damage.append("NULL")
-                            battle_functions.player_pokemon.reset_in_battle_stats()
-                            battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.reset_labels()
 
-
-                elif boxb.collidepoint(pos):
-                    if required_lists.box_data[5] != "":
-                        if player_pokemon.name != required_lists.box_data[5]:
-                            battle_functions.player_pokemon = player_party.player_party[1]
-                            battle_blitting.game_state = "executing"
-                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
-                            required_lists.to_damage.append("NULL")
-                            battle_functions.player_pokemon.reset_in_battle_stats()
-                            battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.reset_labels()
-
-
-                elif boxc.collidepoint(pos):
-                    if required_lists.box_data[6] != "":
-                        if player_pokemon.name != required_lists.box_data[6]:
-                            battle_functions.player_pokemon = player_party.player_party[2]
-                            battle_blitting.game_state = "executing"
-                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
-                            required_lists.to_damage.append("NULL")
-                            battle_functions.player_pokemon.reset_in_battle_stats()
-                            battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.reset_labels()
-
-
-                elif boxd.collidepoint(pos):
-                    if required_lists.box_data[7] != "":
-                        if player_pokemon.name != required_lists.box_data[7]:
-                            battle_functions.player_pokemon = player_party.player_party[3]
-                            battle_blitting.game_state = "executing"
-                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
-                            required_lists.to_damage.append("NULL")
-                            battle_functions.player_pokemon.reset_in_battle_stats()
-                            battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.reset_labels()
-
-
-                elif boxe.collidepoint(pos):
-                    if required_lists.box_data[8] != "":
-                        if player_pokemon.name != required_lists.box_data[8]:
-                            battle_functions.player_pokemon = player_party.player_party[4]
-                            battle_blitting.game_state = "executing"
-                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
-                            required_lists.to_damage.append("NULL")
-                            battle_functions.player_pokemon.reset_in_battle_stats()
-                            battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.reset_labels()
-
-
-                elif boxf.collidepoint(pos):
-                    if required_lists.box_data[9] != "":
-                        if player_pokemon.name != required_lists.box_data[9]:
-                            battle_functions.player_pokemon = player_party.player_party[5]
-                            battle_blitting.game_state = "executing"
-                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
-                            required_lists.to_damage.append("NULL")
-                            battle_functions.player_pokemon.reset_in_battle_stats()
-                            battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.reset_labels()
-
-
-                elif required_lists.back_button.collidepoint(pos):
+                if required_lists.back_button.collidepoint(pos):
                     battle_blitting.reset_labels()
                     battle_blitting.game_state = "first select"
+
+                #make the box a greyed out color for the current pkmn, and a red color if feinted
+                for num in range(len(player_party.player_party)):
+                    if required_lists.six_boxes[num].collidepoint(pos):
+
+                        if player_pokemon.name != required_lists.box_data[num + 4]: #if the clicked pokemon isn't already out
+
+                            battle_functions.player_pokemon = player_party.player_party[num]
+                            battle_blitting.game_state = "executing"
+                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
+                            required_lists.to_damage.append("NULL")
+                            battle_functions.player_pokemon.reset_in_battle_stats()
+                            battle_functions.player_pokemon.calculate_in_battle_stats()
+                            battle_blitting.reset_labels()
 
 
 
@@ -363,8 +293,12 @@ while in_battle == True:
     #priority 8 through -8 execute in descending order, then the loop repeats
         while priority == 8:
             #custap berry
-            #if player_pokemon.moveset[player_to_do].name == "quick claw": FIX FOR PLALYER_TO_DO == 5
-                #use_attack(player_pokemon, enemy_pokemon, player_to_do)
+            if player_to_do != 5:
+                if player_pokemon.moveset[player_to_do].priority == 8:
+                    use_attack(player_pokemon, enemy_pokemon, player_to_do)
+
+            if enemy_pokemon.moveset[enemy_to_do].priority == 8:
+                use_attack(enemy_pokemon, player_pokemon, enemy_to_do)
             priority = 7
 
         while priority == 7:
