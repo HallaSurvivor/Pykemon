@@ -240,8 +240,8 @@ def select_box(move):
 
 def blit_pokemon(player_pokemon, enemy_pokemon):
     '''Blit the actual pokemon sprites in their proper places.'''
-    screen.blit(player_pokemon.player_sprite, images.BOTTOMLEFT)
-    screen.blit(enemy_pokemon.enemy_sprite, images.TOPRIGHT)
+    screen.blit(player_pokemon.player_sprite, images.PLAYERSPRITEPOS)
+    screen.blit(enemy_pokemon.enemy_sprite, images.ENEMYSPRITEPOS)
 
 def blit_numerical_hp(player_pokemon):
     '''Blit the actual hp value to the screen for the player pokemon.'''

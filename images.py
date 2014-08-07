@@ -12,8 +12,8 @@ pygame.init()
 BULBASAUR_BACK = load("bulbasaur_back.png")
 BULBASAUR_FRONT = load("bulbasaur_front.png")
 
-IVYSAUR_BACK = load("ivysaur_back.png")
-IVYSAUR_FRONT = load("ivysaur_front.png")
+IVYSAUR_BACK = load("blastoise_back.png")
+IVYSAUR_FRONT = load("blastoise_front.png")
 
 MUDKIP_FRONT = load("mudkip_front.png")
 MUDKIP_BACK = load("mudkip_back.png")
@@ -107,8 +107,8 @@ PLAYER_STATUS_POS = (216, 170)
 ENEMY_STATUS_POS = (14, 31)
 
 TOPLEFT = (0, 0)
-TOPRIGHT = (230, 55)
-BOTTOMLEFT = (30, 125)
+ENEMYSPRITEPOS = (235, 70)
+PLAYERSPRITEPOS = (40, 130)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

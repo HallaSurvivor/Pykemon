@@ -25,6 +25,6 @@ def generate(wild_pokemon, moveset = [move_list.poison_powder, move_list.growl, 
                             choose_iv(), trainer)
 
     elif wild_pokemon == "ivysaur":
-                            new_pokemon = pokemon_list.Ivysaur("ivysaur", 5, 5, moveset, choose_iv, trainer)
+                            new_pokemon = pokemon_list.Ivysaur("ivysaur", 5, 5, moveset, choose_iv(), trainer)
     new_pokemon.get_pp()
     return new_pokemon
