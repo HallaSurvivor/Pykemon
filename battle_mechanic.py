@@ -110,6 +110,8 @@ while in_battle == True:
 
     battle_blitting.blit_exp(player_pokemon)
 
+    battle_blitting.blit_player_party()
+
     if required_lists.nonvolatile_test_player == True:
         battle_blitting.blit_player_status_ailment(player_pokemon)
 

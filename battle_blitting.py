@@ -251,18 +251,26 @@ def blit_numerical_hp(player_pokemon):
     screen.blit(numerical_hp_full, images.FULLHPTEXTPOS)
 
 def blit_player_name(player_pokemon):
-    '''Blit the player's name to the screen.'''
+    '''Blit the player's name and gender to the screen.'''
     player_name = images.render_small_text(str(player_pokemon.name))
-    screen.blit(player_name, images.PLAYERNAMEPOS)
-    player_name_rect = player_name.get_rect()
-    gender_rect = images.MALE.get_rect()
-    gender_rect.center = player_name_rect.center
-    screen.blit(images.MALE, gender_rect)
+    player_name_rect = screen.blit(player_name, images.PLAYERNAMEPOS)
+
+    gender_image = images.genders[player_pokemon.gender]
+    gender_rect = gender_image.get_rect()
+    gender_rect.left = player_name_rect.right + 5
+    gender_rect.centery = player_name_rect.centery
+    screen.blit(gender_image, gender_rect)
 
 def blit_enemy_name(enemy_pokemon):
-    '''Blit the enemy pokemon's name to the screen.'''
+    '''Blit the enemy pokemon's name and gender to the screen.'''
     enemy_name = images.render_small_text(str(enemy_pokemon.name))
-    screen.blit(enemy_name, images.ENEMYNAMEPOS)
+    enemy_name_rect = screen.blit(enemy_name, images.ENEMYNAMEPOS)
+
+    gender_image = images.genders[enemy_pokemon.gender]
+    gender_rect = gender_image.get_rect()
+    gender_rect.left = enemy_name_rect.right + 5
+    gender_rect.centery = enemy_name_rect.centery
+    screen.blit(gender_image, gender_rect)
 
 def blit_player_status_ailment(player_pokemon):
     '''Check for a nonvolatile status ailment on the player, and blit its image to the screen if it exists.'''
@@ -303,6 +311,13 @@ def blit_pp_4(player_pokemon):
     pp4_rect = pp4.get_rect()
     pp4_rect.center = images.PP4POS
     screen.blit(pp4, pp4_rect)
+
+def blit_player_party():
+    '''Blit the player's party to the bottom of the screen.'''
+    offset = 0
+    for num in range(len(battle_functions.player_party.player_party)):
+        screen.blit(battle_functions.player_party.player_party[num].small_sprite, (7 + offset, 292) )
+        offset += 20
 
 
 def blit_back_button():

@@ -11,6 +11,7 @@ pygame.init()
 #pokemon
 BULBASAUR_BACK = load("bulbasaur_back.png")
 BULBASAUR_FRONT = load("bulbasaur_front.png")
+BULBASAUR_SMALL = load("bulbasaur_small.png")
 
 IVYSAUR_BACK = load("blastoise_back.png")
 IVYSAUR_FRONT = load("blastoise_front.png")
@@ -60,6 +61,9 @@ PSN = load("psn.png")
 SLP = load("slp.png")
 
 MALE = load("male.png")
+FEMALE = load("female.png")
+GENDERLESS = load("genderless.png")
+genders = {"male":MALE, "female":FEMALE, "genderless":GENDERLESS}
 
 
 status_icons = [BRN, FRZ, PAR, PSN, PSN, SLP]
@@ -86,6 +90,8 @@ PP3POS = (469, 224)
 PP4POS = (469, 306)
 
 BACKBUTTONPOS = (346, 292)
+
+#PARTYSPRITESPOS = (7, 292)
 
 BOXAPOS = (383, 7)
 BOXBPOS = (383, 60)

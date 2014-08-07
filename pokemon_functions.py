@@ -74,7 +74,7 @@ class Pokemon(object):
 
         TM_list, move_tutor_list, breeding_move_list,
 
-        player_sprite, enemy_sprite, pokedex_color,
+        player_sprite, enemy_sprite, small_sprite, pokedex_color,
 
         iv_list, name, level, exp, moveset, trainer, item
 
@@ -107,6 +107,7 @@ class Pokemon(object):
         self.ev_yield = ev_yield
         self.player_sprite = player_sprite
         self.enemy_sprite = enemy_sprite
+        self.small_sprite = small_sprite
         self.pokedex_color = pokedex_color
 
         self.name = name

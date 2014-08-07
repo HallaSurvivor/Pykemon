@@ -45,7 +45,7 @@ class Bulbasaur(Pokemon):
 
         ["Tackle"], ["Tackle"], ["Tackle"],
 
-        images.BULBASAUR_BACK, images.BULBASAUR_FRONT, images.GREEN,
+        images.BULBASAUR_BACK, images.BULBASAUR_FRONT, images.BULBASAUR_SMALL, images.GREEN,
 
         iv_list, name, level, exp, moveset, trainer, item)
 
@@ -58,7 +58,7 @@ class Ivysaur(Pokemon):
 
         "monster", "grass", 21,
 
-        45, 1.0, 13.0, 17.5, "medium slow",
+        45, 1.0, 13.0, 87.5, "medium slow",
 
         32, "Venusaur", 142, [0, 0, 0, 1, 1, 0],
 
@@ -68,6 +68,6 @@ class Ivysaur(Pokemon):
 
         ["Tackle"], ["Tackle"], ["Tackle"],
 
-        images.IVYSAUR_BACK, images.IVYSAUR_FRONT, images.GREEN,
+        images.IVYSAUR_BACK, images.IVYSAUR_FRONT, images.BULBASAUR_SMALL, images.GREEN,
 
         iv_list, name, level, exp, moveset, trainer, item)
