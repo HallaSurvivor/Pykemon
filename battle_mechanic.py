@@ -135,11 +135,22 @@ while in_battle == True:
     boxe = required_lists.six_boxes[4]
     boxf = required_lists.six_boxes[5]
 
+    if required_lists.render_stats != -1:
+        images.SCREEN.blit(images.SQUAREBOX, (0, 0))
+
 
     if battle_blitting.game_state == "first select":
 
 
         for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+
+            for num in range(len(battle_functions.player_party.player_party)):
+                if required_lists.party_images[num].collidepoint(pos):
+                    required_lists.render_stats = num
+                else:
+                    required_lists.render_stats = -1
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)
@@ -202,6 +213,14 @@ while in_battle == True:
             battle_blitting.blit_pp_4(player_pokemon)
 
         for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+
+            for num in range(len(battle_functions.player_party.player_party)):
+                if required_lists.party_images[num].collidepoint(pos):
+                    required_lists.render_stats = num
+                else:
+                    required_lists.render_stats = -1
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)
@@ -229,6 +248,14 @@ while in_battle == True:
 
 
         for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+
+            for num in range(len(battle_functions.player_party.player_party)):
+                if required_lists.party_images[num].collidepoint(pos):
+                    required_lists.render_stats = num
+                else:
+                    required_lists.render_stats = -1
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)
@@ -272,6 +299,14 @@ while in_battle == True:
             battle_blitting.reset_labels()
 
         for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+
+            for num in range(len(battle_functions.player_party.player_party)):
+                if required_lists.party_images[num].collidepoint(pos):
+                    required_lists.render_stats = num
+                else:
+                    required_lists.render_stats = -1
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)

@@ -316,9 +316,8 @@ def blit_player_party():
     '''Blit the player's party to the bottom of the screen.'''
     offset = 0
     for num in range(len(battle_functions.player_party.player_party)):
-        screen.blit(battle_functions.player_party.player_party[num].small_sprite, (7 + offset, 292) )
+        required_lists.party_images[num] = screen.blit(battle_functions.player_party.player_party[num].small_sprite, (7 + offset, 292) )
         offset += 20
-
 
 def blit_back_button():
     '''Blit a back button to the screen.'''

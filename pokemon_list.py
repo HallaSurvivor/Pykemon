@@ -68,6 +68,6 @@ class Ivysaur(Pokemon):
 
         ["Tackle"], ["Tackle"], ["Tackle"],
 
-        images.IVYSAUR_BACK, images.IVYSAUR_FRONT, images.BULBASAUR_SMALL, images.GREEN,
+        images.IVYSAUR_BACK, images.IVYSAUR_FRONT, images.IVYSAUR_SMALL, images.GREEN,
 
         iv_list, name, level, exp, moveset, trainer, item)

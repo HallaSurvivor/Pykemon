@@ -15,6 +15,7 @@ BULBASAUR_SMALL = load("bulbasaur_small.png")
 
 IVYSAUR_BACK = load("blastoise_back.png")
 IVYSAUR_FRONT = load("blastoise_front.png")
+IVYSAUR_SMALL = load("ivysaur_small.png")
 
 MUDKIP_FRONT = load("mudkip_front.png")
 MUDKIP_BACK = load("mudkip_back.png")
@@ -24,6 +25,7 @@ GRASS_BATTLE = load("grass_battle.png")
 
 #boxes
 BOX = load("box.png")
+SQUAREBOX = load("squarebox.png")
 TEXTBOX = load("text_box.png")
 POKEMONBOX = load("pokemon_box.png")
 BACK = load("back.png")

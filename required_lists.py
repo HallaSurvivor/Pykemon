@@ -68,6 +68,10 @@ box_colors = [0, 0, 0, 0]
 
 four_boxes = [0, 0, 0, 0]
 
+party_images = [0, 0, 0, 0, 0, 0]
+
+render_stats = -1
+
 back_button = 0
 
 nonvolatile_test_player = False
