@@ -202,7 +202,7 @@ class Pokemon(object):
     def level_up(self):
         '''Increment the level of a pokemon by 1.'''
         self.level += 1
-        required_lists.to_print_immediate.append("{0} leveled up!".format(self.name))
+        required_lists.to_print.append("{0} leveled up!".format(self.name))
         #blit a new box filled with stats
         self.calculate_real_stats
         self.get_needed_exp()

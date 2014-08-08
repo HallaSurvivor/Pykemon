@@ -164,15 +164,19 @@ def check_speed(player, enemy, player_choice, enemy_choice):
     '''Compares the speeds of the player and enemy pokemon, and does the faster pokemon's move first.'''
     if player.battle_speed > enemy.battle_speed:
         use_attack(player, enemy, player_choice)
+        check_player_health(player)
+        check_enemy_health(player, enemy)
         use_attack(enemy, player, enemy_choice)
     else:
         use_attack(enemy, player, enemy_choice)
+        check_player_health(player)
+        check_enemy_health(player, enemy)
         use_attack(player, enemy, player_choice)
 
 def check_player_health(player):
     '''Check if the player hp is > 0, if not, have the user select another pokemon.'''
     if player.hp <= 0:
-        required_lists.to_print_immediate.append("{0} feinted!".format(player.name))
+        required_lists.to_print.append("{0} feinted!".format(player.name))
         #animation?
         watch_count = 0
         for i in range(len(player_party.player_party)):
@@ -182,8 +186,8 @@ def check_player_health(player):
                 watch_count += 1
         else:
             if watch_count == len(player_party.player_party):
-                required_lists.to_print_immediate.append("{0} is out of usable pokemon!".format("Player"))
-                required_lists.to_print_immediate.append("{0} whited out!".format("Player"))
+                required_lists.to_print.append("{0} is out of usable pokemon!".format("Player"))
+                required_lists.to_print.append("{0} whited out!".format("Player"))
 
 def get_money():
     '''Give the player money after winning a battle.'''
@@ -194,23 +198,14 @@ def check_enemy_health(player, enemy):
     '''Check if the enemy healtlh is > 0, if not, return the next pokemon and give experience.'''
     global enemy_pokemon
     if enemy.hp <= 0:
-        required_lists.to_print_immediate.append("{0} feinted!".format(enemy.name))
+        required_lists.to_print.append("{0} feinted!".format(enemy.name))
         for i in range(len(required_lists.current_enemy.party)):
             if required_lists.current_enemy.party[i].hp > 0:
-                required_lists.to_print_immediate.append("{0} sent out {1}!".format(required_lists.current_enemy.name, required_lists.current_enemy.party[i].name))
+                required_lists.to_print.append("{0} sent out {1}!".format(required_lists.current_enemy.name, required_lists.current_enemy.party[i].name))
                 enemy_pokemon = required_lists.current_enemy.party[i]
 
-                to_delete = 0
-                for i in range(len(required_lists.to_damage)):
-                    if required_lists.to_print[i] == enemy_pokemon.name:
-                        del required_lists.to_print[i]
-                        del required_lists.to_damage[i]
-                        del required_lists.to_damage_count[to_delete]
-                    else:
-                        to_delete += 1
-                break
         else:
-            required_lists.to_print_immediate.append("{0} has run out of usable pokemon!")
+            required_lists.to_print.append("{0} has run out of usable pokemon!")
             get_money()
 
         player.get_exp(enemy)

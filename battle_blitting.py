@@ -121,13 +121,9 @@ def update_box_5(player_pokemon, enemy_pokemon):
     if len(required_lists.to_damage) > len(required_lists.to_print):
         del required_lists.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...
 
-    if len(required_lists.to_print_immediate) != 0:
-        required_lists.box5data = required_lists.to_print_immediate[0]
-        del required_lists.to_print_immediate[0]
-    else:
-        required_lists.box5data = required_lists.to_print[0]
-        del required_lists.to_print[0]
-
+    required_lists.box5data = required_lists.to_print[0]
+    del required_lists.to_print[0]
+    if len(required_lists.to_damage) > 0:
         if required_lists.to_damage[0] == "NULL":
             del required_lists.to_damage[0]
 
@@ -151,8 +147,8 @@ def update_box_5(player_pokemon, enemy_pokemon):
             del required_lists.to_damage[0]
             del required_lists.to_damage_count[0]
 
-        battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
-        battle_functions.check_player_health(player_pokemon)
+    battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
+    battle_functions.check_player_health(player_pokemon)
 
     print required_lists.to_print
     print required_lists.to_damage
@@ -245,7 +241,10 @@ def blit_pokemon(player_pokemon, enemy_pokemon):
 
 def blit_numerical_hp(player_pokemon):
     '''Blit the actual hp value to the screen for the player pokemon.'''
-    numerical_hp = images.render_small_text(str(player_pokemon.hp))
+    if player_pokemon.hp == 0:
+        numerical_hp = images.render_small_text(str(0))
+    else:
+        numerical_hp = images.render_small_text(str(player_pokemon.hp))
     numerical_hp_full = images.render_small_text("/  " + str(player_pokemon.hp_full))
     screen.blit(numerical_hp, images.HPTEXTPOS)
     screen.blit(numerical_hp_full, images.FULLHPTEXTPOS)

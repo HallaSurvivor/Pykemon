@@ -10,7 +10,7 @@ double_slap = Attack("Double Slap", "physical", 15, "normal", 10, 16, accuracy =
 comet_punch = Attack("Comet Punch", "physical", 18, "normal", 10, 16, accuracy = 85, multiple_attacks = True)
 mega_punch = Attack("Mega Punch", "physical", 80, "normal", 20, 32, accuracy = 85)
 pay_day = Attack("Pay Day", "physical", 40, "normal", 20, 32)
-fire_punch = Attack("Fire Punch", "physical", 75, "fire", 15, 24, status = "burned", stat_percent = 10)
+fire_punch = Attack("Fire Punch", "physical", 75, "fire", 15, 24, status = "burned", stat_percent = 100)
 ice_punch = Attack("Ice Punch", "physical", 75, "ice", 15, 24, status = "frozen", stat_percent = 100)
 thunder_punch = Attack("Thunder Punch", "physical", 75, "electric", 15, 24, status = "paralyzed", stat_percent = 100)
 scratch = Attack("Scratch", "physical", 40, "normal", 35, 56)

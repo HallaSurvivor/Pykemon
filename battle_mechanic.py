@@ -401,10 +401,21 @@ while in_battle == True:
             priority = -8
 
         while priority == -8:
+            player_pokemon = battle_functions.player_pokemon
+            enemy_pokemon = battle_functions.enemy_pokemon
+
             battle_functions.check_status(player_pokemon)
             battle_functions.check_status(enemy_pokemon)
+
+            player_pokemon = battle_functions.player_pokemon
+            enemy_pokemon = battle_functions.enemy_pokemon
+
             battle_functions.check_volatile_status(player_pokemon)
             battle_functions.check_volatile_status(enemy_pokemon)
+
+            player_pokemon = battle_functions.player_pokemon
+            enemy_pokemon = battle_functions.enemy_pokemon
+
             priority = 8
             battle_blitting.game_state = "wait for prompt"
 
