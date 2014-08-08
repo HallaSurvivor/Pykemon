@@ -71,8 +71,9 @@ class Attack(object):
     def __init__(self, name, category, power, move_type, pp_full, pp_max,
                 contact = True, accuracy = 100, priority = 0, recoil = 0,
                 modify_list = [0, 0, 0, 0, 0],
-                modify_percent = 0, modify_target = "user", status = "none", stat_percent = 0,
-                cause_skip = False, multiple_attacks = False, regain_health = False, increased_crit = False):
+                modify_percent = 0, modify_target = "none", status = "none", stat_percent = 0,
+                cause_skip = False, multiple_attacks = 1, regain_health = False, increased_crit = False,
+                payday = False):
 
         self.name = name
         self.category = category
@@ -85,14 +86,15 @@ class Attack(object):
         self.priority = priority
         self.recoil = recoil
         self.modify_list = modify_list
-        self.modify_perect = modify_percent
+        self.modify_percent = modify_percent
         self.modify_target = modify_target
         self.status = status
         self.stat_percent = stat_percent
         self.cause_skip = cause_skip
-        self.multiple_attacks = multiple_attacks
+        self.multiple_attacks = multiple_attacks #0 if random between 2 and 5
         self.regain_health = regain_health
         self.increased_crit = increased_crit
+        self.payday = payday
 
     def cause_status(self, target):
         '''Induces a status effect on the target.'''
@@ -186,33 +188,105 @@ class Attack(object):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
         required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
         required_lists.to_damage.append("NULL")
+        use_state = "check confusion"
 
-        if self.name == "Pay Day":
-            required_lists.payday_count += 1
-
-        if randint(1, 100) <= P or P == 0:
-            if self.category == "status":
-                if self.status != "none":
-                    self.cause_status(target)
+        while use_state != "end":
+            print use_state
+            if use_state == "check confusion":
+                if user.volatile["confused"] == False:
+                    use_state = "check status"
                 else:
-                    if self.modify_target == "user":
-                        modify_stats(self, user)
+                    if randint(0, 1) == 0:
+                        use_state = "check status"
                     else:
-                        modify_stats(self, target)
+                        use_state = "use confused move"
 
-            else:
-                if self.multiple_attacks == False:
-                    number_attacks = 1
-                elif (self.name == "Bonemerang") or \
-                (self.name == "Double Hit") or \
-                (self.name == "Double Kick") or \
-                (self.name == "Dual Chop") or \
-                (self.name == "Gear Grind") or \
-                (self.name == "Twineedle"):
-                    number_attacks = 2
-                elif self.name == "Triple Kick":
-                    number_attacks = 3
+            elif use_state == "use confused move":
+                #use the confused move
+                use_state = "end"
+
+
+            elif use_state == "check status":
+                if user.status_nonvolatile == "healthy":
+                    use_state = "use move"
                 else:
+                    if user.status_nonvolatile == "frozen":
+                        required_lists.to_print.append("{0} was frozen and unable to move!".format(user.name))
+                        required_lists.to_damage.append("NULL")
+                        use_state = "end"
+                    elif user.status_nonvolatile == "alseep":
+                        required_lists.to_print.append("{0} was sleeping and unable to move!".format(user.name))
+                        required_lists.to_damage.append("NULL")
+                        use_state = "end"
+                    elif user.status_nonvolatile == "paralyzed":
+                        if user.status_counter == 1:
+                            required_lists.to_print.append("{0} was paralyzed and unable to move!".format(user.name))
+                            required_lists.to_damage.append("NULL")
+                            use_state = "end"
+                        else:
+                            use_state = "use move"
+                    else:
+                        use_state = "use move"
+
+
+            elif use_state == "use move":
+                if user.pp_list[user.pp_names[self.name]] > 0: #Figure out how to tell which spot in the list the attack is
+                    user.calculate_in_battle_stats()
+                    target.calculate_in_battle_stats()
+                    user.lower_pp(self.name)
+                    use_state = "check payday"
+                else:
+                    required_lists.to_print.append(self.name + " has no PP left")
+                    required_lists.to_damage.append("NULL")
+                    use_state = "end"
+
+
+            elif use_state == "check payday":
+                if self.payday == True:
+                    required_lists.payday_count += 1
+                use_state = "check accuracy"
+
+            elif use_state == "check accuracy":
+                if randint(1, 100) <= P or P == 0:
+                    use_state = "check skip turn"
+
+                else:
+                    required_lists.to_print.append("It missed!")
+                    required_lists.to_damage.append("NULL")
+                    use_state = "end"
+
+            elif use_state == "check skip turn":
+                if self.cause_skip == True:
+                    user.skip_turn = True
+                use_state = "check category"
+
+            elif use_state == "check category":
+                if self.category == "status":
+                    use_state = "modify status"
+                else:
+                    use_state = "attack stuff"
+
+            elif use_state == "modify status":
+                if self.stat_percent == 0:
+                    use_state = "modify stats"
+
+                else:
+                    if randint(0, 100) <= self.stat_percent:
+                        self.cause_status(target)
+                    use_state = "modify stats"
+
+            elif use_state == "modify stats":
+                if self.modify_percent != 0:
+                    if randint(0, 100) <= self.modify_percent:
+                        if self.modify_target == "user":
+                            modify_stats(self, user)
+                        elif self.modify_target == "target":
+                            modify_stats(self, target)
+                else:
+                    use_state = "end"
+
+            elif use_state == "attack stuff":
+                if self.multiple_attacks == 0:
                     if randint(0, 1000) <= 333:
                         number_attacks = 2
                     elif 333 < randint(0, 1000) <= 666:
@@ -221,47 +295,56 @@ class Attack(object):
                         number_attacks = 4
                     elif 833 < randint(0, 1000) <= 1000:
                         number_attacks = 5
-                    for i in range(number_attacks):
-                        required_lists.to_print.append("It hit {0} times!".format(number_attacks))
 
-                for i in range(number_attacks):
+                    required_lists.to_print.append("It hit {0} times!".format(number_attacks))
+                    required_lists.to_damage.append("NULL")
+                    use_state = "cause damage"
+
+                elif self.multiple_attacks > 1:
+                    number_attacks = self.multiple_attacks
+
+                    required_lists.to_print.append("It hit {0} times!".format(number_attacks))
+                    required_lists.to_damage.append("NULL")
+                    use_state = "cause damage"
+
+                else:
+                    number_attacks = 1
+                    use_state = "cause damage"
+
+
+            elif use_state == "cause damage":
+                if number_attacks == 1:
                     damage = self.calc_damage(user, target)
-
-                    recoil_damage = self.calc_recoil(damage)
-                    if user.trainer == "player":
-                        required_lists.to_damage.append("enemy")
-                    else:
-                        required_lists.to_damage.append("player")
+                    required_lists.to_print.append("")
+                    required_lists.to_damage.append(target.trainer)
                     required_lists.to_damage_count.append(damage)
 
-                    if recoil_damage != 0:
-                        required_lists.to_print.append("{0} was hurt by recoil!".format(user.name))
-                        required_lists.to_damage_count.append(recoil_damage)
-                        required_lists.to_damage.append(user.trainer)
+                else:
+                    for i in range(number_attacks):
+                        damage = self.calc_damage(user, target)
+                        required_lists.to_print.append("")
+                        required_lists.to_damage.append(target.trainer)
+                        required_lists.to_damage_count.append(damage)
 
-                    if self.modify_perect != 0:
-                        if randint(0, 100) <= self.modify_perect:
-                            if self.modify_target == "user":
-                                modify_stats(self, user)
-                            else:
-                                modify_stats(self, target)
+                use_state = "calc recoil"
 
-                    if self.stat_percent != 0:
-                        if randint(0, 100) <= self.stat_percent:
-                            self.cause_status(target)
+            elif use_state == "calc recoil":
+                recoil_damage = self.calc_recoil(damage)
+                if recoil_damage != 0:
+                    required_lists.to_print.append("{0} was hurt by recoil!".format(user.name))
+                    required_lists.to_damage_count.append(recoil_damage)
+                    required_lists.to_damage.append(user.trainer)
+                use_state = "check regain health"
 
-                    if self.regain_health == True:
-                        regained_health = int(float(damage) / 2)
-                        required_lists.to_print.append("{0} had its energy drained".format(target.name))
-                        required_lists.to_damage.append(user.trainer)
-                        required_lists.to_damage_count.append(-regained_health)
+            elif use_state == "check regain health":
+                if self.regain_health == True:
+                    regained_health = int(float(damage) / 2)
+                    required_lists.to_print.append("{0} had its energy drained".format(target.name))
+                    required_lists.to_damage.append(user.trainer)
+                    required_lists.to_damage_count.append(-regained_health)
+                use_state = "modify status"
 
-                if self.cause_skip == True:
-                    user.skip_turn = True
 
-        else:
-            required_lists.to_print.append("It missed!")
-            required_lists.to_damage.append("NULL")
 
 
 class OHKO(Attack):

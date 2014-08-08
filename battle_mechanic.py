@@ -332,10 +332,10 @@ while in_battle == True:
             #custap berry
             if player_to_do != 5:
                 if player_pokemon.moveset[player_to_do].priority == 8:
-                    use_attack(player_pokemon, enemy_pokemon, player_to_do)
+                    player_pokemon.moveset[player_to_do].use(player_pokemon, enemy_pokemon)
 
             if enemy_pokemon.moveset[enemy_to_do].priority == 8:
-                use_attack(enemy_pokemon, player_pokemon, enemy_to_do)
+                enemy_pokemon.moveset[enemy_to_do].use(enemy_pokemon, player_pokemon)
             priority = 7
 
         while priority == 7:
@@ -404,14 +404,14 @@ while in_battle == True:
             player_pokemon = battle_functions.player_pokemon
             enemy_pokemon = battle_functions.enemy_pokemon
 
-            battle_functions.check_status(player_pokemon)
-            battle_functions.check_status(enemy_pokemon)
+            player_pokemon.check_status()
+            enemy_pokemon.check_status() #Figure out why "POKEMON was hurt by STATUS" isn't printing properly
 
             player_pokemon = battle_functions.player_pokemon
             enemy_pokemon = battle_functions.enemy_pokemon
 
-            battle_functions.check_volatile_status(player_pokemon)
-            battle_functions.check_volatile_status(enemy_pokemon)
+            player_pokemon.check_volatile_status()
+            enemy_pokemon.check_volatile_status()
 
             player_pokemon = battle_functions.player_pokemon
             enemy_pokemon = battle_functions.enemy_pokemon

@@ -151,6 +151,7 @@ class Pokemon(object):
         self.accuracy_stage = 0
         self.evasion_stage = 0
 
+        self.pp_names = {}
         self.pp_list = []
 
         self.calculate_real_stats()
@@ -162,6 +163,7 @@ class Pokemon(object):
     def get_pp(self):
         '''Get the pp of each move in the movset, and store it in pp_list.'''
         for i in range(len(self.moveset)):
+            self.pp_names[self.moveset[i].name] = i
             self.pp_list.append(self.moveset[i].pp_full)
 
 
@@ -239,6 +241,89 @@ class Pokemon(object):
             print self.exp
             if self.exp >= self.needed_exp:
                 self.level_up()
+
+    def check_status(self):
+        '''Checks the status of a pokemon, and deals damage or decrements a turn counter accordingly.'''
+        if self.status_nonvolatile == "burned":
+            required_lists.to_print.append("{0} was hurt by burn".format(self.name))
+            required_lists.to_damage.append(self.trainer)
+            required_lists.to_damage_count.append(int(float(self.hp)) / 8)
+
+        elif self.status_nonvolatile == "frozen":
+            if randint(0, 100) <= 20:
+                self.status_nonvolatile == "healthy"
+                required_lists.to_print.append("{0} has thawed out".format(self.name))
+                required_lists.to_damage.append("NULL")
+
+        elif self.status_nonvolatile == "paralyzed":
+            if randint(0, 100) <= 25:
+                self.status_counter = 1
+            else:
+                self.status_counter = 0
+
+        elif self.status_nonvolatile == "poisoned":
+            required_lists.to_print.append("{0} was hurt by poison".format(self.name))
+            required_lists.to_damage.append(self.trainer)
+            required_lists.to_damage_count.append(int(float(self.hp)) / 8)
+
+        elif self.status_nonvolatile == "badly poisoned":
+            required_lists.to_print.append("{0} was hurt by poison".format(self.name))
+            required_lists.to_damage.append(self.trainer)
+            required_lists.to_damage_count.append(int(float(self.hp_full)/16*self.status_counter))
+            self.status_counter += 1
+
+
+        elif self.status_nonvolatile == "asleep":
+            self.status_counter -= 1
+            if self.status_counter == 0:
+                self.status_nonvolatile = "healthy"
+
+    def check_volatile_status(self):
+        '''Handles volatile status ailments and their effects.'''
+        if self.volatile["cursed"] == True:
+            pass
+
+        if self.volatile["embargo"] == True:
+            pass
+
+        if self.volatile["encore"] == True:
+            pass
+
+        if self.volatile["flinch"] == True:
+            pass
+
+        if self.volatile["healblock"] == True:
+            pass
+
+        if self.volatile["identification"] == True:
+            pass
+
+        if self.volatile["infatuated"] == True:
+            pass
+
+        if self.volatile["nightmare"] == True:
+            pass
+
+        if self.volatile["partially trapped"] == True:
+            required_lists.to_print.append("{0} was hurt by {1}".format(self.name, "bind")) #make "bind" a general case
+            required_lists.to_damage.append(self.trainer)
+            required_lists.to_damage_count.append(float(self.hp_full) / 8)
+            #self.status_volatile_counter -= 1
+
+        if self.volatile["parish song"] == True:
+            pass
+
+        if self.volatile["seeded"] == True:
+            pass
+
+        if self.volatile["taunt"] == True:
+            pass
+
+        if self.volatile["telekenetic levitation"] == True:
+            pass
+
+        if self.volatile["torment"] == True:
+            pass
 
 
 def set_volatile_status(self):
