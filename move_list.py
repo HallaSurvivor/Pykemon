@@ -3,7 +3,6 @@ from move_functions import Attack
 from move_functions import OHKO
 
 #name, category, power, move_type, pp full, pp max, contact=True, acc=100, priority=0, recoil=0, user mod=[], enemy mod=[], mod perc=0, status=none
-confused_attack = Attack("", "physical", 40, "normal", 10000000, 10000000000)
 pound = Attack("pound", "physical", 40, "normal", 35, 56)
 karate_chop = Attack("Karate Chop", "physical", 40, "fighting", 25, 50, increased_crit = True)
 double_slap = Attack("Double Slap", "physical", 15, "normal", 10, 16, accuracy = 85, multiple_attacks = True)
@@ -46,8 +45,8 @@ tail_whip = Attack("Tail Whip", "status", 0, "normal", 30, 48, modify_list = [0,
 poison_sting = Attack("Poison Sting", "physical", 15, "poison", 35, 56, status = "poisoned", stat_percent = 30, contact = False)
 twineedle = Attack("Twineedle", "physical", 25, "bug", 20, 32, status = "poisoned", stat_percent = 20, contact = False, multiple_attacks = True)
 leer = Attack("Leer", "status", 0, "normal", 30, 48, modify_list = [0, -1, 0, 0, 0], modify_target = "enemy", modify_percent = 100, contact = False)
-bite = Attack("Bite", "physical", 60, "dark", 25, 40, status = "flinch", stat_percent = 10)
-growl = Attack("Growl", "status", 0, "normal", 40, 52, modify_list = [-1, 0, 0, 0, 0], modify_target = "enemy", contact = False, modify_percent = 100)
+bite = Attack("Bite", "physical", 60, "dark", 25, 40, status = "flinch", stat_percent = 100)
+growl = Attack("Growl", "status", 0, "normal", 40, 52, modify_list = [-1, 0, 0, 0, 0], modify_target = "enemy", contact = False, modify_percent = 10)
 #roar = Attack("Roar", "status", )
 sing = Attack("Sing", "status", 0, "normal", 15, 24, status = "alseep", contact = False)
 

@@ -24,18 +24,18 @@ def check_speed(player, enemy, player_choice, enemy_choice):
     if player_choice != 5:
         if player.battle_speed > enemy.battle_speed:
             player.moveset[player_choice].use(player, enemy)
-            print"ran layer"
             check_player_health(player)
             check_enemy_health(player, enemy)
             enemy.moveset[enemy_choice].use(enemy, player)
-            print "ran enemy"
+            check_player_health(player)
+            check_enemy_health(player, enemy)
         else:
             enemy.moveset[enemy_choice].use(enemy, player)
-            print "ran enemy"
             check_player_health(player)
             check_enemy_health(player, enemy)
             player.moveset[player_choice].use(player, enemy)
-            print "ran player"
+            check_player_health(player)
+            check_enemy_health(player, enemy)
     else:
         enemy.moveset[enemy_choice].use(enemy, player)
         check_player_health(player)

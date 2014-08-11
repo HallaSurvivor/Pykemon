@@ -117,8 +117,9 @@ class Attack(object):
             if self.status == required_lists.volatile[i]:
                 if target.volatile[self.status] == False:
                     target.volatile[self.status] = True
-                    required_lists.to_print.append("{0} was {1}".format(target.name, self.status))
-                    required_lists.to_damage.append("NULL")
+                    if self.status != "flinch":
+                        required_lists.to_print.append("{0} was {1}".format(target.name, self.status))
+                        required_lists.to_damage.append("NULL")
                 else:
                     required_lists.to_print.append("{0} was already {1}".format(target.name, self.status))
                     required_lists.to_damage.append("NULL")
@@ -179,9 +180,49 @@ class Attack(object):
         damage = int(floor( ( (2 * user.level + 10) * damage_ratio * self.power + 2) * modifier / float(250) ) )
         return damage
 
+
     def calc_recoil(self, damage):
         '''Calculates the recoil that a move will deal to the user.'''
         return int(float(self.recoil)/100*damage)
+
+    def calc_confused_damage(self, user):
+        '''Calculates the damage if the user is confused and hits istelf.'''
+        if self.move_type == (user.type1 or user.type2):
+            stab = 1.5
+        else:
+            stab = 1
+        if user.type1 != "ghost":
+            type_bonus1 = type_chain.type_comparison[self.move_type][user.type1]
+        else:
+            type_bonus1 = 1
+
+        if user.type2 != "ghost":
+            type_bonus2 = type_chain.type_comparison[self.move_type][user.type2]
+        else:
+            type_bonus2 = 1
+
+        net_type_bonus = type_bonus1 * type_bonus2
+
+        if user.crit_stage == 0:
+            crit_percent = .0625
+        elif user.crit_stage == 1:
+            crit_percent = .125
+        elif uesr.crit_stage == 2:
+            crit_percent = .50
+        else:
+            crit_percent = 1.00
+
+        if uniform(0, 1) <= crit_percent:
+            crit = 1.5
+        else:
+            crit = 1
+
+
+        modifier = stab * net_type_bonus * crit * uniform(.85, 1)
+        damage_ratio = float(user.battle_atk) / float(user.battle_defs)
+
+        damage = int(floor( ( (2 * user.level + 10) * damage_ratio * 40 + 2) * modifier / float(250) ) )
+        return damage
 
 
     def use(self, user, target):
@@ -194,6 +235,7 @@ class Attack(object):
             print use_state
             if use_state == "check flinch":
                 if user.volatile["flinch"] == True:
+                    print "user flinched"
                     required_lists.to_print.append("{0} flinched!".format(user.name))
                     required_lists.to_damage.append("NULL")
                     user.volatile["flinch"] = False
@@ -212,7 +254,12 @@ class Attack(object):
                         use_state = "use confused move"
 
             elif use_state == "use confused move":
-                #use the confused move
+                damage = self.calc_confused_damage(user)
+                required_lists.to_print.append("{0} hurt itself in its confusion!".format(user.name))
+                required_lists.to_damage.append("NULL")
+                required_lists.to_print.append("")
+                required_lists.to_damage.append(user.trainer)
+                required_lists.to_damage_count.append(damage)
                 use_state = "end"
 
 
@@ -288,6 +335,7 @@ class Attack(object):
                 else:
                     if randint(0, 100) <= self.stat_percent:
                         self.cause_status(target)
+                        print"causd status"
                     use_state = "modify stats"
 
 

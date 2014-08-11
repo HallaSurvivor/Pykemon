@@ -340,7 +340,9 @@ while in_battle == True:
             priority = 7
 
         while priority == 7:
-            #if opponent switches, pursuit
+            #if opponent switches, pursuit:
+            #if enemy_pokemon.to_switch_out == True:
+            #pursuit
             priority = 6
 
         while priority == 6:

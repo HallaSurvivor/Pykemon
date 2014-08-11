@@ -15,7 +15,7 @@ Mary.name = "Mary"
 Jason = generator.generate("mudkip", [move_list.thunder_punch, move_list.ice_punch, move_list.fire_punch, move_list.guillotine], "player")
 Jason.name = "Jason"
 
-Cameron = generator.generate("ivysaur", [move_list.growl, move_list.tackle], "player")
+Cameron = generator.generate("ivysaur", [move_list.growl, move_list.tackle, move_list.bite], "player")
 Cameron.name = "Cameron"
 
 player_party = [Jason, Cameron, Creighton, Mary, Jessica]
