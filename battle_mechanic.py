@@ -13,7 +13,7 @@ import battle_blitting
 '''
 TO DO LIST
 
-flinch
+flinch doesn't carry over turn endings
 make everything in move_functions a method
 make a move with no PP stay on the selection screen instead of wasting a turn.
 

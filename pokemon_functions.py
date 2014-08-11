@@ -133,6 +133,7 @@ class Pokemon(object):
         self.skip_turn = False
         self.status_counter = 1 #changes depending on status. paralz: can attack or no. frzn/sleep: time to cure. badly poisoned: used to tell what turn of poison to calc damage
         self.stats_volatile_counter = 1
+        self.trapped_counter = 0
 
         self.can_switch_out = True
         self.can_use_items = True
@@ -171,9 +172,13 @@ class Pokemon(object):
 
     def get_pp(self):
         '''Get the pp of each move in the movset, and store it in pp_list.'''
+        print self.name
         for i in range(len(self.moveset)):
             self.pp_names[self.moveset[i].name] = i
             self.pp_list.append(self.moveset[i].pp_full)
+            print self.moveset[i].pp_full
+        print len(self.pp_list)
+        print "\n"
 
 
     def lower_pp(self, move_name):
@@ -317,7 +322,10 @@ class Pokemon(object):
             required_lists.to_print.append("{0} was hurt by {1}".format(self.name, "bind")) #make "bind" a general case
             required_lists.to_damage.append(self.trainer)
             required_lists.to_damage_count.append(float(self.hp_full) / 8)
-            #self.status_volatile_counter -= 1
+            self.trapped_counter -= 1
+            if self.trapped_counter == 0:
+                self.volatile["partially trapped"] = False
+                required_lists.to_print.append("{0} was released from {1}".format(self.name, "bind"))
 
         if self.volatile["parish song"] == True:
             pass

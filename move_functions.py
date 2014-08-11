@@ -10,19 +10,30 @@ import required_lists
 
 class Attack(object):
 
-    def __init__(self, name, category, power, move_type, pp_full, pp_max,
-                contact = True, accuracy = 100, priority = 0, recoil = 0,
-                modify_list = [0, 0, 0, 0, 0],
-                modify_percent = 0, modify_target = "none", status = "none", stat_percent = 0,
-                cause_skip = False, multiple_attacks = 1, regain_health = False, increased_crit = False,
-                payday = False):
+    def __init__(self,
+
+            name = "", pp = 0, pp_max = 0, category = "physical", power = 0,
+
+            move_type = "normal", contact = True, accuracy = 100,
+
+            priority = 0, recoil = 0, modify_list = [0, 0, 0, 0, 0],
+
+            modify_percent = 0, modify_target = "none", status = "none",
+
+            stat_percent = 0, cause_skip = False, multiple_attacks = 1,
+
+            regain_health = False, increased_crit = False, payday = False,
+
+            field_effect = False, cause_enemy_switch = False,
+
+            cause_player_switch = False, sound_based = False):
 
         self.name = name
+        self.pp_full = pp
+        self.pp_max = pp_max
         self.category = category
         self.power = power
         self.move_type = move_type
-        self.pp_full = pp_full
-        self.pp_max = pp_max
         self.contact = contact
         self.accuracy = accuracy
         self.priority = priority
@@ -37,6 +48,10 @@ class Attack(object):
         self.regain_health = regain_health
         self.increased_crit = increased_crit
         self.payday = payday
+        self.field_effect = field_effect
+        self.cause_enemy_switch = cause_enemy_switch
+        self.cause_player_switch = cause_player_switch
+        self.sound_based = sound_based
 
     def modify_stats(self, target):
         '''Modifies stats and prints the change to the screen.'''
@@ -126,6 +141,9 @@ class Attack(object):
 
         if self.status == "badly poisoned":
             target.status_counter = 1
+
+        if self.status == "partially trapped":
+            target.trapped_counter = randint(2, 5)
 
         elif self.status == "alseep":
             target.status_counter = randint(1, 3)
@@ -415,7 +433,7 @@ class Attack(object):
 
 class OHKO(Attack):
     def __init__(self, name, move_type, contact):
-        super(OHKO, self).__init__(name, "physical", 100, move_type, 5, 8)
+        super(OHKO, self).__init__(name = name, pp = 5, pp_max = 8, category = "physical", power = 100, move_type = move_type)
         self.contact = contact
 
     def use(self, user, target):
