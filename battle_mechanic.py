@@ -344,6 +344,7 @@ while in_battle == True:
 
         while priority == 6:
             #switching out, itemes, escaping, Focus Punch Charge, mega evo
+
             priority = 5
 
         while priority == 5:
@@ -405,7 +406,7 @@ while in_battle == True:
             enemy_pokemon = battle_functions.enemy_pokemon
 
             player_pokemon.check_status()
-            enemy_pokemon.check_status() #Figure out why "POKEMON was hurt by STATUS" isn't printing properly
+            enemy_pokemon.check_status()
 
             player_pokemon = battle_functions.player_pokemon
             enemy_pokemon = battle_functions.enemy_pokemon
@@ -416,8 +417,18 @@ while in_battle == True:
             player_pokemon = battle_functions.player_pokemon
             enemy_pokemon = battle_functions.enemy_pokemon
 
+            required_lists.to_damage.append("NULL") #compensates for the last item in to_print not printing
+            required_lists.to_print.append(" ")
+
             priority = 8
             battle_blitting.game_state = "wait for prompt"
+
+        while priority == 10:
+            pass #use for feinting message?
+            #def checkhealth():
+                #if player.hp < 0:
+                    #priority = 10
+                    #last_priority = whatever
 
 
     pygame.display.flip()

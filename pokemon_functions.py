@@ -76,9 +76,9 @@ class Pokemon(object):
 
         player_sprite, enemy_sprite, small_sprite, pokedex_color,
 
-        iv_list, name, level, exp, moveset, trainer, item
+        iv_list, name, level, exp, moveset, trainer, item,
 
-        ):
+        can_mega_evolve = False):
 
         self.ability = ability
         self.type1 = type1
@@ -110,6 +110,8 @@ class Pokemon(object):
         self.small_sprite = small_sprite
         self.pokedex_color = pokedex_color
 
+        self.can_mega_evolve = can_mega_evolve
+
         self.name = name
         self.level = level
         self.exp = exp
@@ -131,6 +133,13 @@ class Pokemon(object):
         self.skip_turn = False
         self.status_counter = 1 #changes depending on status. paralz: can attack or no. frzn/sleep: time to cure. badly poisoned: used to tell what turn of poison to calc damage
         self.stats_volatile_counter = 1
+
+        self.can_switch_out = True
+        self.can_use_items = True
+
+        self.to_switch_out = False
+        self.to_switch_in = False
+        self.to_mega_evo = False
 
         if self.gender_ratio == -1:
             self.gender = "genderless"
