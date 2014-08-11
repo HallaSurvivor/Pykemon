@@ -14,7 +14,7 @@ import battle_blitting
 TO DO LIST
 
 flinch doesn't carry over turn endings
-make everything in move_functions a method
+make battle_blitting a class, make a class for battle variables (weather, mist, etc.)
 make a move with no PP stay on the selection screen instead of wasting a turn.
 
 make it possible to print to multiple lines

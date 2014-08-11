@@ -26,7 +26,9 @@ class Attack(object):
 
             field_effect = False, cause_enemy_switch = False,
 
-            cause_player_switch = False, sound_based = False):
+            cause_player_switch = False, sound_based = False,
+
+            set_damage = False, cause_disable = False, fix_move = False):
 
         self.name = name
         self.pp_full = pp
@@ -52,6 +54,9 @@ class Attack(object):
         self.cause_enemy_switch = cause_enemy_switch
         self.cause_player_switch = cause_player_switch
         self.sound_based = sound_based
+        self.set_damage = set_damage
+        self.cause_disable = cause_disable
+        self.fix_move = fix_move
 
     def modify_stats(self, target):
         '''Modifies stats and prints the change to the screen.'''
@@ -247,10 +252,14 @@ class Attack(object):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
         required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
         required_lists.to_damage.append("NULL")
-        use_state = "check flinch"
+        use_state = "set last move"
 
         while use_state != "end":
             print use_state
+
+            if use_state == "set last move":
+                user.previous_move = self
+                use_state = "check flinch"
             if use_state == "check flinch":
                 if user.volatile["flinch"] == True:
                     print "user flinched"
@@ -431,7 +440,7 @@ class Attack(object):
 
 
 
-class OHKO(Attack):
+class OHKO(Attack): #make OHKO an enclosing if statement in Attack?
     def __init__(self, name, move_type, contact):
         super(OHKO, self).__init__(name = name, pp = 5, pp_max = 8, category = "physical", power = 100, move_type = move_type)
         self.contact = contact

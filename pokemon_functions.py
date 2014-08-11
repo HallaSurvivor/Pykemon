@@ -163,6 +163,9 @@ class Pokemon(object):
 
         self.pp_names = {}
         self.pp_list = []
+        self.pp_disabled = [False, False, False, False]
+
+        self.previous_move = object
 
         self.calculate_real_stats()
 
