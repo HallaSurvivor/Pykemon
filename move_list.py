@@ -47,7 +47,7 @@ poison_sting = Attack("Poison Sting", "physical", 15, "poison", 35, 56, status =
 twineedle = Attack("Twineedle", "physical", 25, "bug", 20, 32, status = "poisoned", stat_percent = 20, contact = False, multiple_attacks = True)
 leer = Attack("Leer", "status", 0, "normal", 30, 48, modify_list = [0, -1, 0, 0, 0], modify_target = "enemy", modify_percent = 100, contact = False)
 bite = Attack("Bite", "physical", 60, "dark", 25, 40, status = "flinch", stat_percent = 10)
-growl = Attack("Growl", "status", 0, "normal", 40, 52, modify_list = [-1, 0, 0, 0, 0], modify_target = "enemy", contact = False)
+growl = Attack("Growl", "status", 0, "normal", 40, 52, modify_list = [-1, 0, 0, 0, 0], modify_target = "enemy", contact = False, modify_percent = 100)
 #roar = Attack("Roar", "status", )
 sing = Attack("Sing", "status", 0, "normal", 15, 24, status = "alseep", contact = False)
 

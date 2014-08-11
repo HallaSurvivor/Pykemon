@@ -8,64 +8,6 @@ import required_lists
 
 
 
-def modify_stats(move, target):
-    '''Modifies stats and prints the change to the screen.'''
-    #printing
-    for i in range(5):
-
-        if move.modify_list[i] == 1:
-            required_lists.to_damage.append("NULL")
-            if target.stages[i] == 6:
-                required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
-            else:
-                required_lists.to_print.append("{0}'s {1} rose".format(target.name, required_lists.stat_list[i]))
-
-        elif move.modify_list[i] == 2:
-            required_lists.to_damage.append("NULL")
-            if target.stages[i] == 6:
-                required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
-            else:
-                required_lists.to_print.append("{0}'s {1} sharply rose".format(target.name, required_lists.stat_list[i]))
-
-        elif move.modify_list[i] == 3:
-            required_lists.to_damage.append("NULL")
-            if target.stages[i] == 6:
-                required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
-            else:
-                required_lists.to_print.append("{0}'s {1} drastically rose".format(target.name, required_lists.stat_list[i]))
-
-
-        elif move.modify_list[i] == -1:
-            required_lists.to_damage.append("NULL")
-            if target.stages[i] == -6:
-                required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
-            else:
-                required_lists.to_print.append("{0}'s {1} fell".format(target.name, required_lists.stat_list[i]))
-
-        elif move.modify_list[i] == -2:
-            required_lists.to_damage.append("NULL")
-            if target.stages[i] == -6:
-                required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
-            else:
-                required_lists.to_print.append("{0}'s {1} harshly fell".format(target.name, required_lists.stat_list[i]))
-
-        elif move.modify_list[i] == -3:
-            required_lists.to_damage.append("NULL")
-            if target.stages[i] == -6:
-                required_lists.to_print("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
-            else:
-                required_lists.to_print.append("{0}'s {1} drastically fell".format(target.name, required_lists.stat_list[i]))
-
-    #calculation
-    for i in range(5):
-        if target.stages[i] + move.modify_list[i] > 6:
-            target.stages[i] = 6
-        elif target.stages[i] + move.modify_list[i] < -6:
-            target.stages[i] = -6
-        else:
-            target.stages[i] += move.modify_list[i]
-
-
 class Attack(object):
 
     def __init__(self, name, category, power, move_type, pp_full, pp_max,
@@ -95,6 +37,64 @@ class Attack(object):
         self.regain_health = regain_health
         self.increased_crit = increased_crit
         self.payday = payday
+
+    def modify_stats(self, target):
+        '''Modifies stats and prints the change to the screen.'''
+        #printing
+        print "called modify stats"
+        for i in range(5):
+            if self.modify_list[i] == 1:
+                required_lists.to_damage.append("NULL")
+                if target.stages[i] == 6:
+                    required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+                else:
+                    required_lists.to_print.append("{0}'s {1} rose".format(target.name, required_lists.stat_list[i]))
+
+            elif self.modify_list[i] == 2:
+                required_lists.to_damage.append("NULL")
+                if target.stages[i] == 6:
+                    required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+                else:
+                    required_lists.to_print.append("{0}'s {1} sharply rose".format(target.name, required_lists.stat_list[i]))
+
+            elif self.modify_list[i] == 3:
+                required_lists.to_damage.append("NULL")
+                if target.stages[i] == 6:
+                    required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+                else:
+                    required_lists.to_print.append("{0}'s {1} drastically rose".format(target.name, required_lists.stat_list[i]))
+
+
+            elif self.modify_list[i] == -1:
+                required_lists.to_damage.append("NULL")
+                if target.stages[i] == -6:
+                    required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+                else:
+                    required_lists.to_print.append("{0}'s {1} fell".format(target.name, required_lists.stat_list[i]))
+
+            elif self.modify_list[i] == -2:
+                required_lists.to_damage.append("NULL")
+                if target.stages[i] == -6:
+                    required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+                else:
+                    required_lists.to_print.append("{0}'s {1} harshly fell".format(target.name, required_lists.stat_list[i]))
+
+            elif self.modify_list[i] == -3:
+                required_lists.to_damage.append("NULL")
+                if target.stages[i] == -6:
+                    required_lists.to_print("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+                else:
+                    required_lists.to_print.append("{0}'s {1} drastically fell".format(target.name, required_lists.stat_list[i]))
+
+        #calculation
+        for i in range(5):
+            if target.stages[i] + self.modify_list[i] > 6:
+                target.stages[i] = 6
+            elif target.stages[i] + self.modify_list[i] < -6:
+                target.stages[i] = -6
+            else:
+                target.stages[i] += self.modify_list[i]
+
 
     def cause_status(self, target):
         '''Induces a status effect on the target.'''
@@ -188,10 +188,20 @@ class Attack(object):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
         required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
         required_lists.to_damage.append("NULL")
-        use_state = "check confusion"
+        use_state = "check flinch"
 
         while use_state != "end":
             print use_state
+            if use_state == "check flinch":
+                if user.volatile["flinch"] == True:
+                    required_lists.to_print.append("{0} flinched!".format(user.name))
+                    required_lists.to_damage.append("NULL")
+                    user.volatile["flinch"] = False
+                    use_state = "end"
+                else:
+                    use_state = "check confusion"
+
+
             if use_state == "check confusion":
                 if user.volatile["confused"] == False:
                     use_state = "check status"
@@ -223,6 +233,7 @@ class Attack(object):
                             required_lists.to_print.append("{0} was paralyzed and unable to move!".format(user.name))
                             required_lists.to_damage.append("NULL")
                             use_state = "end"
+
                         else:
                             use_state = "use move"
                     else:
@@ -246,6 +257,7 @@ class Attack(object):
                     required_lists.payday_count += 1
                 use_state = "check accuracy"
 
+
             elif use_state == "check accuracy":
                 if randint(1, 100) <= P or P == 0:
                     use_state = "check skip turn"
@@ -255,16 +267,19 @@ class Attack(object):
                     required_lists.to_damage.append("NULL")
                     use_state = "end"
 
+
             elif use_state == "check skip turn":
                 if self.cause_skip == True:
                     user.skip_turn = True
                 use_state = "check category"
+
 
             elif use_state == "check category":
                 if self.category == "status":
                     use_state = "modify status"
                 else:
                     use_state = "attack stuff"
+
 
             elif use_state == "modify status":
                 if self.stat_percent == 0:
@@ -275,15 +290,18 @@ class Attack(object):
                         self.cause_status(target)
                     use_state = "modify stats"
 
+
             elif use_state == "modify stats":
                 if self.modify_percent != 0:
                     if randint(0, 100) <= self.modify_percent:
+                        print "should modify stats"
                         if self.modify_target == "user":
-                            modify_stats(self, user)
-                        elif self.modify_target == "target":
-                            modify_stats(self, target)
-                else:
-                    use_state = "end"
+                            self.modify_stats(user)
+                        elif self.modify_target == "enemy":
+                            self.modify_stats(target)
+                use_state = "end"
+
+
 
             elif use_state == "attack stuff":
                 if self.multiple_attacks == 0:

@@ -15,10 +15,10 @@ TO DO LIST
 
 flinch
 make everything in move_functions a method
-make the pokemon selection menu an iteration
 make a move with no PP stay on the selection screen instead of wasting a turn.
 
 make it possible to print to multiple lines
+make the enemy AI more advanced
 add in attack animations
 make held items do things
 make abilities a thing
@@ -26,6 +26,8 @@ make abilities a thing
 
 
 a megaevolve button, and a pokemon-status indicator on the bottom of the screen
+
+http://www.upokecenter.com/content/pokemon-black-version-and-pokemon-white-version-timing-notes
 
 '''
 
@@ -112,7 +114,7 @@ while in_battle == True:
 
     battle_blitting.blit_player_party()
 
-    if required_lists.nonvolatile_test_player == True:
+    if required_lists.nonvolatile_test_player == True: #make this directly test for status
         battle_blitting.blit_player_status_ailment(player_pokemon)
 
     if required_lists.nonvolatile_test_enemy == True:
@@ -275,10 +277,9 @@ while in_battle == True:
 
                         if player_pokemon.name != required_lists.box_data[num + 4]: #if the clicked pokemon isn't already out
 
-                            battle_functions.player_pokemon = player_party.player_party[num]
+                            battle_functions.player_pokemon.to_switch_out = True
+                            player_party.player_party[num].to_switch_in = True
                             battle_blitting.game_state = "executing"
-                            required_lists.to_print.append("{0}, I choose you!".format(battle_functions.player_pokemon.name))
-                            required_lists.to_damage.append("NULL")
                             battle_functions.player_pokemon.reset_in_battle_stats()
                             battle_functions.player_pokemon.calculate_in_battle_stats()
                             battle_blitting.reset_labels()
@@ -343,6 +344,20 @@ while in_battle == True:
             priority = 6
 
         while priority == 6:
+
+            if battle_functions.player_pokemon.to_switch_out == True:
+                for i in range(len(player_party.player_party)):
+
+                    if player_party.player_party[i].to_switch_in == True:
+
+                        required_lists.to_print.append("{0}, I choose you!".format(player_party.player_party[i].name))
+                        required_lists.to_damage.append("NULL")
+
+                        battle_functions.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
+                        player_party.player_party[i].to_switch_in = False
+                        battle_functions.player_pokemon = player_party.player_party[i]
+                        break
+
             #switching out, itemes, escaping, Focus Punch Charge, mega evo
 
             priority = 5

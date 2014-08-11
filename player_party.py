@@ -18,4 +18,4 @@ Jason.name = "Jason"
 Cameron = generator.generate("ivysaur", [move_list.growl, move_list.tackle], "player")
 Cameron.name = "Cameron"
 
-player_party = [Cameron, Jason, Creighton, Mary, Jessica]
+player_party = [Jason, Cameron, Creighton, Mary, Jessica]
