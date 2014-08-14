@@ -187,7 +187,6 @@ while in_battle == True:
                     b.reset_labels()
                     b.game_state = "first select"
 
-                #make the box a greyed out color for the current pkmn, and a red color if feinted
                 for num in range(len(player_party.player_party)):
                     if r.six_boxes[num].collidepoint(pos):
 
@@ -223,7 +222,8 @@ while in_battle == True:
                 pygame.quit()
                 sys.exit(0)
 
-            elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (event.type == pygame.KEYDOWN):
+            elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1)\
+             or (event.type == pygame.KEYDOWN):
 
                 if len(r.to_print) > 0:
                     wait_timer = 0

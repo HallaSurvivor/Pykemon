@@ -28,6 +28,7 @@ BOX = load("box.png")
 SQUAREBOX = load("squarebox.png")
 TEXTBOX = load("text_box.png")
 POKEMONBOX = load("pokemon_box.png")
+FAINTEDPOKEMONBOX = load("fainted_pokemon_box.png")
 BACK = load("back.png")
 
 

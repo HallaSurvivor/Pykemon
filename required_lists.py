@@ -60,7 +60,7 @@ box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2,
 
 box5data = "What would you like to do?"
 
-box_colors = [0, 0, 0, 0]
+box_colors = [0, 0, 0, 0, 0, 0]
 
 four_boxes = [0, 0, 0, 0]
 

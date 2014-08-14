@@ -26,32 +26,27 @@ def print_ask_for_space():
 
 def define_text_boxes():
     '''Renders the text that goes in each box, and defines a rectangle around each block of text.'''
-    box1_text_image = images.render_text(r.box_data[0])
-    box2_text_image = images.render_text(r.box_data[1])
-    box3_text_image = images.render_text(r.box_data[2])
-    box4_text_image = images.render_text(r.box_data[3])
+    text_image_list = []
+    text_box_list = []
 
-    box1_text_rect = box1_text_image.get_rect()
-    box2_text_rect = box2_text_image.get_rect()
-    box3_text_rect = box3_text_image.get_rect()
-    box4_text_rect = box4_text_image.get_rect()
+    for i in range(4):
+        text_image_list.append(images.render_text(r.box_data[i]))
 
-    boxa_text_image = images.render_text(r.box_data[4])
-    boxb_text_image = images.render_text(r.box_data[5])
-    boxc_text_image = images.render_text(r.box_data[6])
-    boxd_text_image = images.render_text(r.box_data[7])
-    boxe_text_image = images.render_text(r.box_data[8])
-    boxf_text_image = images.render_text(r.box_data[9])
+    six_box_list = []
+    for i in range(len(f.player_party.player_party)):
+        if f.player_party.player_party[i].fainted == False:
+            six_box_list.append(images.render_text(r.box_data[i+4]))
+        else:
+            six_box_list.append(images.render_text(r.box_data[i+4], color=images.WHITE))
 
-    boxa_text_rect = boxa_text_image.get_rect()
-    boxb_text_rect = boxb_text_image.get_rect()
-    boxc_text_rect = boxc_text_image.get_rect()
-    boxd_text_rect = boxd_text_image.get_rect()
-    boxe_text_rect = boxe_text_image.get_rect()
-    boxf_text_rect = boxf_text_image.get_rect()
+    while len(six_box_list) != 6:
+        six_box_list.append(images.render_text(""))
 
-    text_image_list = [box1_text_image, box2_text_image, box3_text_image, box4_text_image, boxa_text_image, boxb_text_image, boxc_text_image, boxd_text_image, boxe_text_image, boxf_text_image]
-    text_box_list = [box1_text_rect, box2_text_rect, box3_text_rect, box4_text_rect, boxa_text_rect, boxb_text_rect, boxc_text_rect, boxd_text_rect, boxe_text_rect, boxf_text_rect]
+    for i in range(6):
+        text_image_list.append(six_box_list[i])
+
+    for i in range(10):
+        text_box_list.append(text_image_list[i].get_rect())
 
     return [text_image_list, text_box_list]
 
@@ -81,27 +76,27 @@ def render_6_boxes():
     '''Blit the 6 boxes, with corrosponding pokemon, to the screen.'''
     text_list = define_text_boxes()
 
-    boxa = screen.blit(images.POKEMONBOX, images.BOXAPOS)
+    boxa = screen.blit(r.box_colors[0], images.BOXAPOS)
     text_list[1][4].center = boxa.center
     screen.blit(text_list[0][4], text_list[1][4])
 
-    boxb = screen.blit(images.POKEMONBOX, images.BOXBPOS)
+    boxb = screen.blit(r.box_colors[1], images.BOXBPOS)
     text_list[1][5].center = boxb.center
     screen.blit(text_list[0][5], text_list[1][5])
 
-    boxc = screen.blit(images.POKEMONBOX, images.BOXCPOS)
+    boxc = screen.blit(r.box_colors[2], images.BOXCPOS)
     text_list[1][6].center = boxc.center
     screen.blit(text_list[0][6], text_list[1][6])
 
-    boxd = screen.blit(images.POKEMONBOX, images.BOXDPOS)
+    boxd = screen.blit(r.box_colors[3], images.BOXDPOS)
     text_list[1][7].center = boxd.center
     screen.blit(text_list[0][7], text_list[1][7])
 
-    boxe = screen.blit(images.POKEMONBOX, images.BOXEPOS)
+    boxe = screen.blit(r.box_colors[4], images.BOXEPOS)
     text_list[1][8].center = boxe.center
     screen.blit(text_list[0][8], text_list[1][8])
 
-    boxf = screen.blit(images.POKEMONBOX, images.BOXFPOS)
+    boxf = screen.blit(r.box_colors[5], images.BOXFPOS)
     text_list[1][9].center = boxf.center
     screen.blit(text_list[0][9], text_list[1][9])
 
@@ -340,7 +335,17 @@ def choose_box_color():
 
 
     elif game_state == "pokemon list":
-        pass #Make this change color based on FNT
+        pkmn_boxes = []
+        for i in range(len(f.player_party.player_party)):
+            if f.player_party.player_party[i].fainted == True:
+                pkmn_boxes.append(images.FAINTEDPOKEMONBOX)
+            else:
+                pkmn_boxes.append(images.POKEMONBOX)
+        while len(pkmn_boxes) != 6:
+            pkmn_boxes.append(images.POKEMONBOX)
+
+        for i in range(6):
+            r.box_colors[i] = pkmn_boxes[i]
 
 
 def blit_battle_screen():
