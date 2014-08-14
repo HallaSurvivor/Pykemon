@@ -150,9 +150,6 @@ def update_box_5(player_pokemon, enemy_pokemon):
     battle_functions.check_enemy_health(player_pokemon, enemy_pokemon)
     battle_functions.check_player_health(player_pokemon)
 
-    print required_lists.to_print
-    print required_lists.to_damage
-
     if len(required_lists.to_print) == 0:
         required_lists.box5data = "What would you like to do?"
 
@@ -314,10 +311,25 @@ def blit_pp_4(player_pokemon):
 def blit_player_party():
     '''Blit the player's party to the bottom of the screen.'''
     offset = 0
-    for num in range(len(battle_functions.player_party.player_party)):
-        required_lists.party_images[num] = screen.blit(battle_functions.player_party.player_party[num].small_sprite, (7 + offset, 292) )
-        offset += 20
+    for i in range(len(battle_functions.player_party.player_party)):
+        required_lists.party_images[i] = screen.blit(battle_functions.player_party.player_party[i].small_sprite, (7 + offset, 292) )
+        offset += 25
 
 def blit_back_button():
     '''Blit a back button to the screen.'''
     required_lists.back_button = screen.blit(images.BACK, images.BACKBUTTONPOS)
+
+def blit_in_party_stats():
+    stat_box = screen.blit(images.SQUAREBOX, (0, 0))
+
+    pokemon_name = images.render_small_text(battle_functions.player_party.player_party[required_lists.render_stats].name)
+    pokemon_name_rect = pokemon_name.get_rect()
+    pokemon_name_rect.centerx = stat_box.centerx
+    pokemon_name_rect.top = stat_box.top + 10
+    screen.blit(pokemon_name, pokemon_name_rect)
+    if battle_functions.player_party.player_party[required_lists.render_stats].fainted == False:
+        for i in range(len(required_lists.nonvolatile)):
+            if battle_functions.player_party.player_party[required_lists.render_stats].status_nonvolatile == required_lists.nonvolatile[i]:
+                screen.blit(images.status_icons[i], (15, 20))
+    else:
+        screen.blit(images.FNT, (15, 20))

@@ -137,10 +137,13 @@ class Pokemon(object):
 
         self.can_switch_out = True
         self.can_use_items = True
+        self.can_use_fainted_items = False
 
         self.to_switch_out = False
         self.to_switch_in = False
         self.to_mega_evo = False
+
+        self.fainted = False
 
         if self.gender_ratio == -1:
             self.gender = "genderless"
@@ -156,6 +159,7 @@ class Pokemon(object):
 
         self.iv = iv_list
         self.ev = [0, 0, 0, 0, 0, 0]
+
         self.stages = [0, 0, 0, 0, 0, 0]
         self.crit_stage = 0
         self.accuracy_stage = 0
@@ -175,28 +179,15 @@ class Pokemon(object):
 
     def get_pp(self):
         '''Get the pp of each move in the movset, and store it in pp_list.'''
-        print self.name
         for i in range(len(self.moveset)):
             self.pp_names[self.moveset[i].name] = i
             self.pp_list.append(self.moveset[i].pp_full)
-            print self.moveset[i].pp_full
-        print len(self.pp_list)
-        print "\n"
-
 
     def lower_pp(self, move_name):
         '''Decrement the pp of the used move by 1.'''
         for i in range(len(self.moveset)):
             if move_name == self.moveset[i].name:
                 self.pp_list[i] -= 1
-
-    def reset_in_battle_stats(self):
-        '''Set all the stages equal to zero when sending out a new pokemon.'''
-        self.stages = [0, 0, 0, 0, 0, 0]
-        self.accuracy_stage = 0
-        self.evasion_stage = 0
-        self.crit_stage = 0
-
 
     def calculate_in_battle_stats(self):
         '''Calculate the stats based on the stage of each stat.'''
@@ -344,6 +335,51 @@ class Pokemon(object):
 
         if self.volatile["torment"] == True:
             pass
+
+    def reset_all_stats(self):
+        '''Set all the stages equal to zero when sending out a new pokemon.'''
+        self.stages = [0, 0, 0, 0, 0, 0]
+        self.accuracy_stage = 0
+        self.evasion_stage = 0
+        self.crit_stage = 0
+
+        self.volatile = {"confused":False, "cursed":False, "embargo":False,
+                        "encore":False, "flinch":False, "healblock":False,
+                        "identification":False, "infatuated":False,
+                        "nightmare":False, "partially trapped":False,
+                        "parish song":False, "seeded":False, "taunt":False,
+                        "telekenetic levitation":False, "torment":False
+                        }
+
+        self.skip_turn = False
+        self.status_counter = 1 #changes depending on status. paralz: can attack or no. frzn/sleep: time to cure. badly poisoned: used to tell what turn of poison to calc damage
+        self.stats_volatile_counter = 1
+        self.trapped_counter = 0
+
+        self.to_switch_out = False
+        self.to_switch_in = False
+        self.to_mega_evo = False
+
+        self.can_switch_out = True
+        self.can_use_items = True
+        self.can_use_fainted_items = False
+
+        self.pp_disabled = [False, False, False, False]
+
+
+
+
+    def faint(self):
+        '''Reset a pokemon's stats and set FNT to true.'''
+        self.reset_all_stats()
+
+        self.status_nonvolatile = "healthy"
+
+        self.can_switch_out = True
+        self.can_use_items = True
+        self.can_use_fainted_items = False
+
+        self.fainted = True
 
 
 def set_volatile_status(self):

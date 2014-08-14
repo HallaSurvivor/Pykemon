@@ -2,7 +2,6 @@
 from move_functions import Attack
 from move_functions import OHKO
 
-#name, category, power, move_type, pp full, pp max, contact=True, acc=100, priority=0, recoil=0, user mod=[], enemy mod=[], mod perc=0, status=none
 pound = Attack(
         name = "pound",
         category = "physical",

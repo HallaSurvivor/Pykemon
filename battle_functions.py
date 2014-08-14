@@ -24,18 +24,30 @@ def check_speed(player, enemy, player_choice, enemy_choice):
     if player_choice != 5:
         if player.battle_speed > enemy.battle_speed:
             player.moveset[player_choice].use(player, enemy)
+            print "used player move"
             check_player_health(player)
+            print"checked player health"
             check_enemy_health(player, enemy)
+            print "checked enemy health"
             enemy.moveset[enemy_choice].use(enemy, player)
+            print "used enemy move"
             check_player_health(player)
+            print"checked player health"
             check_enemy_health(player, enemy)
+            print"checked enemy health"
         else:
             enemy.moveset[enemy_choice].use(enemy, player)
+            print"used enemy move"
             check_player_health(player)
+            print"checked player health"
             check_enemy_health(player, enemy)
+            print "checked enemey health"
             player.moveset[player_choice].use(player, enemy)
+            print "used player move"
             check_player_health(player)
+            print "checked player health"
             check_enemy_health(player, enemy)
+            print "checked enemy health"
     else:
         enemy.moveset[enemy_choice].use(enemy, player)
         check_player_health(player)
@@ -45,16 +57,16 @@ def check_speed(player, enemy, player_choice, enemy_choice):
 def check_player_health(player):
     '''Check if the player hp is > 0, if not, have the user select another pokemon.'''
     if player.hp <= 0:
-        required_lists.to_print.append("{0} feinted!".format(player.name))
+        required_lists.to_print.append("{0} fainted!".format(player.name))
         #animation?
         watch_count = 0
+        player.faint
         for i in range(len(player_party.player_party)):
-            if player_party.player_party[i].hp > 0:
+            if not player_party.player_party[i].fainted:
                 game_state = "pokemon select"
-            else:
-                watch_count += 1
+                return 0
+
         else:
-            if watch_count == len(player_party.player_party):
                 required_lists.to_print.append("{0} is out of usable pokemon!".format("Player"))
                 required_lists.to_print.append("{0} whited out!".format("Player"))
 
@@ -67,14 +79,18 @@ def check_enemy_health(player, enemy):
     '''Check if the enemy healtlh is > 0, if not, return the next pokemon and give experience.'''
     global enemy_pokemon
     if enemy.hp <= 0:
-        required_lists.to_print.append("{0} feinted!".format(enemy.name))
+        required_lists.to_print.append("{0} fainted!".format(enemy.name))
+        required_lists.to_damage.append("NULL")
+        enemy.faint()
         for i in range(len(required_lists.current_enemy.party)):
-            if required_lists.current_enemy.party[i].hp > 0:
+            if not required_lists.current_enemy.party[i].fainted:
                 required_lists.to_print.append("{0} sent out {1}!".format(required_lists.current_enemy.name, required_lists.current_enemy.party[i].name))
                 enemy_pokemon = required_lists.current_enemy.party[i]
+                print enemy_pokemon.name
+                return 0
 
         else:
-            required_lists.to_print.append("{0} has run out of usable pokemon!")
+            required_lists.to_print.append("{0} has run out of usable pokemon!".format(required_lists.current_enemy.name))
             get_money()
 
         player.get_exp(enemy)

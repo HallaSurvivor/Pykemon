@@ -13,8 +13,9 @@ import battle_blitting
 '''
 TO DO LIST
 
-flinch doesn't carry over turn endings
+flinch doesn't carry over turn endings => have a reset function that executes at the end of the turn
 make battle_blitting a class, make a class for battle variables (weather, mist, etc.)
+make 6boxes change color depending on a pokemon's fainted status
 make a move with no PP stay on the selection screen instead of wasting a turn.
 
 make it possible to print to multiple lines
@@ -25,7 +26,7 @@ make abilities a thing
 
 
 
-a megaevolve button, and a pokemon-status indicator on the bottom of the screen
+a megaevolve button on the bottom of the screen
 
 http://www.upokecenter.com/content/pokemon-black-version-and-pokemon-white-version-timing-notes
 
@@ -138,7 +139,8 @@ while in_battle == True:
     boxf = required_lists.six_boxes[5]
 
     if required_lists.render_stats != -1:
-        images.SCREEN.blit(images.SQUAREBOX, (0, 0))
+        battle_blitting.blit_in_party_stats()
+
 
 
     if battle_blitting.game_state == "first select":
@@ -150,6 +152,7 @@ while in_battle == True:
             for num in range(len(battle_functions.player_party.player_party)):
                 if required_lists.party_images[num].collidepoint(pos):
                     required_lists.render_stats = num
+                    break
                 else:
                     required_lists.render_stats = -1
 
@@ -220,6 +223,7 @@ while in_battle == True:
             for num in range(len(battle_functions.player_party.player_party)):
                 if required_lists.party_images[num].collidepoint(pos):
                     required_lists.render_stats = num
+                    break
                 else:
                     required_lists.render_stats = -1
 
@@ -255,6 +259,7 @@ while in_battle == True:
             for num in range(len(battle_functions.player_party.player_party)):
                 if required_lists.party_images[num].collidepoint(pos):
                     required_lists.render_stats = num
+                    break
                 else:
                     required_lists.render_stats = -1
 
@@ -276,13 +281,11 @@ while in_battle == True:
                     if required_lists.six_boxes[num].collidepoint(pos):
 
                         if player_pokemon.name != required_lists.box_data[num + 4]: #if the clicked pokemon isn't already out
-
-                            battle_functions.player_pokemon.to_switch_out = True
-                            player_party.player_party[num].to_switch_in = True
-                            battle_blitting.game_state = "executing"
-                            battle_functions.player_pokemon.reset_in_battle_stats()
-                            battle_functions.player_pokemon.calculate_in_battle_stats()
-                            battle_blitting.reset_labels()
+                            if not player_party.player_party[num].fainted:
+                                battle_functions.player_pokemon.to_switch_out = True
+                                player_party.player_party[num].to_switch_in = True
+                                battle_blitting.game_state = "executing"
+                                battle_blitting.reset_labels()
 
 
 
@@ -305,6 +308,7 @@ while in_battle == True:
             for num in range(len(battle_functions.player_party.player_party)):
                 if required_lists.party_images[num].collidepoint(pos):
                     required_lists.render_stats = num
+                    break
                 else:
                     required_lists.render_stats = -1
 
@@ -348,6 +352,8 @@ while in_battle == True:
         while priority == 6:
 
             if battle_functions.player_pokemon.to_switch_out == True:
+                battle_functions.player_pokemon.reset_all_stats()
+
                 for i in range(len(player_party.player_party)):
 
                     if player_party.player_party[i].to_switch_in == True:
@@ -355,9 +361,11 @@ while in_battle == True:
                         required_lists.to_print.append("{0}, I choose you!".format(player_party.player_party[i].name))
                         required_lists.to_damage.append("NULL")
 
+
                         battle_functions.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
                         player_party.player_party[i].to_switch_in = False
                         battle_functions.player_pokemon = player_party.player_party[i]
+                        battle_functions.player_pokemon.calculate_in_battle_stats()
                         break
 
             #switching out, itemes, escaping, Focus Punch Charge, mega evo
@@ -424,6 +432,7 @@ while in_battle == True:
 
             player_pokemon.check_status()
             enemy_pokemon.check_status()
+            print "checked status"
 
             player_pokemon = battle_functions.player_pokemon
             enemy_pokemon = battle_functions.enemy_pokemon
@@ -435,7 +444,7 @@ while in_battle == True:
             enemy_pokemon = battle_functions.enemy_pokemon
 
             required_lists.to_damage.append("NULL") #compensates for the last item in to_print not printing
-            required_lists.to_print.append(" ")
+            required_lists.to_print.append("DOES THIS PRINT?")
 
             priority = 8
             battle_blitting.game_state = "wait for prompt"

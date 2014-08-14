@@ -16,3 +16,6 @@ enemy1 = Enemy("enemy1",
                 ]
 
         )
+
+enemy1.party[0].name = "1"
+enemy1.party[1].name = "2"

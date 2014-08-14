@@ -208,19 +208,20 @@ class Attack(object):
         '''Calculates the recoil that a move will deal to the user.'''
         return int(float(self.recoil)/100*damage)
 
+
     def calc_confused_damage(self, user):
         '''Calculates the damage if the user is confused and hits istelf.'''
-        if self.move_type == (user.type1 or user.type2):
+        if "normal" == (user.type1 or user.type2):
             stab = 1.5
         else:
             stab = 1
         if user.type1 != "ghost":
-            type_bonus1 = type_chain.type_comparison[self.move_type][user.type1]
+            type_bonus1 = type_chain.type_comparison["normal"][user.type1]
         else:
             type_bonus1 = 1
 
         if user.type2 != "ghost":
-            type_bonus2 = type_chain.type_comparison[self.move_type][user.type2]
+            type_bonus2 = type_chain.type_comparison["normal"][user.type2]
         else:
             type_bonus2 = 1
 
@@ -255,11 +256,13 @@ class Attack(object):
         use_state = "set last move"
 
         while use_state != "end":
-            print use_state
+            #print use_state
 
             if use_state == "set last move":
                 user.previous_move = self
                 use_state = "check flinch"
+
+
             if use_state == "check flinch":
                 if user.volatile["flinch"] == True:
                     print "user flinched"

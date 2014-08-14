@@ -61,6 +61,7 @@ PAR = load("par.png")
 FRZ = load("frz.png")
 PSN = load("psn.png")
 SLP = load("slp.png")
+FNT = load("fnt.png")
 
 MALE = load("male.png")
 FEMALE = load("female.png")
