@@ -52,10 +52,6 @@ f.auto_choose_pokemon()
 
 while in_battle == True:
 
-    player_pokemon = f.player_pokemon
-
-    enemy_pokemon = f.enemy_pokemon
-
     b.blit_battle_screen()
 
     if r.nonvolatile_test_player == True:
@@ -66,8 +62,8 @@ while in_battle == True:
 
     b.blit_back_button()
 
-    player_pokemon.calculate_in_battle_stats()
-    enemy_pokemon.calculate_in_battle_stats()
+    f.player_pokemon.calculate_in_battle_stats()
+    f.enemy_pokemon.calculate_in_battle_stats()
 
     box1 = r.four_boxes[0]
     box2 = r.four_boxes[1]
@@ -99,12 +95,12 @@ while in_battle == True:
                 pos = pygame.mouse.get_pos()
 
                 player_to_do = 5
-                if player_pokemon.skip_turn == False:
+                if f.player_pokemon.skip_turn == False:
 
                     if box1.collidepoint(pos):
                         movelist = []
-                        for i in range(len(player_pokemon.moveset)):
-                            movelist.append(player_pokemon.moveset[i].name)
+                        for i in range(len(f.player_pokemon.moveset)):
+                            movelist.append(f.player_pokemon.moveset[i].name)
                         while len(movelist) != 4:
                             movelist.append("")
                         for i in range(4):
@@ -131,9 +127,9 @@ while in_battle == True:
                         pygame.quit()
                         sys.exit(0)
                 else:
-                    r.to_print.append("{0} must recharge".format(player_pokemon.name))
+                    r.to_print.append("{0} must recharge".format(f.player_pokemon.name))
                     r.to_damage.append("NULL")
-                    player_pokemon.skip_turn = False
+                    f.player_pokemon.skip_turn = False
                     b.game_state = "executing"
 
 
@@ -160,7 +156,7 @@ while in_battle == True:
                     b.reset_labels()
                     b.game_state = "first select"
 
-                for num in range(len(player_pokemon.moveset)):
+                for num in range(len(f.player_pokemon.moveset)):
                     if r.four_boxes[num].collidepoint(pos):
                         player_to_do = num
                         b.game_state = "executing"
@@ -195,7 +191,7 @@ while in_battle == True:
                 for num in range(len(player_party.player_party)):
                     if r.six_boxes[num].collidepoint(pos):
 
-                        if player_pokemon.name != r.box_data[num + 4]: #if the clicked pokemon isn't already out
+                        if f.player_pokemon.name != r.box_data[num + 4]: #if the clicked pokemon isn't already out
                             if not player_party.player_party[num].fainted:
                                 f.player_pokemon.to_switch_out = True
                                 player_party.player_party[num].to_switch_in = True
@@ -245,12 +241,14 @@ while in_battle == True:
     #priority 8 through -8 execute in descending order, then the loop repeats
         while priority == 8:
             #custap berry
+            '''
             if player_to_do != 5:
                 if player_pokemon.moveset[player_to_do].priority == 8:
                     player_pokemon.moveset[player_to_do].use(player_pokemon, enemy_pokemon)
 
             if enemy_pokemon.moveset[enemy_to_do].priority == 8:
                 enemy_pokemon.moveset[enemy_to_do].use(enemy_pokemon, player_pokemon)
+                '''
             priority = 7
 
         while priority == 7:
@@ -337,21 +335,15 @@ while in_battle == True:
             priority = -8
 
         while priority == -8:
-            player_pokemon = f.player_pokemon
-            enemy_pokemon = f.enemy_pokemon
-
-            player_pokemon.check_status()
-            enemy_pokemon.check_status()
+            f.player_pokemon.check_status()
+            f.enemy_pokemon.check_status()
             print "checked status"
 
-            player_pokemon = f.player_pokemon
-            enemy_pokemon = f.enemy_pokemon
+            f.player_pokemon = f.player_pokemon
+            f.enemy_pokemon = f.enemy_pokemon
 
-            player_pokemon.check_volatile_status()
-            enemy_pokemon.check_volatile_status()
-
-            player_pokemon = f.player_pokemon
-            enemy_pokemon = f.enemy_pokemon
+            f.player_pokemon.check_volatile_status()
+            f.enemy_pokemon.check_volatile_status()
 
             r.to_damage.append("NULL") #compensates for the last item in to_print not printing
             r.to_print.append("DOES THIS PRINT?")
