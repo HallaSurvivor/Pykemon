@@ -19,44 +19,43 @@ def auto_choose_pokemon():
             player_pokemon = player_party.player_party[i]
             break
 
-def check_speed(player, enemy, player_choice, enemy_choice):
+def check_speed(player_choice, enemy_choice):
     '''Compares the speeds of the player and enemy pokemon, and does the faster pokemon's move first.'''
     if player_choice != 5:
-        if player.battle_speed > enemy.battle_speed:
-            player.moveset[player_choice].use(player, enemy)
+        if player_pokemon.battle_speed > enemy_pokemon.battle_speed:
+            player_pokemon.moveset[player_choice].use(player_pokemon, enemy_pokemon)
             print "used player move"
             check_player_health()
             print"checked player health"
             check_enemy_health()
             print "checked enemy health"
-            enemy.moveset[enemy_choice].use(enemy, player)
+            enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
             print "used enemy move"
             check_player_health()
             print"checked player health"
             check_enemy_health()
             print"checked enemy health"
         else:
-            enemy.moveset[enemy_choice].use(enemy, player)
+            enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
             print"used enemy move"
             check_player_health()
             print"checked player health"
             check_enemy_health()
             print "checked enemey health"
-            player.moveset[player_choice].use(player, enemy)
+            player_pokemon.moveset[player_choice].use(player_pokemon, enemy_pokemon)
             print "used player move"
             check_player_health()
             print "checked player health"
             check_enemy_health()
             print "checked enemy health"
     else:
-        enemy.moveset[enemy_choice].use(enemy, player)
+        enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
         check_player_health()
         check_enemy_health()
 
 
 def check_player_health():
     '''Check if the player hp is > 0, if not, have the user select another pokemon.'''
-    global player_pokemon
     if player_pokemon.hp <= 0:
         required_lists.to_print.append("{0} fainted!".format(player_pokemon.name))
         #animation?
@@ -78,7 +77,7 @@ def get_money():
 
 def check_enemy_health():
     '''Check if the enemy healtlh is > 0, if not, return the next pokemon and give experience.'''
-    global enemy_pokemon, player_pokemon
+    global enemy_pokemon
     if enemy_pokemon.hp <= 0:
         required_lists.to_print.append("{0} fainted!".format(enemy_pokemon.name))
         required_lists.to_damage.append("NULL")

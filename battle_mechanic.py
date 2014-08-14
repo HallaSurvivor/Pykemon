@@ -316,7 +316,7 @@ while in_battle == True:
             priority = 0
 
         while priority == 0:
-            f.check_speed(player_pokemon, enemy_pokemon, player_to_do, enemy_to_do)
+            f.check_speed(player_to_do, enemy_to_do)
             priority = -1
 
         while priority == -1:
