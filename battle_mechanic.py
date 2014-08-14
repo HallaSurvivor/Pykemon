@@ -4,17 +4,17 @@ import pygame
 import sys
 import enemies
 import player_party
-import required_lists
+import required_lists as r
 import items
 import images
-import battle_functions
-import battle_blitting
+import battle_functions as f
+import battle_blitting as b
 
 '''
 TO DO LIST
 
 flinch doesn't carry over turn endings => have a reset function that executes at the end of the turn
-make battle_blitting a class, make a class for battle variables (weather, mist, etc.)
+make b a class, make a class for battle variables (weather, mist, etc.)
 make 6boxes change color depending on a pokemon's fainted status
 make a move with no PP stay on the selection screen instead of wasting a turn.
 
@@ -39,41 +39,6 @@ priority = 8
 def open_bag():
     global bag
 
-def choose_box_color():
-    '''Choose the correct box color based on game state.'''
-    if battle_blitting.game_state == "first select":
-        required_lists.box_colors[0] = images.BOX
-        required_lists.box_colors[1] = images.BOX
-        required_lists.box_colors[2] = images.BOX
-        required_lists.box_colors[3] = images.BOX
-
-    elif battle_blitting.game_state == "move list":
-        if move_choices[0] != "":
-            required_lists.box_colors[0] = battle_blitting.select_box(player_pokemon.moveset[0])
-        else:
-            required_lists.box_colors[0] = images.BOX
-
-        if move_choices[1] != "":
-            required_lists.box_colors[1] = battle_blitting.select_box(player_pokemon.moveset[1])
-        else:
-            required_lists.box_colors[1] = images.BOX
-
-        if move_choices[2] != "":
-            required_lists.box_colors[2] = battle_blitting.select_box(player_pokemon.moveset[2])
-        else:
-            required_lists.box_colors[2] = images.BOX
-
-        if move_choices[3] != "":
-            required_lists.box_colors[3] = battle_blitting.select_box(player_pokemon.moveset[3])
-        else:
-            required_lists.box_colors[3] = images.BOX
-
-    elif battle_blitting.game_state == "wait for prompt":
-        required_lists.box_colors[0] = images.BOX
-        required_lists.box_colors[1] = images.BOX
-        required_lists.box_colors[2] = images.BOX
-        required_lists.box_colors[3] = images.BOX
-
 
 pygame.init()
 pygame.display.set_caption("Pokemon!")
@@ -82,74 +47,74 @@ player_to_do = 0
 
 wait_timer = 0
 
-battle_functions.auto_choose_pokemon()
+f.auto_choose_pokemon()
 
 
 while in_battle == True:
 
-    player_pokemon = battle_functions.player_pokemon
+    player_pokemon = f.player_pokemon
 
-    enemy_pokemon = battle_functions.enemy_pokemon
+    enemy_pokemon = f.enemy_pokemon
 
-    battle_blitting.render_background()
+    b.render_background()
 
-    choose_box_color()
+    b.choose_box_color(player_pokemon)
 
-    battle_blitting.render_correct_boxes()
+    b.render_correct_boxes()
 
-    battle_blitting.render_hp_boxes()
+    b.render_hp_boxes()
 
-    battle_blitting.render_player_hp(player_pokemon)
+    b.render_player_hp(player_pokemon)
 
-    battle_blitting.render_enemy_hp(enemy_pokemon)
+    b.render_enemy_hp(enemy_pokemon)
 
-    battle_blitting.blit_pokemon(player_pokemon, enemy_pokemon)
+    b.blit_pokemon(player_pokemon, enemy_pokemon)
 
-    battle_blitting.blit_numerical_hp(player_pokemon)
+    b.blit_numerical_hp(player_pokemon)
 
-    battle_blitting.blit_player_name(player_pokemon)
+    b.blit_player_name(player_pokemon)
 
-    battle_blitting.blit_enemy_name(enemy_pokemon)
+    b.blit_enemy_name(enemy_pokemon)
 
-    battle_blitting.blit_exp(player_pokemon)
+    b.blit_exp(player_pokemon)
 
-    battle_blitting.blit_player_party()
+    b.blit_player_party()
 
-    if required_lists.nonvolatile_test_player == True: #make this directly test for status
-        battle_blitting.blit_player_status_ailment(player_pokemon)
+    if r.nonvolatile_test_player == True:
+        b.blit_player_status_ailment(player_pokemon)  #make this directly test for status
 
-    if required_lists.nonvolatile_test_enemy == True:
-        battle_blitting.blit_enemy_status_ailment(enemy_pokemon)
+    if r.nonvolatile_test_enemy == True:
+        b.blit_enemy_status_ailment(enemy_pokemon)
 
-    battle_blitting.blit_back_button()
+    b.blit_back_button()
 
     player_pokemon.calculate_in_battle_stats()
     enemy_pokemon.calculate_in_battle_stats()
 
-    box1 = required_lists.four_boxes[0]
-    box2 = required_lists.four_boxes[1]
-    box3 = required_lists.four_boxes[2]
-    box4 = required_lists.four_boxes[3]
+    box1 = r.four_boxes[0]
+    box2 = r.four_boxes[1]
+    box3 = r.four_boxes[2]
+    box4 = r.four_boxes[3]
 
-    boxa = required_lists.six_boxes[0]
-    boxb = required_lists.six_boxes[1]
-    boxc = required_lists.six_boxes[2]
-    boxd = required_lists.six_boxes[3]
-    boxe = required_lists.six_boxes[4]
-    boxf = required_lists.six_boxes[5]
+    boxa = r.six_boxes[0]
+    boxb = r.six_boxes[1]
+    boxc = r.six_boxes[2]
+    boxd = r.six_boxes[3]
+    boxe = r.six_boxes[4]
+    boxf = r.six_boxes[5]
 
-    if required_lists.render_stats != -1:
-        battle_blitting.blit_in_party_stats()
+    if r.render_stats != -1:
+        b.blit_in_party_stats()
 
 
 
-    if battle_blitting.game_state == "first select":
+    if b.game_state == "first select":
 
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
 
-            battle_blitting.check_for_hover_over_party(pos)
+            b.check_for_hover_over_party(pos)
 
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -160,18 +125,18 @@ while in_battle == True:
 
                 player_to_do = 5
                 if player_pokemon.skip_turn == False:
-                    move_choices = []
+                    r.move_choices = []
 
                     if box1.collidepoint(pos):
                         for i in range(len(player_pokemon.moveset)):
-                            move_choices.append(player_pokemon.moveset[i].name)
-                        while len(move_choices) != 4:
-                            move_choices.append("")
-                        required_lists.box_data[0] = move_choices[0]
-                        required_lists.box_data[1] = move_choices[1]
-                        required_lists.box_data[2] = move_choices[2]
-                        required_lists.box_data[3] = move_choices[3]
-                        battle_blitting.game_state = "move list"
+                            r.move_choices.append(player_pokemon.moveset[i].name)
+                        while len(r.move_choices) != 4:
+                            r.move_choices.append("")
+                        r.box_data[0] = r.move_choices[0]
+                        r.box_data[1] = r.move_choices[1]
+                        r.box_data[2] = r.move_choices[2]
+                        r.box_data[3] = r.move_choices[3]
+                        b.game_state = "move list"
 
                     elif box3.collidepoint(pos):
                         pokemon_choices = []
@@ -180,42 +145,42 @@ while in_battle == True:
                         while len(pokemon_choices) != 6:
                             pokemon_choices.append("")
 
-                        required_lists.box_data[4] = pokemon_choices[0]
-                        required_lists.box_data[5] = pokemon_choices[1]
-                        required_lists.box_data[6] = pokemon_choices[2]
-                        required_lists.box_data[7] = pokemon_choices[3]
-                        required_lists.box_data[8] = pokemon_choices[4]
-                        required_lists.box_data[9] = pokemon_choices[5]
-                        battle_blitting.game_state = "pokemon list"
+                        r.box_data[4] = pokemon_choices[0]
+                        r.box_data[5] = pokemon_choices[1]
+                        r.box_data[6] = pokemon_choices[2]
+                        r.box_data[7] = pokemon_choices[3]
+                        r.box_data[8] = pokemon_choices[4]
+                        r.box_data[9] = pokemon_choices[5]
+                        b.game_state = "pokemon list"
                     elif box4.collidepoint(pos):
                         box5data = "Player successfully ran away"
                         pygame.quit()
                         sys.exit(0)
                 else:
-                    required_lists.to_print.append("{0} must recharge".format(player_pokemon.name))
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append("{0} must recharge".format(player_pokemon.name))
+                    r.to_damage.append("NULL")
                     player_pokemon.skip_turn = False
-                    battle_blitting.game_state = "executing"
+                    b.game_state = "executing"
 
 
 
-    elif battle_blitting.game_state == "move list":
+    elif b.game_state == "move list":
 
 
 #make this a list and iterate?
-        if required_lists.box_data[0] != "":
-            battle_blitting.blit_pp_1(player_pokemon)
-        if required_lists.box_data[1] != "":
-            battle_blitting.blit_pp_2(player_pokemon)
-        if required_lists.box_data[2] != "":
-            battle_blitting.blit_pp_3(player_pokemon)
-        if required_lists.box_data[3] != "":
-            battle_blitting.blit_pp_4(player_pokemon)
+        if r.box_data[0] != "":
+            b.blit_pp_1(player_pokemon)
+        if r.box_data[1] != "":
+            b.blit_pp_2(player_pokemon)
+        if r.box_data[2] != "":
+            b.blit_pp_3(player_pokemon)
+        if r.box_data[3] != "":
+            b.blit_pp_4(player_pokemon)
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
 
-            battle_blitting.check_for_hover_over_party(pos)
+            b.check_for_hover_over_party(pos)
 
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -226,27 +191,27 @@ while in_battle == True:
 
                 player_to_do = 5
 
-                if required_lists.back_button.collidepoint(pos):
-                    battle_blitting.reset_labels()
-                    battle_blitting.game_state = "first select"
+                if r.back_button.collidepoint(pos):
+                    b.reset_labels()
+                    b.game_state = "first select"
 
                 for num in range(len(player_pokemon.moveset)):
-                    if required_lists.four_boxes[num].collidepoint(pos):
+                    if r.four_boxes[num].collidepoint(pos):
                         player_to_do = num
-                        battle_blitting.game_state = "executing"
-                        battle_blitting.reset_labels()
-                        battle_blitting.print_ask_for_space()
+                        b.game_state = "executing"
+                        b.reset_labels()
+                        b.print_ask_for_space()
 
 
 
-    elif battle_blitting.game_state == "pokemon list":
+    elif b.game_state == "pokemon list":
 
 
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
 
-            battle_blitting.check_for_hover_over_party(pos)
+            b.check_for_hover_over_party(pos)
 
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -257,41 +222,41 @@ while in_battle == True:
 
                 player_to_do = 5
 
-                if required_lists.back_button.collidepoint(pos):
-                    battle_blitting.reset_labels()
-                    battle_blitting.game_state = "first select"
+                if r.back_button.collidepoint(pos):
+                    b.reset_labels()
+                    b.game_state = "first select"
 
                 #make the box a greyed out color for the current pkmn, and a red color if feinted
                 for num in range(len(player_party.player_party)):
-                    if required_lists.six_boxes[num].collidepoint(pos):
+                    if r.six_boxes[num].collidepoint(pos):
 
-                        if player_pokemon.name != required_lists.box_data[num + 4]: #if the clicked pokemon isn't already out
+                        if player_pokemon.name != r.box_data[num + 4]: #if the clicked pokemon isn't already out
                             if not player_party.player_party[num].fainted:
-                                battle_functions.player_pokemon.to_switch_out = True
+                                f.player_pokemon.to_switch_out = True
                                 player_party.player_party[num].to_switch_in = True
-                                battle_blitting.game_state = "executing"
-                                battle_blitting.reset_labels()
+                                b.game_state = "executing"
+                                b.reset_labels()
 
 
 
-    elif battle_blitting.game_state == "wait for prompt":
+    elif b.game_state == "wait for prompt":
 
 
 
-        if len(required_lists.to_print) > 0:
+        if len(r.to_print) > 0:
             wait_timer += 1
             if wait_timer == 100:
-                battle_blitting.update_box_5(player_pokemon, enemy_pokemon)
+                b.update_box_5(player_pokemon, enemy_pokemon)
                 wait_timer = 0
         else:
-            battle_blitting.game_state = "first select"
-            battle_blitting.reset_labels()
+            b.game_state = "first select"
+            b.reset_labels()
 
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
 
-            battle_blitting.check_for_hover_over_party(pos)
+            b.check_for_hover_over_party(pos)
 
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -299,15 +264,15 @@ while in_battle == True:
 
             elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (event.type == pygame.KEYDOWN):
 
-                if len(required_lists.to_print) > 0:
+                if len(r.to_print) > 0:
                     wait_timer = 0
-                    battle_blitting.update_box_5(player_pokemon, enemy_pokemon)
+                    b.update_box_5(player_pokemon, enemy_pokemon)
                 else:
-                    battle_blitting.game_state = "first select"
+                    b.game_state = "first select"
 
 
 
-    elif battle_blitting.game_state == "executing":
+    elif b.game_state == "executing":
 
 
 
@@ -331,21 +296,21 @@ while in_battle == True:
 
         while priority == 6:
 
-            if battle_functions.player_pokemon.to_switch_out == True:
-                battle_functions.player_pokemon.reset_all_stats()
+            if f.player_pokemon.to_switch_out == True:
+                f.player_pokemon.reset_all_stats()
 
                 for i in range(len(player_party.player_party)):
 
                     if player_party.player_party[i].to_switch_in == True:
 
-                        required_lists.to_print.append("{0}, I choose you!".format(player_party.player_party[i].name))
-                        required_lists.to_damage.append("NULL")
+                        r.to_print.append("{0}, I choose you!".format(player_party.player_party[i].name))
+                        r.to_damage.append("NULL")
 
 
-                        battle_functions.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
+                        f.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
                         player_party.player_party[i].to_switch_in = False
-                        battle_functions.player_pokemon = player_party.player_party[i]
-                        battle_functions.player_pokemon.calculate_in_battle_stats()
+                        f.player_pokemon = player_party.player_party[i]
+                        f.player_pokemon.calculate_in_battle_stats()
                         break
 
             #switching out, itemes, escaping, Focus Punch Charge, mega evo
@@ -376,7 +341,7 @@ while in_battle == True:
             priority = 0
 
         while priority == 0:
-            battle_functions.check_speed(player_pokemon, enemy_pokemon, player_to_do, enemy_to_do)
+            f.check_speed(player_pokemon, enemy_pokemon, player_to_do, enemy_to_do)
             priority = -1
 
         while priority == -1:
@@ -407,27 +372,27 @@ while in_battle == True:
             priority = -8
 
         while priority == -8:
-            player_pokemon = battle_functions.player_pokemon
-            enemy_pokemon = battle_functions.enemy_pokemon
+            player_pokemon = f.player_pokemon
+            enemy_pokemon = f.enemy_pokemon
 
             player_pokemon.check_status()
             enemy_pokemon.check_status()
             print "checked status"
 
-            player_pokemon = battle_functions.player_pokemon
-            enemy_pokemon = battle_functions.enemy_pokemon
+            player_pokemon = f.player_pokemon
+            enemy_pokemon = f.enemy_pokemon
 
             player_pokemon.check_volatile_status()
             enemy_pokemon.check_volatile_status()
 
-            player_pokemon = battle_functions.player_pokemon
-            enemy_pokemon = battle_functions.enemy_pokemon
+            player_pokemon = f.player_pokemon
+            enemy_pokemon = f.enemy_pokemon
 
-            required_lists.to_damage.append("NULL") #compensates for the last item in to_print not printing
-            required_lists.to_print.append("DOES THIS PRINT?")
+            r.to_damage.append("NULL") #compensates for the last item in to_print not printing
+            r.to_print.append("DOES THIS PRINT?")
 
             priority = 8
-            battle_blitting.game_state = "wait for prompt"
+            b.game_state = "wait for prompt"
 
         while priority == 10:
             pass #use for feinting message?
