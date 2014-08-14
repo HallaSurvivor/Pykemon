@@ -100,17 +100,16 @@ while in_battle == True:
 
                 player_to_do = 5
                 if player_pokemon.skip_turn == False:
-                    r.move_choices = []
 
                     if box1.collidepoint(pos):
+                        movelist = []
                         for i in range(len(player_pokemon.moveset)):
-                            r.move_choices.append(player_pokemon.moveset[i].name)
-                        while len(r.move_choices) != 4:
-                            r.move_choices.append("")
-                        r.box_data[0] = r.move_choices[0]
-                        r.box_data[1] = r.move_choices[1]
-                        r.box_data[2] = r.move_choices[2]
-                        r.box_data[3] = r.move_choices[3]
+                            movelist.append(player_pokemon.moveset[i].name)
+                        while len(movelist) != 4:
+                            movelist.append("")
+                        for i in range(4):
+                            r.box_data[i] = movelist[i]
+
                         b.game_state = "move list"
 
                     elif box3.collidepoint(pos):
@@ -141,8 +140,6 @@ while in_battle == True:
 
     elif b.game_state == "move list":
 
-
-#make this a list and iterate?
         b.blit_pp()
 
         for event in pygame.event.get():

@@ -328,41 +328,20 @@ def check_for_hover_over_party(pos):
 
 def choose_box_color():
     '''Choose the correct box color based on game state.'''
-    if game_state == "first select":
-        r.box_colors[0] = images.BOX
-        r.box_colors[1] = images.BOX
-        r.box_colors[2] = images.BOX
-        r.box_colors[3] = images.BOX
+    #By default, they're all white
+    r.box_colors[0] = images.BOX
+    r.box_colors[1] = images.BOX
+    r.box_colors[2] = images.BOX
+    r.box_colors[3] = images.BOX
 
-    elif game_state == "move list":
-        if r.move_choices[0] != "":
-            r.box_colors[0] = select_box(f.player_pokemon.moveset[0])
-        else:
-            r.box_colors[0] = images.BOX
+    if game_state == "move list":
+        for i in range(len(f.player_pokemon.moveset)):
+            r.box_colors[i] = select_box(f.player_pokemon.moveset[i])
 
-        if r.move_choices[1] != "":
-            r.box_colors[1] = select_box(f.player_pokemon.moveset[1])
-        else:
-            r.box_colors[1] = images.BOX
-
-        if r.move_choices[2] != "":
-            r.box_colors[2] = select_box(f.player_pokemon.moveset[2])
-        else:
-            r.box_colors[2] = images.BOX
-
-        if r.move_choices[3] != "":
-            r.box_colors[3] = select_box(f.player_pokemon.moveset[3])
-        else:
-            r.box_colors[3] = images.BOX
 
     elif game_state == "pokemon list":
         pass #Make this change color based on FNT
 
-    elif game_state == "wait for prompt":
-        r.box_colors[0] = images.BOX
-        r.box_colors[1] = images.BOX
-        r.box_colors[2] = images.BOX
-        r.box_colors[3] = images.BOX
 
 def blit_battle_screen():
 
