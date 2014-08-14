@@ -320,6 +320,7 @@ def blit_back_button():
     required_lists.back_button = screen.blit(images.BACK, images.BACKBUTTONPOS)
 
 def blit_in_party_stats():
+    '''Blit the stats of the pokemon who the user is hovering over to (0, 0).'''
     stat_box = screen.blit(images.SQUAREBOX, (0, 0))
 
     pokemon_name = images.render_small_text(battle_functions.player_party.player_party[required_lists.render_stats].name)
@@ -333,3 +334,12 @@ def blit_in_party_stats():
                 screen.blit(images.status_icons[i], (15, 20))
     else:
         screen.blit(images.FNT, (15, 20))
+
+def check_for_hover_over_party(pos):
+    '''Check if the user is hovering over a pokemon.'''
+    for num in range(len(battle_functions.player_party.player_party)):
+        if required_lists.party_images[num].collidepoint(pos):
+            required_lists.render_stats = num
+            break
+        else:
+            required_lists.render_stats = -1
