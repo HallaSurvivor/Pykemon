@@ -281,33 +281,13 @@ def blit_enemy_status_ailment():
         if f.enemy_pokemon.status_nonvolatile == r.nonvolatile[i]:
             screen.blit(images.status_icons[i], images.ENEMY_STATUS_POS)
 
-def blit_pp_1():
-    '''Blit the pp of the player's first move.'''
-    pp1 = images.render_small_text(str(f.player_pokemon.pp_list[0]) + "  /  "+str(f.player_pokemon.moveset[0].pp_full))
-    pp1_rect = pp1.get_rect()
-    pp1_rect.center = images.PP1POS
-    screen.blit(pp1, pp1_rect)
-
-def blit_pp_2():
-    '''Blit the pp of the player's second move.'''
-    pp2 = images.render_small_text(str(f.player_pokemon.pp_list[1]) + "  /  "+str(f.player_pokemon.moveset[1].pp_full))
-    pp2_rect = pp2.get_rect()
-    pp2_rect.center = images.PP2POS
-    screen.blit(pp2, pp2_rect)
-
-def blit_pp_3():
-    '''Blit the pp of the player's third move.'''
-    pp3 = images.render_small_text(str(f.player_pokemon.pp_list[2]) + "  /  "+str(f.player_pokemon.moveset[2].pp_full))
-    pp3_rect = pp3.get_rect()
-    pp3_rect.center = images.PP3POS
-    screen.blit(pp3, pp3_rect)
-
-def blit_pp_4():
-    '''Blit the pp of the player's fourth move.'''
-    pp4 = images.render_small_text(str(f.player_pokemon.pp_list[3]) + "  /  "+str(f.player_pokemon.moveset[3].pp_full))
-    pp4_rect = pp4.get_rect()
-    pp4_rect.center = images.PP4POS
-    screen.blit(pp4, pp4_rect)
+def blit_pp():
+    '''Blit the pp of the player's moveset'''
+    for i in range(len(f.player_pokemon.pp_list)):
+        pp = images.render_small_text(str(f.player_pokemon.pp_list[i]) + "  /  "+str(f.player_pokemon.moveset[i].pp_full))
+        pp_rect = pp.get_rect()
+        pp_rect.center = images.PP_POS_LIST[i]
+        screen.blit(pp, pp_rect)
 
 def blit_player_party():
     '''Blit the player's party to the bottom of the screen.'''

@@ -143,14 +143,7 @@ while in_battle == True:
 
 
 #make this a list and iterate?
-        if r.box_data[0] != "":
-            b.blit_pp_1()
-        if r.box_data[1] != "":
-            b.blit_pp_2()
-        if r.box_data[2] != "":
-            b.blit_pp_3()
-        if r.box_data[3] != "":
-            b.blit_pp_4()
+        b.blit_pp()
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()

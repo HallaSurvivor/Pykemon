@@ -5,7 +5,7 @@ import required_lists
 import move_list
 from random import randint
 
-player_pokemon = 0
+player_pokemon = player_party.Cameron
 
 required_lists.current_enemy = enemies.enemy1
 
