@@ -7,9 +7,9 @@ from random import randint
 
 player_pokemon = player_party.Cameron
 
-required_lists.current_enemy = enemies.enemy1
+enemies.current_enemy = enemies.enemy1
 
-enemy_pokemon = required_lists.current_enemy.party[0]
+enemy_pokemon = enemies.current_enemy.party[0]
 
 def auto_choose_pokemon():
     '''Automatically selects the first pokemon in the player's party with hp > 0.'''
@@ -82,10 +82,10 @@ def check_enemy_health():
         required_lists.to_print.append("{0} fainted!".format(enemy_pokemon.name))
         required_lists.to_damage.append("NULL")
         enemy_pokemon.faint()
-        for i in range(len(required_lists.current_enemy.party)):
-            if not required_lists.current_enemy.party[i].fainted:
-                required_lists.to_print.append("{0} sent out {1}!".format(required_lists.current_enemy.name, required_lists.current_enemy.party[i].name))
-                enemy_pokemon = required_lists.current_enemy.party[i]
+        for i in range(len(enemies.current_enemy.party)):
+            if not enemies.current_enemy.party[i].fainted:
+                required_lists.to_print.append("{0} sent out {1}!".format(enemies.current_enemy.name, enemies.current_enemy.party[i].name))
+                enemy_pokemon = enemies.current_enemy.party[i]
                 print enemy_pokemon.name
                 return 0
 
@@ -93,7 +93,7 @@ def check_enemy_health():
             required_lists.to_print.append("{0} has run out of usable pokemon!".format(required_lists.current_enemy.name))
             get_money()
 
-        player_pokemon.get_exp(enemy)
-        player_pokemon.get_ev(enemy)
+        player_pokemon.get_exp(enemy_pokemon)
+        player_pokemon.get_ev(enemy_pokemon)
 
 
