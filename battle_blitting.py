@@ -322,19 +322,20 @@ def blit_back_button():
 
 def blit_in_party_stats():
     '''Blit the stats of the pokemon who the user is hovering over to (0, 0).'''
-    stat_box = screen.blit(images.SQUAREBOX, (0, 0))
+    if r.render_stats != -1:
+        stat_box = screen.blit(images.SQUAREBOX, (0, 0))
 
-    pokemon_name = images.render_small_text(f.player_party.player_party[r.render_stats].name)
-    pokemon_name_rect = pokemon_name.get_rect()
-    pokemon_name_rect.centerx = stat_box.centerx
-    pokemon_name_rect.top = stat_box.top + 10
-    screen.blit(pokemon_name, pokemon_name_rect)
-    if f.player_party.player_party[r.render_stats].fainted == False:
-        for i in range(len(r.nonvolatile)):
-            if f.player_party.player_party[r.render_stats].status_nonvolatile == r.nonvolatile[i]:
-                screen.blit(images.status_icons[i], (15, 20))
-    else:
-        screen.blit(images.FNT, (15, 20))
+        pokemon_name = images.render_small_text(f.player_party.player_party[r.render_stats].name)
+        pokemon_name_rect = pokemon_name.get_rect()
+        pokemon_name_rect.centerx = stat_box.centerx
+        pokemon_name_rect.top = stat_box.top + 10
+        screen.blit(pokemon_name, pokemon_name_rect)
+        if f.player_party.player_party[r.render_stats].fainted == False:
+            for i in range(len(r.nonvolatile)):
+                if f.player_party.player_party[r.render_stats].status_nonvolatile == r.nonvolatile[i]:
+                    screen.blit(images.status_icons[i], (15, 20))
+        else:
+            screen.blit(images.FNT, (15, 20))
 
 def check_for_hover_over_party(pos):
     '''Check if the user is hovering over a pokemon.'''
@@ -345,7 +346,7 @@ def check_for_hover_over_party(pos):
         else:
             r.render_stats = -1
 
-def choose_box_color(player_pokemon):
+def choose_box_color():
     '''Choose the correct box color based on game state.'''
     if game_state == "first select":
         r.box_colors[0] = images.BOX
@@ -355,22 +356,22 @@ def choose_box_color(player_pokemon):
 
     elif game_state == "move list":
         if r.move_choices[0] != "":
-            r.box_colors[0] = select_box(player_pokemon.moveset[0])
+            r.box_colors[0] = select_box(f.player_pokemon.moveset[0])
         else:
             r.box_colors[0] = images.BOX
 
         if r.move_choices[1] != "":
-            r.box_colors[1] = select_box(player_pokemon.moveset[1])
+            r.box_colors[1] = select_box(f.player_pokemon.moveset[1])
         else:
             r.box_colors[1] = images.BOX
 
         if r.move_choices[2] != "":
-            r.box_colors[2] = select_box(player_pokemon.moveset[2])
+            r.box_colors[2] = select_box(f.player_pokemon.moveset[2])
         else:
             r.box_colors[2] = images.BOX
 
         if r.move_choices[3] != "":
-            r.box_colors[3] = select_box(player_pokemon.moveset[3])
+            r.box_colors[3] = select_box(f.player_pokemon.moveset[3])
         else:
             r.box_colors[3] = images.BOX
 
@@ -382,3 +383,29 @@ def choose_box_color(player_pokemon):
         r.box_colors[1] = images.BOX
         r.box_colors[2] = images.BOX
         r.box_colors[3] = images.BOX
+
+def blit_battle_screen():
+
+    render_background()
+
+    choose_box_color()
+
+    render_correct_boxes()
+
+    render_hp_boxes()
+
+    render_player_hp(f.player_pokemon)
+
+    render_enemy_hp(f.enemy_pokemon)
+
+    blit_pokemon(f.player_pokemon, f.enemy_pokemon)
+
+    blit_numerical_hp(f.player_pokemon)
+
+    blit_player_name(f.player_pokemon)
+
+    blit_enemy_name(f.enemy_pokemon)
+
+    blit_exp(f.player_pokemon)
+
+    blit_player_party()

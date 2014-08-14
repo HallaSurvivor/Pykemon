@@ -56,29 +56,7 @@ while in_battle == True:
 
     enemy_pokemon = f.enemy_pokemon
 
-    b.render_background()
-
-    b.choose_box_color(player_pokemon)
-
-    b.render_correct_boxes()
-
-    b.render_hp_boxes()
-
-    b.render_player_hp(player_pokemon)
-
-    b.render_enemy_hp(enemy_pokemon)
-
-    b.blit_pokemon(player_pokemon, enemy_pokemon)
-
-    b.blit_numerical_hp(player_pokemon)
-
-    b.blit_player_name(player_pokemon)
-
-    b.blit_enemy_name(enemy_pokemon)
-
-    b.blit_exp(player_pokemon)
-
-    b.blit_player_party()
+    b.blit_battle_screen()
 
     if r.nonvolatile_test_player == True:
         b.blit_player_status_ailment(player_pokemon)  #make this directly test for status
@@ -103,10 +81,7 @@ while in_battle == True:
     boxe = r.six_boxes[4]
     boxf = r.six_boxes[5]
 
-    if r.render_stats != -1:
-        b.blit_in_party_stats()
-
-
+    b.blit_in_party_stats()
 
     if b.game_state == "first select":
 
