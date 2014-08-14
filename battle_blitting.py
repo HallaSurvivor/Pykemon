@@ -117,7 +117,7 @@ def render_box_5():
     box5_text_rect.top = box5.top + 15
     screen.blit(box5_text_image, box5_text_rect)
 
-def update_box_5(player_pokemon, enemy_pokemon):
+def update_box_5():
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
     if len(r.to_damage) > len(r.to_print):
         del r.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...
@@ -129,27 +129,27 @@ def update_box_5(player_pokemon, enemy_pokemon):
             del r.to_damage[0]
 
         elif r.to_damage[0] == "player status":
-            blit_player_status_ailment(player_pokemon)
+            blit_player_status_ailment()
             r.nonvolatile_test_player = True
             del r.to_damage[0]
 
         elif r.to_damage[0] == "enemy status":
-            blit_enemy_status_ailment(enemy_pokemon)
+            blit_enemy_status_ailment()
             r.nonvolatile_test_enemy = True
             del r.to_damage[0]
 
         elif r.to_damage[0] == "player":
-            player_pokemon.hp -= r.to_damage_count[0]
+            f.player_pokemon.hp -= r.to_damage_count[0]
             del r.to_damage[0]
             del r.to_damage_count[0]
 
         else: #enemy
-            enemy_pokemon.hp -= r.to_damage_count[0]
+            f.enemy_pokemon.hp -= r.to_damage_count[0]
             del r.to_damage[0]
             del r.to_damage_count[0]
 
-    f.check_enemy_health(player_pokemon, enemy_pokemon)
-    f.check_player_health(player_pokemon)
+    f.check_enemy_health()
+    f.check_player_health()
 
     if len(r.to_print) == 0:
         r.box5data = "What would you like to do?"
@@ -167,25 +167,25 @@ def render_hp_boxes():
     screen.blit(images.PLAYER_HP_BOX, images.PLAYERHPPOS)
     screen.blit(images.ENEMY_HP_BOX, images.ENEMYHPPOS)
 
-def render_player_hp(pokemon):
+def render_player_hp():
     '''Blits the graphical representation of the player's HP to the screen.'''
-    hp_percent = float(pokemon.hp)/float(pokemon.hp_full)
+    hp_percent = float(f.player_pokemon.hp)/float(f.player_pokemon.hp_full)
     hp_to_render = hp_percent * 84 #hp bar is 84px wide
     hp_to_render = int(hp_to_render)
     for hp in range(hp_to_render):
         screen.blit(images.HP_GREEN, (275+hp, 174))
 
-def render_enemy_hp(pokemon):
+def render_enemy_hp():
     '''Blits the graphical representation of the enemy's HP to the screen.'''
-    hp_percent = float(pokemon.hp)/float(pokemon.hp_full)
+    hp_percent = float(f.enemy_pokemon.hp)/float(f.enemy_pokemon.hp_full)
     hp_to_render = hp_percent * 86 #hp bar is 86px wide
     hp_to_render = int(hp_to_render)
     for hp in range(hp_to_render):
         screen.blit(images.HP_GREEN, (74+hp, 40))
 
-def blit_exp(player_pokemon):
+def blit_exp():
     '''Blit the correct length experience bar to the screen.'''
-    exp_percent = float(player_pokemon.exp) / float(player_pokemon.needed_exp)
+    exp_percent = float(f.player_pokemon.exp) / float(f.player_pokemon.needed_exp)
     exp_percent = int(exp_percent)
     for exp in range(exp_percent):
         screen.blit(images.EXP_BAR, (300+exp, 200) )
@@ -232,79 +232,79 @@ def select_box(move):
         box = images.TEXTBOX
     return box
 
-def blit_pokemon(player_pokemon, enemy_pokemon):
+def blit_pokemon():
     '''Blit the actual pokemon sprites in their proper places.'''
-    screen.blit(player_pokemon.player_sprite, images.PLAYERSPRITEPOS)
-    screen.blit(enemy_pokemon.enemy_sprite, images.ENEMYSPRITEPOS)
+    screen.blit(f.player_pokemon.player_sprite, images.PLAYERSPRITEPOS)
+    screen.blit(f.enemy_pokemon.enemy_sprite, images.ENEMYSPRITEPOS)
 
-def blit_numerical_hp(player_pokemon):
+def blit_numerical_hp():
     '''Blit the actual hp value to the screen for the player pokemon.'''
-    if player_pokemon.hp == 0:
+    if f.player_pokemon.hp <= 0:
         numerical_hp = images.render_small_text(str(0))
     else:
-        numerical_hp = images.render_small_text(str(player_pokemon.hp))
-    numerical_hp_full = images.render_small_text("/  " + str(player_pokemon.hp_full))
+        numerical_hp = images.render_small_text(str(f.player_pokemon.hp))
+    numerical_hp_full = images.render_small_text("/  " + str(f.player_pokemon.hp_full))
     screen.blit(numerical_hp, images.HPTEXTPOS)
     screen.blit(numerical_hp_full, images.FULLHPTEXTPOS)
 
-def blit_player_name(player_pokemon):
+def blit_player_name():
     '''Blit the player's name and gender to the screen.'''
-    player_name = images.render_small_text(str(player_pokemon.name))
+    player_name = images.render_small_text(str(f.player_pokemon.name))
     player_name_rect = screen.blit(player_name, images.PLAYERNAMEPOS)
 
-    gender_image = images.genders[player_pokemon.gender]
+    gender_image = images.genders[f.player_pokemon.gender]
     gender_rect = gender_image.get_rect()
     gender_rect.left = player_name_rect.right + 5
     gender_rect.centery = player_name_rect.centery
     screen.blit(gender_image, gender_rect)
 
-def blit_enemy_name(enemy_pokemon):
+def blit_enemy_name():
     '''Blit the enemy pokemon's name and gender to the screen.'''
-    enemy_name = images.render_small_text(str(enemy_pokemon.name))
+    enemy_name = images.render_small_text(str(f.enemy_pokemon.name))
     enemy_name_rect = screen.blit(enemy_name, images.ENEMYNAMEPOS)
 
-    gender_image = images.genders[enemy_pokemon.gender]
+    gender_image = images.genders[f.enemy_pokemon.gender]
     gender_rect = gender_image.get_rect()
     gender_rect.left = enemy_name_rect.right + 5
     gender_rect.centery = enemy_name_rect.centery
     screen.blit(gender_image, gender_rect)
 
-def blit_player_status_ailment(player_pokemon):
+def blit_player_status_ailment():
     '''Check for a nonvolatile status ailment on the player, and blit its image to the screen if it exists.'''
     for i in range(len(r.nonvolatile)):
-        if player_pokemon.status_nonvolatile == r.nonvolatile[i]:
+        if f.player_pokemon.status_nonvolatile == r.nonvolatile[i]:
             screen.blit(images.status_icons[i], images.PLAYER_STATUS_POS)
 
-def blit_enemy_status_ailment(enemy_pokemon):
+def blit_enemy_status_ailment():
     '''Check for a nonvolatile status ailment on the enemy, and blit its image to the screen if it exists.'''
     for i in range(len(r.nonvolatile)):
-        if enemy_pokemon.status_nonvolatile == r.nonvolatile[i]:
+        if f.enemy_pokemon.status_nonvolatile == r.nonvolatile[i]:
             screen.blit(images.status_icons[i], images.ENEMY_STATUS_POS)
 
-def blit_pp_1(player_pokemon):
+def blit_pp_1():
     '''Blit the pp of the player's first move.'''
-    pp1 = images.render_small_text(str(player_pokemon.pp_list[0]) + "  /  "+str(player_pokemon.moveset[0].pp_full))
+    pp1 = images.render_small_text(str(f.player_pokemon.pp_list[0]) + "  /  "+str(f.player_pokemon.moveset[0].pp_full))
     pp1_rect = pp1.get_rect()
     pp1_rect.center = images.PP1POS
     screen.blit(pp1, pp1_rect)
 
-def blit_pp_2(player_pokemon):
+def blit_pp_2():
     '''Blit the pp of the player's second move.'''
-    pp2 = images.render_small_text(str(player_pokemon.pp_list[1]) + "  /  "+str(player_pokemon.moveset[1].pp_full))
+    pp2 = images.render_small_text(str(f.player_pokemon.pp_list[1]) + "  /  "+str(f.player_pokemon.moveset[1].pp_full))
     pp2_rect = pp2.get_rect()
     pp2_rect.center = images.PP2POS
     screen.blit(pp2, pp2_rect)
 
-def blit_pp_3(player_pokemon):
+def blit_pp_3():
     '''Blit the pp of the player's third move.'''
-    pp3 = images.render_small_text(str(player_pokemon.pp_list[2]) + "  /  "+str(player_pokemon.moveset[2].pp_full))
+    pp3 = images.render_small_text(str(f.player_pokemon.pp_list[2]) + "  /  "+str(f.player_pokemon.moveset[2].pp_full))
     pp3_rect = pp3.get_rect()
     pp3_rect.center = images.PP3POS
     screen.blit(pp3, pp3_rect)
 
-def blit_pp_4(player_pokemon):
+def blit_pp_4():
     '''Blit the pp of the player's fourth move.'''
-    pp4 = images.render_small_text(str(player_pokemon.pp_list[3]) + "  /  "+str(player_pokemon.moveset[3].pp_full))
+    pp4 = images.render_small_text(str(f.player_pokemon.pp_list[3]) + "  /  "+str(f.player_pokemon.moveset[3].pp_full))
     pp4_rect = pp4.get_rect()
     pp4_rect.center = images.PP4POS
     screen.blit(pp4, pp4_rect)
@@ -394,18 +394,18 @@ def blit_battle_screen():
 
     render_hp_boxes()
 
-    render_player_hp(f.player_pokemon)
+    render_player_hp()
 
-    render_enemy_hp(f.enemy_pokemon)
+    render_enemy_hp()
 
-    blit_pokemon(f.player_pokemon, f.enemy_pokemon)
+    blit_pokemon()
 
-    blit_numerical_hp(f.player_pokemon)
+    blit_numerical_hp()
 
-    blit_player_name(f.player_pokemon)
+    blit_player_name()
 
-    blit_enemy_name(f.enemy_pokemon)
+    blit_enemy_name()
 
-    blit_exp(f.player_pokemon)
+    blit_exp()
 
     blit_player_party()

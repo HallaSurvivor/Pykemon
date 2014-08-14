@@ -59,10 +59,10 @@ while in_battle == True:
     b.blit_battle_screen()
 
     if r.nonvolatile_test_player == True:
-        b.blit_player_status_ailment(player_pokemon)  #make this directly test for status
+        b.blit_player_status_ailment()  #make this directly test for status
 
     if r.nonvolatile_test_enemy == True:
-        b.blit_enemy_status_ailment(enemy_pokemon)
+        b.blit_enemy_status_ailment()
 
     b.blit_back_button()
 
@@ -144,13 +144,13 @@ while in_battle == True:
 
 #make this a list and iterate?
         if r.box_data[0] != "":
-            b.blit_pp_1(player_pokemon)
+            b.blit_pp_1()
         if r.box_data[1] != "":
-            b.blit_pp_2(player_pokemon)
+            b.blit_pp_2()
         if r.box_data[2] != "":
-            b.blit_pp_3(player_pokemon)
+            b.blit_pp_3()
         if r.box_data[3] != "":
-            b.blit_pp_4(player_pokemon)
+            b.blit_pp_4()
 
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
@@ -221,7 +221,7 @@ while in_battle == True:
         if len(r.to_print) > 0:
             wait_timer += 1
             if wait_timer == 100:
-                b.update_box_5(player_pokemon, enemy_pokemon)
+                b.update_box_5()
                 wait_timer = 0
         else:
             b.game_state = "first select"
@@ -241,7 +241,7 @@ while in_battle == True:
 
                 if len(r.to_print) > 0:
                     wait_timer = 0
-                    b.update_box_5(player_pokemon, enemy_pokemon)
+                    b.update_box_5()
                 else:
                     b.game_state = "first select"
 
