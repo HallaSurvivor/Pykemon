@@ -5,11 +5,13 @@ import required_lists
 import move_list
 from random import randint
 
+
 player_pokemon = player_party.Cameron
 
 enemies.current_enemy = enemies.enemy1
 
 enemy_pokemon = enemies.current_enemy.party[0]
+
 
 def auto_choose_pokemon():
     '''Automatically selects the first pokemon in the player's party with hp > 0.'''
@@ -24,30 +26,30 @@ def check_speed(player_choice, enemy_choice):
     if player_choice != 5:
         if player_pokemon.battle_speed > enemy_pokemon.battle_speed:
             player_pokemon.moveset[player_choice].use(player_pokemon, enemy_pokemon)
-            print "used player move"
+            print("used player move")
             check_player_health()
-            print"checked player health"
+            print("checked player health")
             check_enemy_health()
-            print "checked enemy health"
+            print("checked enemy health")
             enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
-            print "used enemy move"
+            print("used enemy move")
             check_player_health()
-            print"checked player health"
+            print("checked player health")
             check_enemy_health()
-            print"checked enemy health"
+            print("checked enemy health")
         else:
             enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
-            print"used enemy move"
+            print("used enemy move")
             check_player_health()
-            print"checked player health"
+            print("checked player health")
             check_enemy_health()
-            print "checked enemey health"
+            print("checked enemey health")
             player_pokemon.moveset[player_choice].use(player_pokemon, enemy_pokemon)
-            print "used player move"
+            print("used player move")
             check_player_health()
-            print "checked player health"
+            print("checked player health")
             check_enemy_health()
-            print "checked enemy health"
+            print("checked enemy health")
     else:
         enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
         check_player_health()
@@ -86,7 +88,7 @@ def check_enemy_health():
             if not enemies.current_enemy.party[i].fainted:
                 required_lists.to_print.append("{0} sent out {1}!".format(enemies.current_enemy.name, enemies.current_enemy.party[i].name))
                 enemy_pokemon = enemies.current_enemy.party[i]
-                print enemy_pokemon.name
+                print(enemy_pokemon.name)
                 return 0
 
         else:

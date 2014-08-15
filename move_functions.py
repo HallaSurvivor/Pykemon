@@ -61,7 +61,7 @@ class Attack(object):
     def modify_stats(self, target):
         '''Modifies stats and prints the change to the screen.'''
         #printing
-        print "called modify stats"
+        print("called modify stats")
         for i in range(5):
             if self.modify_list[i] == 1:
                 r.to_damage.append("NULL")
@@ -267,7 +267,7 @@ class Attack(object):
 
             if use_state == "check flinch":
                 if user.volatile["flinch"] == True:
-                    print "user flinched"
+                    print("user flinched")
                     r.to_print.append("{0} flinched!".format(user.name))
                     r.to_damage.append("NULL")
                     user.volatile["flinch"] = False
@@ -367,14 +367,14 @@ class Attack(object):
                 else:
                     if randint(0, 100) <= self.stat_percent:
                         self.cause_status(target)
-                        print"causd status"
+                        print("causd status")
                     use_state = "modify stats"
 
 
             elif use_state == "modify stats":
                 if self.modify_percent != 0:
                     if randint(0, 100) <= self.modify_percent:
-                        print "should modify stats"
+                        print("should modify stats")
                         if self.modify_target == "user":
                             self.modify_stats(user)
                         elif self.modify_target == "enemy":

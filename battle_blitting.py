@@ -7,7 +7,16 @@ import battle_functions as f
 
 screen = images.SCREEN
 
-game_state = "first select"
+
+class Battle_States(object):
+    first_select = 0
+    move_select = 1
+    item_select = 2
+    pokemon_select = 3
+    executing = 4
+    printing = 5
+
+game_state = Battle_States.first_select
 
 
 def render_background():
@@ -329,12 +338,12 @@ def choose_box_color():
     r.box_colors[2] = images.BOX
     r.box_colors[3] = images.BOX
 
-    if game_state == "move list":
+    if game_state == Battle_States.move_select:
         for i in range(len(f.player_pokemon.moveset)):
             r.box_colors[i] = select_box(f.player_pokemon.moveset[i])
 
 
-    elif game_state == "pokemon list":
+    elif game_state == Battle_States.pokemon_select:
         pkmn_boxes = []
         for i in range(len(f.player_party.player_party)):
             if f.player_party.player_party[i].fainted == True:

@@ -79,7 +79,7 @@ while in_battle == True:
 
     b.blit_in_party_stats()
 
-    if b.game_state == "first select":
+    if b.game_state == b.Battle_States.first_select:
 
 
         for event in pygame.event.get():
@@ -106,7 +106,7 @@ while in_battle == True:
                         for i in range(4):
                             r.box_data[i] = movelist[i]
 
-                        b.game_state = "move list"
+                        b.game_state = b.Battle_States.move_select
 
                     elif box3.collidepoint(pos):
                         pokemon_choices = []
@@ -121,7 +121,7 @@ while in_battle == True:
                         r.box_data[7] = pokemon_choices[3]
                         r.box_data[8] = pokemon_choices[4]
                         r.box_data[9] = pokemon_choices[5]
-                        b.game_state = "pokemon list"
+                        b.game_state = b.Battle_States.pokemon_select
                     elif box4.collidepoint(pos):
                         box5data = "Player successfully ran away"
                         pygame.quit()
@@ -130,11 +130,11 @@ while in_battle == True:
                     r.to_print.append("{0} must recharge".format(f.player_pokemon.name))
                     r.to_damage.append("NULL")
                     f.player_pokemon.skip_turn = False
-                    b.game_state = "executing"
+                    b.game_state = b.Battle_States.executing
 
 
 
-    elif b.game_state == "move list":
+    elif b.game_state == b.Battle_States.move_select:
 
         b.blit_pp()
 
@@ -154,18 +154,18 @@ while in_battle == True:
 
                 if r.back_button.collidepoint(pos):
                     b.reset_labels()
-                    b.game_state = "first select"
+                    b.game_state = b.Battle_States.first_select
 
                 for num in range(len(f.player_pokemon.moveset)):
                     if r.four_boxes[num].collidepoint(pos):
                         player_to_do = num
-                        b.game_state = "executing"
+                        b.game_state = b.Battle_States.executing
                         b.reset_labels()
                         b.print_ask_for_space()
 
 
 
-    elif b.game_state == "pokemon list":
+    elif b.game_state == b.Battle_States.pokemon_select:
 
 
 
@@ -185,7 +185,7 @@ while in_battle == True:
 
                 if r.back_button.collidepoint(pos):
                     b.reset_labels()
-                    b.game_state = "first select"
+                    b.game_state = b.Battle_States.first_select
 
                 for num in range(len(player_party.player_party)):
                     if r.six_boxes[num].collidepoint(pos):
@@ -194,12 +194,12 @@ while in_battle == True:
                             if not player_party.player_party[num].fainted:
                                 f.player_pokemon.to_switch_out = True
                                 player_party.player_party[num].to_switch_in = True
-                                b.game_state = "executing"
+                                b.game_state = b.Battle_States.executing
                                 b.reset_labels()
 
 
 
-    elif b.game_state == "wait for prompt":
+    elif b.game_state == b.Battle_States.printing:
 
 
 
@@ -209,7 +209,7 @@ while in_battle == True:
                 b.update_box_5()
                 wait_timer = 0
         else:
-            b.game_state = "first select"
+            b.game_state = b.Battle_States.first_select
             b.reset_labels()
 
 
@@ -229,11 +229,11 @@ while in_battle == True:
                     wait_timer = 0
                     b.update_box_5()
                 else:
-                    b.game_state = "first select"
+                    b.game_state = b.Battle_States.first_select
 
 
 
-    elif b.game_state == "executing":
+    elif b.game_state == b.Battle_States.executing:
 
 
 
@@ -337,7 +337,7 @@ while in_battle == True:
         while priority == -8:
             f.player_pokemon.check_status()
             f.enemy_pokemon.check_status()
-            print "checked status"
+            print("checked status")
 
             f.player_pokemon = f.player_pokemon
             f.enemy_pokemon = f.enemy_pokemon
@@ -349,7 +349,7 @@ while in_battle == True:
             r.to_print.append("DOES THIS PRINT?")
 
             priority = 8
-            b.game_state = "wait for prompt"
+            b.game_state = b.Battle_States.printing
 
         while priority == 10:
             pass #use for feinting message?

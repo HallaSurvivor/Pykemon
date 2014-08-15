@@ -1,14 +1,14 @@
 __author__ = 'HallaSurvivor'
 
 
-from pokemon_list import *
-from enemies import *
-from battle_mechanic import *
+from .pokemon_list import *
+from .enemies import *
+from .battle_mechanic import *
 import pygame
 from random import randint
 import math
 import os
-import sprites
+from . import sprites
 
 def battle_start(enemy):
     global in_battle

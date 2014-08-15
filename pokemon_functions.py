@@ -244,9 +244,9 @@ class Pokemon(object):
 
             given_exp = a*b*e*L/(7*s) #t is discluded, as there isn't another player to trade with
             given_exp = int(given_exp)
-            print "{0} gained {1} experience!".format(self.name, given_exp)
+            print("{0} gained {1} experience!".format(self.name, given_exp))
             self.exp += given_exp
-            print self.exp
+            print(self.exp)
             if self.exp >= self.needed_exp:
                 self.level_up()
 
