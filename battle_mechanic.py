@@ -13,6 +13,8 @@ import battle_blitting as b
 '''
 TO DO LIST
 
+MAKE A TO_EXECUTE BUFFER THAT INCLUDES THINGS LIKE CHECKING HEALTH.
+
 flinch doesn't carry over turn endings => have a reset function that executes at the end of the turn
 make b a class, make a class for battle variables (weather, mist, etc.)
 make 6boxes change color depending on a pokemon's fainted status
@@ -125,7 +127,7 @@ while in_battle == True:
                         pygame.quit()
                         sys.exit(0)
                 else:
-                    r.to_print.append("{0} must recharge".format(f.player_pokemon.name))
+                    r.to_do.append("{0} must recharge".format(f.player_pokemon.name))
                     r.to_damage.append("NULL")
                     f.player_pokemon.skip_turn = False
                     b.game_state = b.Battle_States.executing
@@ -198,14 +200,17 @@ while in_battle == True:
 
 
     elif b.game_state == b.Battle_States.printing:
+        if len(r.to_do) > 0:
 
+            if isinstance(r.to_do[0], r.PrintingStuff):
+                wait_timer += 1
+                if wait_timer == 100:
+                    b.update_box_5()
+                    wait_timer = 0
 
-
-        if len(r.to_print) > 0:
-            wait_timer += 1
-            if wait_timer == 100:
+            else:
                 b.update_box_5()
-                wait_timer = 0
+
         else:
             b.game_state = b.Battle_States.first_select
             b.reset_labels()
@@ -223,7 +228,7 @@ while in_battle == True:
             elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1)\
              or (event.type == pygame.KEYDOWN):
 
-                if len(r.to_print) > 0:
+                if len(r.to_do) > 0:
                     wait_timer = 0
                     b.update_box_5()
                 else:
@@ -232,8 +237,6 @@ while in_battle == True:
 
 
     elif b.game_state == b.Battle_States.executing:
-
-
 
         enemy_to_do = randint(0, 3)
     #priority 8 through -8 execute in descending order, then the loop repeats
@@ -264,7 +267,7 @@ while in_battle == True:
 
                     if player_party.player_party[i].to_switch_in == True:
 
-                        r.to_print.append(r.PrintingStuff("{0}, I choose you!".format(player_party.player_party[i].name)))
+                        r.to_do.append(r.PrintingStuff("{0}, I choose you!".format(player_party.player_party[i].name)))
 
 
                         f.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
@@ -332,19 +335,18 @@ while in_battle == True:
             priority = -8
 
         while priority == -8:
-            f.player_pokemon.check_status()
-            f.enemy_pokemon.check_status()
 
-            f.player_pokemon = f.player_pokemon
-            f.enemy_pokemon = f.enemy_pokemon
+            r.to_do.append("check player status")
+            r.to_do.append("check enemy status")
 
-            f.player_pokemon.check_volatile_status()
-            f.enemy_pokemon.check_volatile_status()
+            r.to_do.append("check player volatile")
+            r.to_do.append("check enemy volatile")
+
+            r.to_do.append(r.PrintingStuff(" "))
 
             priority = 8
             b.game_state = b.Battle_States.printing
 
-            r.to_print.append(r.PrintingStuff(" ")) #compensates for the buffer deleting the last line of text
 
         while priority == 10:
             pass #use for feinting message?

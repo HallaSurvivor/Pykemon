@@ -66,7 +66,7 @@ fire_punch = Attack(
         pp = 15,
         pp_max = 24,
         status = "burned",
-        status_percent = 10,
+        status_percent = 100,
         status_target = r.Targets.enemy)
 
 ice_punch = Attack(
@@ -77,7 +77,7 @@ ice_punch = Attack(
         pp = 15,
         pp_max = 24,
         status = "frozen",
-        status_percent = 100,
+        status_percent = 10,
         status_target = r.Targets.enemy)
 
 thunder_punch = Attack(

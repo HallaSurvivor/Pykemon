@@ -73,7 +73,7 @@ nonvolatile = ["burned", "frozen", "paralyzed", "poisoned", "badly poisoned", "a
 
 volatile = ["confused", "cursed", "embargo", "encore", "flinch", "healblock", "identification", "infatuation", "nightmare", "partially trapped", "parish song", "seeded", "taunt", "telekenetic levitation", "torment"]
 
-to_print = []
+to_do = []
 
 class Style(object):
     NULL = 0
@@ -85,6 +85,7 @@ class Style(object):
 class Targets(object):
     player = 0
     enemy = 1
+
 
 class PrintingStuff(object):
     def __init__(self, text, style = Style.NULL, target = object, damage = 0, status = "none", modifier = 0, modified_stat = "none"):
@@ -100,9 +101,6 @@ class PrintingStuff(object):
         self.target.hp -= self.damage
 
     def cause_status_ailment(self):
-        print("\n tried to cause status ailment")
-        print("target: {0}".format(self.target))
-        print("effect: {0}".format(self.status))
         self.target.status_counter = 1
         self.target.status_nonvolatile = self.status
         print self.target.status_nonvolatile
@@ -112,6 +110,8 @@ class PrintingStuff(object):
 
         elif self.status == "alseep":
             self.target.status_counter = randint(1, 3)
+
+        print("caused status")
 
     def cause_status(self):
         self.target.volatile[self.status] = True

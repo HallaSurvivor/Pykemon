@@ -123,19 +123,30 @@ def render_box_5():
 
 def update_box_5():
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
-    if len(r.to_print) == 0:
+    if len(r.to_do) == 0:
         r.box5data = "What would you like to do?"
         game_state = Battle_States.first_select
 
     else:
-        for i in range(len(r.to_print)):
-            print(r.to_print[i].text)
-        r.to_print[0].print_text()
-        del r.to_print[0]
+        if isinstance(r.to_do[0], r.PrintingStuff):
+            r.to_do[0].print_text()
+            r.to_do.insert(1, f.check_enemy_health())
+            r.to_do.insert(2, f.check_player_health())
 
+        elif r.to_do[0] == "check player status":
+            f.player_pokemon.check_status()
 
-    f.check_enemy_health()
-    f.check_player_health()
+        elif r.to_do[0] == "check enemy status":
+            f.enemy_pokemon.check_status()
+
+        elif r.to_do[0] == "check player volatile":
+            f.player_pokemon.check_volatile_status()
+
+        elif r.to_do[0] == "check enemy volatile":
+            f.enemy_pokemon.check_volatile_status()
+
+        del r.to_do[0]
+
 
 def render_correct_boxes():
     '''Blits either 4 or 6 boxes depending on the game state, always blits box5.'''
