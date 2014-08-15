@@ -54,11 +54,9 @@ while in_battle == True:
 
     b.blit_battle_screen()
 
-    if r.nonvolatile_test_player == True:
-        b.blit_player_status_ailment()  #make this directly test for status
+    b.blit_player_status_ailment()
 
-    if r.nonvolatile_test_enemy == True:
-        b.blit_enemy_status_ailment()
+    b.blit_enemy_status_ailment()
 
     b.blit_back_button()
 
@@ -266,8 +264,7 @@ while in_battle == True:
 
                     if player_party.player_party[i].to_switch_in == True:
 
-                        r.to_print.append("{0}, I choose you!".format(player_party.player_party[i].name))
-                        r.to_damage.append("NULL")
+                        r.to_print.append(r.PrintingStuff("{0}, I choose you!".format(player_party.player_party[i].name)))
 
 
                         f.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
@@ -337,7 +334,6 @@ while in_battle == True:
         while priority == -8:
             f.player_pokemon.check_status()
             f.enemy_pokemon.check_status()
-            print("checked status")
 
             f.player_pokemon = f.player_pokemon
             f.enemy_pokemon = f.enemy_pokemon
@@ -347,6 +343,8 @@ while in_battle == True:
 
             priority = 8
             b.game_state = b.Battle_States.printing
+
+            r.to_print.append(r.PrintingStuff(" ")) #compensates for the buffer deleting the last line of text
 
         while priority == 10:
             pass #use for feinting message?

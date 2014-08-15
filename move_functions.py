@@ -131,33 +131,22 @@ class Attack(object):
             target = user
         else:
             target = battle_target
+
         for i in range(len(r.nonvolatile)):
             if self.status == r.nonvolatile[i]:
-                if target.status_nonvolatile == "healthy":
 
-                    target.status_counter = 1 #status_counter is used for a variety of things depending upon the status
-                    target.status_nonvolatile = self.status
-                    r.to_print.append(r.PrintingStuff("{pokemon} was {status}".format(pokemon = target.name, status = self.status), style = r.Style.status, target = target, status = self.status))
+                if target.status_nonvolatile == "healthy":
+                    r.to_print.append(r.PrintingStuff("{pokemon} was {status}".format(pokemon = target.name, status = self.status), style = r.Style.nonvolatile, target = target, status = self.status))
                 else:
                     r.to_print.append(r.PrintingStuff("{pokemon} was already {status}".format(pokemon = target.name, status = target.status_nonvolatile)))
 
         for i in range(len(r.volatile)):
             if self.status == r.volatile[i]:
                 if target.volatile[self.status] == False:
-                    target.volatile[self.status] = True
                     if self.status != "flinch":
-                       r.to_print.append(r.PrintingStuff("{pokemon} was {status}".format(pokemon = target.name, status = self.status), r.Style.enemy_status, status = self.status))
+                       r.to_print.append(r.PrintingStuff("{pokemon} was {status}".format(pokemon = target.name, status = self.status), style = r.Style.status, status = self.status))
                 else:
-                    r.to_print.append(r.PrintingStuff("{pokemon} was already {status}".format(pokemon = target.name, status = target.status)))
-
-        if self.status == "badly poisoned":
-            target.status_counter = 1
-
-        if self.status == "partially trapped":
-            target.trapped_counter = randint(2, 5)
-
-        elif self.status == "alseep":
-            target.status_counter = randint(1, 3)
+                    r.to_print.append(r.PrintingStuff("{pokemon} was already {status}".format(pokemon = target.name, status = self.status)))
 
 
     def calc_damage(self, user, target):
@@ -285,7 +274,7 @@ class Attack(object):
 
             elif use_state == "use confused move":
                 damage = self.calc_confused_damage(user)
-                r.to_print.append(r.PrintingStuff("{pokemon} hurt itself in its confusion!".format(user.name), style = r.Style.damage, target = user, damage = damage))
+                r.to_print.append(r.PrintingStuff("{pokemon} hurt itself in its confusion!".format(pokemon = user.name), style = r.Style.damage, target = user, damage = damage))
                 use_state = "end"
 
 
@@ -294,14 +283,14 @@ class Attack(object):
                     use_state = "use move"
                 else:
                     if user.status_nonvolatile == "frozen":
-                        r.to_print.append(r.PrintingStuff("{pokemon} was frozen and unable to move!".format(user.name)))
+                        r.to_print.append(r.PrintingStuff("{pokemon} was frozen and unable to move!".format(pokemon = user.name)))
                         use_state = "end"
                     elif user.status_nonvolatile == "alseep":
-                        r.to_print.append(r.PrintingStuff("{pokemon} was sleeping and unable to move!".format(user.name)))
+                        r.to_print.append(r.PrintingStuff("{pokemon} was sleeping and unable to move!".format(pokemon = user.name)))
                         use_state = "end"
                     elif user.status_nonvolatile == "paralyzed":
                         if user.status_counter == 1:
-                            r.to_print.append(r.PrintingStuff("{pokemon} was paralyzed and unable to move!".format(user.name)))
+                            r.to_print.append(r.PrintingStuff("{pokemon} was paralyzed and unable to move!".format(pokemon = user.name)))
                             use_state = "end"
 
                         else:
@@ -317,7 +306,7 @@ class Attack(object):
                     user.lower_pp(self.name)
                     use_state = "check payday"
                 else:
-                    r.to_print.append(r.PrintingStuff("{move} has no PP left!".format(self.name)))
+                    r.to_print.append(r.PrintingStuff("{move} has no PP left!".format(move = self.name)))
                     use_state = "end"
 
 
@@ -383,13 +372,13 @@ class Attack(object):
                     elif 833 < randint(0, 1000) <= 1000:
                         number_attacks = 5
 
-                    r.to_print.append(r.PrintingStuff("It hit {number} times!".format(self.multiple_attacks)))
+                    r.to_print.append(r.PrintingStuff("It hit {number} times!".format(number = self.multiple_attacks)))
                     use_state = "cause damage"
 
                 elif self.multiple_attacks > 1:
                     number_attacks = self.multiple_attacks
 
-                    r.to_print.append(r.PrintingStuff("It hit {number} times!".format(self.multiple_attacks)))
+                    r.to_print.append(r.PrintingStuff("It hit {number} times!".format(number = self.multiple_attacks)))
                     use_state = "cause damage"
 
                 else:
@@ -412,13 +401,13 @@ class Attack(object):
             elif use_state == "calc recoil":
                 recoil_damage = self.calc_recoil(damage)
                 if recoil_damage != 0:
-                    r.to_print.append(r.PrintingStuff("{pokemon} was hurt by recoil!".format(user.name), style = r.Style.damage, target = user, damage = recoil_damage))
+                    r.to_print.append(r.PrintingStuff("{pokemon} was hurt by recoil!".format(pokemon = user.name), style = r.Style.damage, target = user, damage = recoil_damage))
                 use_state = "check regain health"
 
             elif use_state == "check regain health":
                 if self.regain_health == True:
                     regained_health = int(float(damage) / 2)
-                    r.to_print.append(r.PrintingStuff("{pokemon} had its energy drained!".format(target.name), style = r.Style.damage, target = user, damage = -regained_health))
+                    r.to_print.append(r.PrintingStuff("{pokemon} had its energy drained!".format(pokemon = target.name), style = r.Style.damage, target = user, damage = -regained_health))
                 use_state = "modify status"
 
 

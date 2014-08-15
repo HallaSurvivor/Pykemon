@@ -130,9 +130,7 @@ def update_box_5():
     else:
         for i in range(len(r.to_print)):
             print(r.to_print[i].text)
-        r.box5data = r.to_print[0].text
-        if r.to_print[0].style == r.Style.damage:
-            r.to_print[0].target.hp -= r.to_print[0].damage
+        r.to_print[0].print_text()
         del r.to_print[0]
 
 

@@ -80,6 +80,7 @@ class Style(object):
     damage = 1
     modify = 2
     status = 3
+    nonvolatile = 4
 
 class Targets(object):
     player = 0
@@ -94,6 +95,46 @@ class PrintingStuff(object):
         self.status = status
         self.modifier = modifier
         self.modified_stat = modified_stat
+
+    def cause_damage(self):
+        self.target.hp -= self.damage
+
+    def cause_status_ailment(self):
+        print("\n tried to cause status ailment")
+        print("target: {0}".format(self.target))
+        print("effect: {0}".format(self.status))
+        self.target.status_counter = 1
+        self.target.status_nonvolatile = self.status
+        print self.target.status_nonvolatile
+
+        if self.status == "badly poisoned":
+            self.target.status_counter = 1
+
+        elif self.status == "alseep":
+            self.target.status_counter = randint(1, 3)
+
+    def cause_status(self):
+        self.target.volatile[self.status] = True
+
+        if self.status == "partially trapped":
+            self.target.trapped_counter = randint(2, 5)
+
+
+    def print_text(self):
+        global box5data
+        box5data = self.text
+        if self.style == Style.damage:
+            self.cause_damage()
+
+        elif self.style == Style.status:
+            self.cause_status()
+
+        elif self.style == Style.nonvolatile:
+            self.cause_status_ailment()
+
+        elif self.style == Style.modify:
+            pass
+
 
 box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2, 3, 4, a, b, c, d, e, f
 
