@@ -345,9 +345,6 @@ while in_battle == True:
             f.player_pokemon.check_volatile_status()
             f.enemy_pokemon.check_volatile_status()
 
-            r.to_damage.append("NULL") #compensates for the last item in to_print not printing
-            r.to_print.append("DOES THIS PRINT?")
-
             priority = 8
             b.game_state = b.Battle_States.printing
 

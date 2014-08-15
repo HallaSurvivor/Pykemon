@@ -42,9 +42,32 @@ nature_modifiers = {
 
                 }
 
+class Growth_Rates(object):
+    slow = 0
+    medium_fast = 1
+    fast = 2
+    medium_slow = 3
+    erratic = 4
+    fluctuating = 5
+
 growth_rates = ["slow", "medium fast", "fast", "medium slow", "erratic", "fluctuating"]
 
 stat_list = ["attack", "defense", "special attack", "special defense", "speed"]
+
+class NonVolatile(object):
+    burned = 0
+    frozen = 1
+    paralyzed = 2
+    poisoned = 3
+    badly_poisoned = 4
+    asleep = 5
+
+class Stats(object):
+    attack = 0
+    defense = 1
+    special_attack = 2
+    special_defense = 3
+    speed = 4
 
 nonvolatile = ["burned", "frozen", "paralyzed", "poisoned", "badly poisoned", "asleep"]
 
@@ -52,12 +75,18 @@ volatile = ["confused", "cursed", "embargo", "encore", "flinch", "healblock", "i
 
 to_print = []
 
-to_damage = []
+class Style(object):
+    NULL = 0
+    damage = 1
+    modify = 2
+    status = 3
 
-to_damage_count = []
-'''
+class Targets(object):
+    player = 0
+    enemy = 1
+
 class PrintingStuff(object):
-    def __init__(text, style = "NULL", target = object, damage = 0, status = "none", modifier = 0, modified_stat = 0):
+    def __init__(self, text, style = Style.NULL, target = object, damage = 0, status = "none", modifier = 0, modified_stat = "none"):
         self.text = text
         self.style = style
         self.target = target
@@ -65,7 +94,7 @@ class PrintingStuff(object):
         self.status = status
         self.modifier = modifier
         self.modified_stat = modified_stat
-'''
+
 box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2, 3, 4, a, b, c, d, e, f
 
 box5data = "What would you like to do?"

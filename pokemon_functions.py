@@ -212,7 +212,7 @@ class Pokemon(object):
     def level_up(self):
         '''Increment the level of a pokemon by 1.'''
         self.level += 1
-        required_lists.to_print.append("{0} leveled up!".format(self.name))
+        required_lists.to_print.append(required_lists.PrintingStuff("{0} leveled up!".format(self.name)))
         #blit a new box filled with stats
         self.calculate_real_stats
         self.get_needed_exp()
@@ -253,15 +253,12 @@ class Pokemon(object):
     def check_status(self):
         '''Checks the status of a pokemon, and deals damage or decrements a turn counter accordingly.'''
         if self.status_nonvolatile == "burned":
-            required_lists.to_print.append("{0} was hurt by burn".format(self.name))
-            required_lists.to_damage.append(self.trainer)
-            required_lists.to_damage_count.append(int(float(self.hp)) / 8)
+            required_lists.to_print.append(required_lists.PrintingStuff("{0} was hurt by burn".format(self.name), required_lists.Style.damage, target = self, damage = self.hp_full/8))
 
         elif self.status_nonvolatile == "frozen":
             if randint(0, 100) <= 20:
                 self.status_nonvolatile == "healthy"
-                required_lists.to_print.append("{0} has thawed out".format(self.name))
-                required_lists.to_damage.append("NULL")
+                required_lists.to_print.append(required_lists.PrintingStuff("{0} has thawed out".format(self.name)))
 
         elif self.status_nonvolatile == "paralyzed":
             if randint(0, 100) <= 25:
@@ -270,20 +267,17 @@ class Pokemon(object):
                 self.status_counter = 0
 
         elif self.status_nonvolatile == "poisoned":
-            required_lists.to_print.append("{0} was hurt by poison".format(self.name))
-            required_lists.to_damage.append(self.trainer)
-            required_lists.to_damage_count.append(int(float(self.hp)) / 8)
+            required_lists.to_print.append(required_lists.PrintingStuff("{0} was hurt by poison".format(self.name), style = required_lists.Style.damage, target = self, damage = self.hp_full/8))
 
         elif self.status_nonvolatile == "badly poisoned":
-            required_lists.to_print.append("{0} was hurt by poison".format(self.name))
-            required_lists.to_damage.append(self.trainer)
-            required_lists.to_damage_count.append(int(float(self.hp_full)/16*self.status_counter))
+            required_lists.to_print.append(required_lists.PrintingStuff("{0} was hurt by poison".format(self.name), style = required_lists.Style.damage, target = self, damage = self.hp_full/16*self.status_counter))
             self.status_counter += 1
 
 
         elif self.status_nonvolatile == "asleep":
             self.status_counter -= 1
             if self.status_counter == 0:
+                required_lists.to_print.append(required_lists.PrintingStuff("{0} woke up!".format(self.name)))
                 self.status_nonvolatile = "healthy"
 
     def check_volatile_status(self):

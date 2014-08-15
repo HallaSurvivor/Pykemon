@@ -123,45 +123,26 @@ def render_box_5():
 
 def update_box_5():
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
-    if len(r.to_damage) > len(r.to_print):
-        del r.to_damage[0] #compensates for a random extra "NULL" that came from somewhere...
+    if len(r.to_print) == 0:
+        r.box5data = "What would you like to do?"
+        game_state = Battle_States.first_select
 
-    r.box5data = r.to_print[0]
-    del r.to_print[0]
-    if len(r.to_damage) > 0:
-        if r.to_damage[0] == "NULL":
-            del r.to_damage[0]
+    else:
+        for i in range(len(r.to_print)):
+            print(r.to_print[i].text)
+        r.box5data = r.to_print[0].text
+        if r.to_print[0].style == r.Style.damage:
+            r.to_print[0].target.hp -= r.to_print[0].damage
+        del r.to_print[0]
 
-        elif r.to_damage[0] == "player status":
-            blit_player_status_ailment()
-            r.nonvolatile_test_player = True
-            del r.to_damage[0]
-
-        elif r.to_damage[0] == "enemy status":
-            blit_enemy_status_ailment()
-            r.nonvolatile_test_enemy = True
-            del r.to_damage[0]
-
-        elif r.to_damage[0] == "player":
-            f.player_pokemon.hp -= r.to_damage_count[0]
-            del r.to_damage[0]
-            del r.to_damage_count[0]
-
-        else: #enemy
-            f.enemy_pokemon.hp -= r.to_damage_count[0]
-            del r.to_damage[0]
-            del r.to_damage_count[0]
 
     f.check_enemy_health()
     f.check_player_health()
 
-    if len(r.to_print) == 0:
-        r.box5data = "What would you like to do?"
-
 def render_correct_boxes():
     '''Blits either 4 or 6 boxes depending on the game state, always blits box5.'''
     render_box_5()
-    if game_state != "pokemon list":
+    if game_state != Battle_States.pokemon_select:
         render_4_boxes()
     else:
         render_6_boxes()

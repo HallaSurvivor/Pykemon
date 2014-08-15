@@ -1,6 +1,7 @@
 '''All of the moves in the game.'''
 from move_functions import Attack
 from move_functions import OHKO
+import required_lists as r
 
 pound = Attack(
         name = "pound",
@@ -65,7 +66,8 @@ fire_punch = Attack(
         pp = 15,
         pp_max = 24,
         status = "burned",
-        stat_percent = 10)
+        status_percent = 10,
+        status_target = r.Targets.enemy)
 
 ice_punch = Attack(
         name = "Ice Punch",
@@ -75,7 +77,8 @@ ice_punch = Attack(
         pp = 15,
         pp_max = 24,
         status = "frozen",
-        stat_percent = 10)
+        status_percent = 10,
+        status_target = r.Targets.enemy)
 
 thunder_punch = Attack(
         name = "Thunder Punch",
@@ -85,7 +88,8 @@ thunder_punch = Attack(
         pp = 15,
         pp_max = 24,
         status = "paralyzed",
-        stat_percent = 100)
+        status_percent = 100,
+        status_target = r.Targets.enemy)
 
 scratch = Attack(
         name = "Scratch",
@@ -185,7 +189,7 @@ bind = Attack(
         pp_max = 32,
         accuracy = 85,
         status = "partially trapped",
-        stat_percent = 100)
+        status_percent = 100)
 
 slam = Attack(
         name = "Slam",
@@ -212,7 +216,7 @@ stomp = Attack(
         pp = 20,
         pp_max = 32,
         status = "flinch",
-        stat_percent = 30) #2x damage and no miss if minimize
+        status_percent = 30) #2x damage and no miss if minimize
 
 double_kick = Attack(
         name = "Double Kick",
@@ -251,7 +255,7 @@ rolling_kick = Attack(
         pp_max = 24,
         accuracy = 85,
         status = "flinch",
-        stat_percent = 30)
+        status_percent = 30)
 
 sand_attack = Attack(
         name = "Sand Attack",
@@ -268,7 +272,7 @@ headbutt = Attack(
         pp = 15,
         pp_max = 24,
         status = "flinch",
-        stat_percent = 30) #field effect?
+        status_percent = 30) #field effect?
 
 horn_attack = Attack(
         name = "Horn Attack",
@@ -309,7 +313,7 @@ body_slam = Attack(
         pp = 15,
         pp_max = 24,
         status = "paralyzed",
-        stat_percent = 30)
+        status_percent = 30)
 
 wrap = Attack(
         name = "Wrap",
@@ -319,7 +323,7 @@ wrap = Attack(
         pp = 20,
         pp_max = 32,
         status = "partially trapped",
-        stat_percent = 100)
+        status_percent = 100)
 
 take_down = Attack(
         name = "Take Down",
@@ -365,7 +369,7 @@ poison_sting = Attack(
         pp = 35,
         pp_max = 56,
         status = "poisoned",
-        stat_percent = 30,
+        status_percent = 30,
         contact = False)
 
 twineedle = Attack(
@@ -376,7 +380,7 @@ twineedle = Attack(
         pp = 20,
         pp_max = 32,
         status = "poisoned",
-        stat_percent = 20,
+        status_percent = 20,
         contact = False,
         multiple_attacks = True)
 
@@ -399,7 +403,7 @@ bite = Attack(
         pp = 25,
         pp_max = 40,
         status = "flinch",
-        stat_percent = 100)
+        status_percent = 100)
 
 growl = Attack(
         name = "Growl",
@@ -444,7 +448,7 @@ supersonic = Attack(
         contact = False,
         sound_based = True,
         status = "confused",
-        stat_percent = 100)
+        status_percent = 100)
 
 sonic_boom = Attack(
         name = "Sonic Boom",
@@ -487,7 +491,7 @@ ember = Attack(
         pp_max = 40,
         contact = False,
         status = "burned",
-        stat_percent = 10)
+        status_percent = 10)
 
 flamethrower = Attack(
         name = "Flamethrower",
@@ -498,7 +502,7 @@ flamethrower = Attack(
         pp_max = 24,
         contact = False,
         status = "burned",
-        stat_percent = 10)
+        status_percent = 10)
 
 mist = Attack() #make this do things
 
@@ -515,7 +519,7 @@ poison_powder = Attack(
         contact = False,
         accuracy = 75,
         status = "poisoned",
-        stat_percent = 100)
+        status_percent = 100)
 
 confide = Attack(
         name = "Confide",
@@ -535,7 +539,7 @@ will_o_wisp = Attack(
         pp_max = 24,
         status = "burned",
         accuracy = 85,
-        stat_percent = 100)
+        status_percent = 100)
 
 toxic = Attack(
         name = "Toxic",
@@ -545,7 +549,7 @@ toxic = Attack(
         pp_max = 16,
         status = "badly poisoned",
         accuracy = 90,
-        stat_percent = 100)
+        status_percent = 100)
 
 dragon_dance = Attack(
         name = "Dragon Dance",
@@ -588,7 +592,7 @@ confusion = Attack(
         pp_max = 40,
         contact = False,
         status = "confused",
-        stat_percent = 100)
+        status_percent = 100)
 
 giga_impact = Attack(
         name = "Giga Impact",
