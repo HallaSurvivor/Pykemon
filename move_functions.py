@@ -4,7 +4,7 @@ from random import randint
 from random import uniform
 from math import floor
 import type_chain
-import required_lists
+import required_lists as r
 
 
 
@@ -64,47 +64,49 @@ class Attack(object):
         print "called modify stats"
         for i in range(5):
             if self.modify_list[i] == 1:
-                required_lists.to_damage.append("NULL")
+                r.to_damage.append("NULL")
                 if target.stages[i] == 6:
-                    required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} won't go any higher!".format(target.name, r.stat_list[i]))
+                    #r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i]))
                 else:
-                    required_lists.to_print.append("{0}'s {1} rose".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} rose".format(target.name, r.stat_list[i]))
+                    #r.PrintingStuff("{name}'s {stat} rose!".format(name = targetget.name, stat = r.stat_list[i]), target.trainer + " stat", modifier = self.modify_list)
 
             elif self.modify_list[i] == 2:
-                required_lists.to_damage.append("NULL")
+                r.to_damage.append("NULL")
                 if target.stages[i] == 6:
-                    required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} won't go any higher!".format(target.name, r.stat_list[i]))
                 else:
-                    required_lists.to_print.append("{0}'s {1} sharply rose".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} sharply rose".format(target.name, r.stat_list[i]))
 
             elif self.modify_list[i] == 3:
-                required_lists.to_damage.append("NULL")
+                r.to_damage.append("NULL")
                 if target.stages[i] == 6:
-                    required_lists.to_print.append("{0}'s {1} won't go any higher!".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} won't go any higher!".format(target.name, r.stat_list[i]))
                 else:
-                    required_lists.to_print.append("{0}'s {1} drastically rose".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} drastically rose".format(target.name, r.stat_list[i]))
 
 
             elif self.modify_list[i] == -1:
-                required_lists.to_damage.append("NULL")
+                r.to_damage.append("NULL")
                 if target.stages[i] == -6:
-                    required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} won't go any lower!".format(target.name, r.stat_list[i]))
                 else:
-                    required_lists.to_print.append("{0}'s {1} fell".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} fell".format(target.name, r.stat_list[i]))
 
             elif self.modify_list[i] == -2:
-                required_lists.to_damage.append("NULL")
+                r.to_damage.append("NULL")
                 if target.stages[i] == -6:
-                    required_lists.to_print.append("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} won't go any lower!".format(target.name, r.stat_list[i]))
                 else:
-                    required_lists.to_print.append("{0}'s {1} harshly fell".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} harshly fell".format(target.name, r.stat_list[i]))
 
             elif self.modify_list[i] == -3:
-                required_lists.to_damage.append("NULL")
+                r.to_damage.append("NULL")
                 if target.stages[i] == -6:
-                    required_lists.to_print("{0}'s {1} won't go any lower!".format(target.name, required_lists.stat_list[i]))
+                    r.to_print("{0}'s {1} won't go any lower!".format(target.name, r.stat_list[i]))
                 else:
-                    required_lists.to_print.append("{0}'s {1} drastically fell".format(target.name, required_lists.stat_list[i]))
+                    r.to_print.append("{0}'s {1} drastically fell".format(target.name, r.stat_list[i]))
 
         #calculation
         for i in range(5):
@@ -118,31 +120,31 @@ class Attack(object):
 
     def cause_status(self, target):
         '''Induces a status effect on the target.'''
-        for i in range(len(required_lists.nonvolatile)):
-            if self.status == required_lists.nonvolatile[i]:
+        for i in range(len(r.nonvolatile)):
+            if self.status == r.nonvolatile[i]:
                 if target.status_nonvolatile == "healthy":
 
                     target.status_counter = 1 #status_counter is used for a variety of things depending upon the status
                     target.status_nonvolatile = self.status
-                    required_lists.to_print.append("{0} was {1}".format(target.name, self.status))
+                    r.to_print.append("{0} was {1}".format(target.name, self.status))
                     if target.trainer =="player":
-                        required_lists.to_damage.append("player status")
+                        r.to_damage.append("player status")
                     else:
-                        required_lists.to_damage.append("enemy status")
+                        r.to_damage.append("enemy status")
                 else:
-                    required_lists.to_print.append("{0} is already {1}".format(target.name, target.status_nonvolatile))
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append("{0} is already {1}".format(target.name, target.status_nonvolatile))
+                    r.to_damage.append("NULL")
 
-        for i in range(len(required_lists.volatile)):
-            if self.status == required_lists.volatile[i]:
+        for i in range(len(r.volatile)):
+            if self.status == r.volatile[i]:
                 if target.volatile[self.status] == False:
                     target.volatile[self.status] = True
                     if self.status != "flinch":
-                        required_lists.to_print.append("{0} was {1}".format(target.name, self.status))
-                        required_lists.to_damage.append("NULL")
+                        r.to_print.append("{0} was {1}".format(target.name, self.status))
+                        r.to_damage.append("NULL")
                 else:
-                    required_lists.to_print.append("{0} was already {1}".format(target.name, self.status))
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append("{0} was already {1}".format(target.name, self.status))
+                    r.to_damage.append("NULL")
 
         if self.status == "badly poisoned":
             target.status_counter = 1
@@ -164,11 +166,11 @@ class Attack(object):
         type_bonus2 = type_chain.type_comparison[self.move_type][target.type2]
         net_type_bonus = type_bonus1 * type_bonus2
         if net_type_bonus > 1:
-            required_lists.to_print.append("It was super effective!")
-            required_lists.to_damage.append("NULL")
+            r.to_print.append("It was super effective!")
+            r.to_damage.append("NULL")
         elif net_type_bonus < 1:
-            required_lists.to_print.append("It was not very effective!")
-            required_lists.to_damage.append("NULL")
+            r.to_print.append("It was not very effective!")
+            r.to_damage.append("NULL")
 
         crit_stage = user.crit_stage
         if self.increased_crit == True:
@@ -185,8 +187,8 @@ class Attack(object):
 
         if uniform(0, 1) <= crit_percent:
             crit = 1.5
-            required_lists.to_print.append("It was a critical hit!")
-            required_lists.to_damage.append("NULL")
+            r.to_print.append("It was a critical hit!")
+            r.to_damage.append("NULL")
         else:
             crit = 1
 
@@ -251,8 +253,8 @@ class Attack(object):
 
     def use(self, user, target):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
-        required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
-        required_lists.to_damage.append("NULL")
+        r.to_print.append("{0} used {1}!".format(user.name, self.name))
+        r.to_damage.append("NULL")
         use_state = "set last move"
 
         while use_state != "end":
@@ -266,8 +268,8 @@ class Attack(object):
             if use_state == "check flinch":
                 if user.volatile["flinch"] == True:
                     print "user flinched"
-                    required_lists.to_print.append("{0} flinched!".format(user.name))
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append("{0} flinched!".format(user.name))
+                    r.to_damage.append("NULL")
                     user.volatile["flinch"] = False
                     use_state = "end"
                 else:
@@ -285,11 +287,11 @@ class Attack(object):
 
             elif use_state == "use confused move":
                 damage = self.calc_confused_damage(user)
-                required_lists.to_print.append("{0} hurt itself in its confusion!".format(user.name))
-                required_lists.to_damage.append("NULL")
-                required_lists.to_print.append("")
-                required_lists.to_damage.append(user.trainer)
-                required_lists.to_damage_count.append(damage)
+                r.to_print.append("{0} hurt itself in its confusion!".format(user.name))
+                r.to_damage.append("NULL")
+                r.to_print.append("")
+                r.to_damage.append(user.trainer)
+                r.to_damage_count.append(damage)
                 use_state = "end"
 
 
@@ -298,17 +300,17 @@ class Attack(object):
                     use_state = "use move"
                 else:
                     if user.status_nonvolatile == "frozen":
-                        required_lists.to_print.append("{0} was frozen and unable to move!".format(user.name))
-                        required_lists.to_damage.append("NULL")
+                        r.to_print.append("{0} was frozen and unable to move!".format(user.name))
+                        r.to_damage.append("NULL")
                         use_state = "end"
                     elif user.status_nonvolatile == "alseep":
-                        required_lists.to_print.append("{0} was sleeping and unable to move!".format(user.name))
-                        required_lists.to_damage.append("NULL")
+                        r.to_print.append("{0} was sleeping and unable to move!".format(user.name))
+                        r.to_damage.append("NULL")
                         use_state = "end"
                     elif user.status_nonvolatile == "paralyzed":
                         if user.status_counter == 1:
-                            required_lists.to_print.append("{0} was paralyzed and unable to move!".format(user.name))
-                            required_lists.to_damage.append("NULL")
+                            r.to_print.append("{0} was paralyzed and unable to move!".format(user.name))
+                            r.to_damage.append("NULL")
                             use_state = "end"
 
                         else:
@@ -324,14 +326,14 @@ class Attack(object):
                     user.lower_pp(self.name)
                     use_state = "check payday"
                 else:
-                    required_lists.to_print.append(self.name + " has no PP left")
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append(self.name + " has no PP left")
+                    r.to_damage.append("NULL")
                     use_state = "end"
 
 
             elif use_state == "check payday":
                 if self.payday == True:
-                    required_lists.payday_count += 1
+                    r.payday_count += 1
                 use_state = "check accuracy"
 
 
@@ -340,8 +342,8 @@ class Attack(object):
                     use_state = "check skip turn"
 
                 else:
-                    required_lists.to_print.append("It missed!")
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append("It missed!")
+                    r.to_damage.append("NULL")
                     use_state = "end"
 
 
@@ -392,15 +394,15 @@ class Attack(object):
                     elif 833 < randint(0, 1000) <= 1000:
                         number_attacks = 5
 
-                    required_lists.to_print.append("It hit {0} times!".format(number_attacks))
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append("It hit {0} times!".format(number_attacks))
+                    r.to_damage.append("NULL")
                     use_state = "cause damage"
 
                 elif self.multiple_attacks > 1:
                     number_attacks = self.multiple_attacks
 
-                    required_lists.to_print.append("It hit {0} times!".format(number_attacks))
-                    required_lists.to_damage.append("NULL")
+                    r.to_print.append("It hit {0} times!".format(number_attacks))
+                    r.to_damage.append("NULL")
                     use_state = "cause damage"
 
                 else:
@@ -411,33 +413,33 @@ class Attack(object):
             elif use_state == "cause damage":
                 if number_attacks == 1:
                     damage = self.calc_damage(user, target)
-                    required_lists.to_print.append("")
-                    required_lists.to_damage.append(target.trainer)
-                    required_lists.to_damage_count.append(damage)
+                    r.to_print.append("")
+                    r.to_damage.append(target.trainer)
+                    r.to_damage_count.append(damage)
 
                 else:
                     for i in range(number_attacks):
                         damage = self.calc_damage(user, target)
-                        required_lists.to_print.append("")
-                        required_lists.to_damage.append(target.trainer)
-                        required_lists.to_damage_count.append(damage)
+                        r.to_print.append("")
+                        r.to_damage.append(target.trainer)
+                        r.to_damage_count.append(damage)
 
                 use_state = "calc recoil"
 
             elif use_state == "calc recoil":
                 recoil_damage = self.calc_recoil(damage)
                 if recoil_damage != 0:
-                    required_lists.to_print.append("{0} was hurt by recoil!".format(user.name))
-                    required_lists.to_damage_count.append(recoil_damage)
-                    required_lists.to_damage.append(user.trainer)
+                    r.to_print.append("{0} was hurt by recoil!".format(user.name))
+                    r.to_damage_count.append(recoil_damage)
+                    r.to_damage.append(user.trainer)
                 use_state = "check regain health"
 
             elif use_state == "check regain health":
                 if self.regain_health == True:
                     regained_health = int(float(damage) / 2)
-                    required_lists.to_print.append("{0} had its energy drained".format(target.name))
-                    required_lists.to_damage.append(user.trainer)
-                    required_lists.to_damage_count.append(-regained_health)
+                    r.to_print.append("{0} had its energy drained".format(target.name))
+                    r.to_damage.append(user.trainer)
+                    r.to_damage_count.append(-regained_health)
                 use_state = "modify status"
 
 
@@ -451,23 +453,23 @@ class OHKO(Attack): #make OHKO an enclosing if statement in Attack?
     def use(self, user, target):
         P = 30 + (user.level - target.level)
 
-        required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
-        required_lists.to_damage.append("NULL")
+        r.to_print.append("{0} used {1}!".format(user.name, self.name))
+        r.to_damage.append("NULL")
 
         if randint(1, 100) <= P:
-            required_lists.to_print.append("It's a one-hit KO!")
-            required_lists.to_damage.append("NULL")
+            r.to_print.append("It's a one-hit KO!")
+            r.to_damage.append("NULL")
             damage = target.hp
 
             if user.trainer == "player":
-                required_lists.to_damage.append("enemy")
+                r.to_damage.append("enemy")
             else:
-                required_lists.to_damage.append("player")
-            required_lists.to_damage_count.append(damage)
+                r.to_damage.append("player")
+            r.to_damage_count.append(damage)
 
         else:
-            required_lists.to_print.append("It missed!")
-            required_lists.to_damage.append("NULL")
+            r.to_print.append("It missed!")
+            r.to_damage.append("NULL")
 
 '''
 class TwoTurn(Attack):
@@ -475,25 +477,25 @@ class TwoTurn(Attack):
     def use(self, user, target):
 
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
-        required_lists.to_print.append("{0} used {1}!".format(user.name, self.name))
-        required_lists.to_damage.append("NULL")
+        r.to_print.append("{0} used {1}!".format(user.name, self.name))
+        r.to_damage.append("NULL")
 
-                    required_lists.to_print.append("It hit {0} times!".format(number_attacks))
+                    r.to_print.append("It hit {0} times!".format(number_attacks))
 
                 damage = calc_damage(user, target, self)
 
                 if user.trainer == "player":
-                    required_lists.to_damage.append("enemy")
+                    r.to_damage.append("enemy")
                 else:
-                    required_lists.to_damage.append("player")
-                required_lists.to_damage_count.append(damage)
+                    r.to_damage.append("player")
+                r.to_damage_count.append(damage)
 
             if self.cause_skip == True:
                 user.skip_turn = True
 
     else:
-        required_lists.to_print.append("It missed!")
-        required_lists.to_damage.append("NULL")
+        r.to_print.append("It missed!")
+        r.to_damage.append("NULL")
 '''
 
 

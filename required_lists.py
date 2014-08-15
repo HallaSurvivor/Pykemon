@@ -52,10 +52,20 @@ volatile = ["confused", "cursed", "embargo", "encore", "flinch", "healblock", "i
 
 to_print = []
 
-to_damage = [] #added to every time to_print is added to. calls one of three things: player, enemy, null
+to_damage = []
 
 to_damage_count = []
-
+'''
+class PrintingStuff(object):
+    def __init__(text, style = "NULL", target = object, damage = 0, status = "none", modifier = 0, modified_stat = 0):
+        self.text = text
+        self.style = style
+        self.target = target
+        self.damage = damage
+        self.status = status
+        self.modifier = modifier
+        self.modified_stat = modified_stat
+'''
 box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2, 3, 4, a, b, c, d, e, f
 
 box5data = "What would you like to do?"
