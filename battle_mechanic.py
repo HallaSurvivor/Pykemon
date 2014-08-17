@@ -13,8 +13,6 @@ import battle_blitting as b
 '''
 TO DO LIST
 
-MAKE A TO_EXECUTE BUFFER THAT INCLUDES THINGS LIKE CHECKING HEALTH.
-
 flinch doesn't carry over turn endings => have a reset function that executes at the end of the turn
 make b a class, make a class for battle variables (weather, mist, etc.)
 make 6boxes change color depending on a pokemon's fainted status

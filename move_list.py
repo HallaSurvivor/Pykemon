@@ -508,6 +508,8 @@ mist = Attack() #make this do things
 
 
 
+
+
 #=====
 
 poison_powder = Attack(

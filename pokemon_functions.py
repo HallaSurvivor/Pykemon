@@ -143,6 +143,8 @@ class Pokemon(object):
         self.to_switch_in = False
         self.to_mega_evo = False
 
+        self.caused_bind = ""
+
         self.fainted = False
 
         if self.gender_ratio == -1:
@@ -169,7 +171,7 @@ class Pokemon(object):
         self.pp_list = []
         self.pp_disabled = [False, False, False, False]
 
-        self.previous_move = object
+        self.previous_move = move_list.Attack
 
         self.calculate_real_stats()
 
@@ -308,7 +310,7 @@ class Pokemon(object):
             pass
 
         if self.volatile["partially trapped"] == True:
-            required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} was hurt by {1}".format(self.name, "bind"), target = self, damage = self.hp_full / 8)) #make "bind" a general case
+            required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} was hurt by {1}".format(self.name, self.caused_bind), target = self, damage = self.hp_full / 8)) #make "bind" a general case
             self.trapped_counter -= 1
             if self.trapped_counter == 0:
                 self.volatile["partially trapped"] = False
@@ -356,6 +358,8 @@ class Pokemon(object):
         self.can_switch_out = True
         self.can_use_items = True
         self.can_use_fainted_items = False
+
+        self.caused_bind = ""
 
         self.pp_disabled = [False, False, False, False]
 

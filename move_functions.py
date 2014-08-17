@@ -143,8 +143,10 @@ class Attack(object):
         for i in range(len(r.volatile)):
             if self.status == r.volatile[i]:
                 if target.volatile[self.status] == False:
+                    if self.status == "partially trapped":
+                        target.caused_bind = self.name
                     if self.status != "flinch":
-                       r.to_do.append(r.PrintingStuff("{pokemon} was {status}".format(pokemon = target.name, status = self.status), style = r.Style.status, status = self.status))
+                       r.to_do.append(r.PrintingStuff("{pokemon} was {status}".format(pokemon = target.name, status = self.status), target = target, style = r.Style.status, status = self.status))
                 else:
                     r.to_do.append(r.PrintingStuff("{pokemon} was already {status}".format(pokemon = target.name, status = self.status)))
 
