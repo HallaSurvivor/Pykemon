@@ -34,12 +34,10 @@ def check_speed(player_choice, enemy_choice):
         enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
 
 
-
-
 def check_player_health():
     '''Check if the player hp is > 0, if not, have the user select another pokemon.'''
     if player_pokemon.hp <= 0:
-        required_lists.to_do.append("{0} fainted!".format(player_pokemon.name))
+        required_lists.to_do.append(required_lists.PrintingStuff("{0} fainted!".format(player_pokemon.name)))
         #animation?
         watch_count = 0
         player_pokemon.faint()
@@ -51,6 +49,7 @@ def check_player_health():
         else:
                 required_lists.to_do.append("{0} is out of usable pokemon!".format("Player"))
                 required_lists.to_do.append("{0} whited out!".format("Player"))
+                required_lists.to_do.append("end battle")
 
 def get_money():
     '''Give the player money after winning a battle.'''

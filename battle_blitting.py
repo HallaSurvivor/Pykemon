@@ -131,8 +131,8 @@ def update_box_5():
     else:
         if isinstance(r.to_do[0], r.PrintingStuff):
             r.to_do[0].print_text()
-            r.to_do.insert(1, f.check_enemy_health())
-            r.to_do.insert(2, f.check_player_health())
+            r.to_do.insert(1, "check player health")
+            r.to_do.insert(2, "check enemy health")
 
         elif r.to_do[0] == "check player status":
             f.player_pokemon.check_status()
@@ -145,6 +145,15 @@ def update_box_5():
 
         elif r.to_do[0] == "check enemy volatile":
             f.enemy_pokemon.check_volatile_status()
+
+        elif r.to_do[0] == "check player health":
+            f.check_player_health()
+
+        elif r.to_do[0] == "check enemy health":
+            f.check_enemy_health()
+
+        elif r.to_do[0] == "end battle":
+            r.in_battle = False
 
         del r.to_do[0]
 

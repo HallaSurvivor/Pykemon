@@ -32,7 +32,6 @@ http://www.upokecenter.com/content/pokemon-black-version-and-pokemon-white-versi
 
 '''
 
-in_battle = True
 priority = 8
 
 
@@ -50,7 +49,7 @@ wait_timer = 0
 f.auto_choose_pokemon()
 
 
-while in_battle == True:
+while r.in_battle == True:
 
     b.blit_battle_screen()
 
@@ -120,10 +119,12 @@ while in_battle == True:
                         r.box_data[8] = pokemon_choices[4]
                         r.box_data[9] = pokemon_choices[5]
                         b.game_state = b.Battle_States.pokemon_select
+
                     elif box4.collidepoint(pos):
-                        box5data = "Player successfully ran away"
-                        pygame.quit()
-                        sys.exit(0)
+                        r.to_do.append("end battle")
+                        player_to_do = 5
+                        b.game_state = b.Battle_States.executing
+
                 else:
                     r.to_do.append("{0} must recharge".format(f.player_pokemon.name))
                     r.to_damage.append("NULL")
