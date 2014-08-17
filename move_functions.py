@@ -66,63 +66,33 @@ class Attack(object):
 
 
         for i in range(5):
-            if self.modify_list[i] == 1:
+                mod = self.modify_list[i]
 
-                if target.stages[i] == 6:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i])))
+                if mod > 0:
+                    if target.stages[i] == 6:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i])))
 
-                else:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 1))
+                    elif mod == 1:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 1, modified_stat = i))
 
-            if self.modify_list[i] == 2:
+                    elif mod == 2:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} sharply rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 2, modified_stat = i))
 
-                if target.stages[i] == 6:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i])))
+                    elif mod == 3:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} drastically rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 3, modified_stat = i))
 
-                else:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} sharply rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 2))
+                elif mod < 0:
+                    if target.stages[i] == -6:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any lower!".format(name = target.name, stat = r.stat_list[i])))
 
-            if self.modify_list[i] == 1:
+                    elif mod == -1:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -1, modified_stat = i))
 
-                if target.stages[i] == 6:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i])))
+                    elif mod == -2:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} harshly fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -2, modified_stat = i))
 
-                else:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} drastically rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 3))
-
-
-            elif self.modify_list[i] == -1:
-
-                if target.stages[i] == 6:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i])))
-
-                else:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -1))
-
-            elif self.modify_list[i] == -2:
-
-                if target.stages[i] == 6:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i])))
-
-                else:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} harshly fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -2))
-
-            elif self.modify_list[i] == -3:
-
-                if target.stages[i] == 6:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i])))
-
-                else:
-                    r.to_do.append(r.PrintingStuff("{name}'s {stat} drastically fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -3))
-
-        #calculation
-        for i in range(5):
-            if target.stages[i] + self.modify_list[i] > 6:
-                target.stages[i] = 6
-            elif target.stages[i] + self.modify_list[i] < -6:
-                target.stages[i] = -6
-            else:
-                target.stages[i] += self.modify_list[i]
+                    elif mod == -3:
+                        r.to_do.append(r.PrintingStuff("{name}'s {stat} drastically fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -3, modified_stat = i))
 
 
     def cause_status(self, target_position, user, battle_target):

@@ -135,7 +135,12 @@ class PrintingStuff(object):
             self.cause_status_ailment()
 
         elif self.style == Style.modify:
-            pass
+            if self.target.stages[self.modified_stat] + self.modifier > 6:
+                self.target.stages[self.modified_stat] = 6
+            elif self.target.stages[self.modified_stat] + self.modifier < -6:
+                self.target.stages[self.modified_stat] = -6
+            else:
+                self.target.stages[self.modified_stat] += self.modifier
 
 
 box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2, 3, 4, a, b, c, d, e, f

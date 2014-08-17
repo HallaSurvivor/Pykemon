@@ -127,6 +127,7 @@ def update_box_5():
         r.box5data = "What would you like to do?"
         game_state = Battle_States.first_select
 
+
     else:
         if isinstance(r.to_do[0], r.PrintingStuff):
             r.to_do[0].print_text()

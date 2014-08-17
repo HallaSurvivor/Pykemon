@@ -345,6 +345,8 @@ while in_battle == True:
             priority = 8
             b.game_state = b.Battle_States.printing
 
+            print f.player_pokemon.stages
+
 
         while priority == 10:
             pass #use for feinting message?

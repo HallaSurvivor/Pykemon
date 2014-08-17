@@ -132,7 +132,8 @@ swords_dance = Attack(
         contact = False,
         modify_percent = 100,
         modify_list = [2, 0, 0, 0, 0],
-        accuracy = 0)
+        accuracy = 0,
+        modify_target = "user")
 
 cut = Attack(
         name = "Cut",

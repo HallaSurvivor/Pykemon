@@ -26,22 +26,12 @@ def check_speed(player_choice, enemy_choice):
     if player_choice != 5:
         if player_pokemon.battle_speed > enemy_pokemon.battle_speed:
             player_pokemon.moveset[player_choice].use(player_pokemon, enemy_pokemon)
-            check_player_health()
-            check_enemy_health()
             enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
-            check_player_health()
-            check_enemy_health()
         else:
             enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
-            check_player_health()
-            check_enemy_health()
             player_pokemon.moveset[player_choice].use(player_pokemon, enemy_pokemon)
-            check_player_health()
-            check_enemy_health()
     else:
         enemy_pokemon.moveset[enemy_choice].use(enemy_pokemon, player_pokemon)
-        check_player_health()
-        check_enemy_health()
 
 
 
