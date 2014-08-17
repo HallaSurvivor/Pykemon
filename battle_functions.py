@@ -37,7 +37,7 @@ def check_speed(player_choice, enemy_choice):
 def check_player_health():
     '''Check if the player hp is > 0, if not, have the user select another pokemon.'''
     if player_pokemon.hp <= 0:
-        required_lists.to_do.append(required_lists.PrintingStuff("{0} fainted!".format(player_pokemon.name)))
+        required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} fainted!".format(player_pokemon.name)))
         #animation?
         watch_count = 0
         player_pokemon.faint()
@@ -47,9 +47,9 @@ def check_player_health():
                 return 0
 
         else:
-                required_lists.to_do.append("{0} is out of usable pokemon!".format("Player"))
-                required_lists.to_do.append("{0} whited out!".format("Player"))
-                required_lists.to_do.append("end battle")
+                required_lists.to_do.insert(2, required_lists.PrintingStuff("{0} is out of usable pokemon!".format("Player")))
+                required_lists.to_do.insert(3, required_lists.PrintingStuff("{0} whited out!".format("Player")))
+                required_lists.to_do.insert(4, "end battle")
 
 def get_money():
     '''Give the player money after winning a battle.'''
@@ -60,18 +60,17 @@ def check_enemy_health():
     '''Check if the enemy healtlh is > 0, if not, return the next pokemon and give experience.'''
     global enemy_pokemon
     if enemy_pokemon.hp <= 0:
-        required_lists.to_do.append("{0} fainted!".format(enemy_pokemon.name))
-        required_lists.to_damage.append("NULL")
+        required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} fainted!".format(enemy_pokemon.name)))
         enemy_pokemon.faint()
         for i in range(len(enemies.current_enemy.party)):
             if not enemies.current_enemy.party[i].fainted:
-                required_lists.to_do.append("{0} sent out {1}!".format(enemies.current_enemy.name, enemies.current_enemy.party[i].name))
+                required_lists.to_do.insert(2, required_lists.PrintingStuff("{0} sent out {1}!".format(enemies.current_enemy.name, enemies.current_enemy.party[i].name)))
                 enemy_pokemon = enemies.current_enemy.party[i]
                 print(enemy_pokemon.name)
                 return 0
 
         else:
-            required_lists.to_do.append("{0} has run out of usable pokemon!".format(required_lists.current_enemy.name))
+            required_lists.to_do.insert(2, required_lists.PrintingStuff("{0} has run out of usable pokemon!".format(required_lists.current_enemy.name)))
             get_money()
 
         player_pokemon.get_exp(enemy_pokemon)
