@@ -5,10 +5,10 @@ Pokemon = object
 
 class PrintingStuff(object):
     '''Handles printing and things that happen alongside printing.'''
-    def __init__(self, text, style = r.Style.NULL, user = Pokemon, target = Pokemon, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = Pokemon):
+    def __init__(self, text, style = r.Style.NULL, required_pokemon = [Pokemon], target = Pokemon, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = Pokemon):
         self.text = text
         self.style = style
-        self.user = user
+        self.required_pokemon = required_pokemon
         self.target = target
         self.damage = damage
         self.status = status
@@ -71,8 +71,8 @@ class PrintingStuff(object):
         elif self.style == r.Style.switch_out:
             pass
 
-def add_to_print_buffer(text, style = r.Style.NULL, user = Pokemon, target = Pokemon, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = Pokemon):
-    r.to_do.append(PrintingStuff(text, style, user, target, damage, status, modifier, modified_stat, to_switch_in))
+def add_to_print_buffer(text, style = r.Style.NULL, required_pokemon = [Pokemon], target = Pokemon, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = Pokemon):
+    r.to_do.append(PrintingStuff(text, style, required_pokemon, target, damage, status, modifier, modified_stat, to_switch_in))
 
-def insert_in_print_buffer(position, text, style = r.Style.NULL, user = Pokemon, target = Pokemon, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = Pokemon):
-    r.to_do.insert(position, PrintingStuff(text, style, user, target, damage, status, modifier, modified_stat, to_switch_in))
+def insert_in_print_buffer(position, text, style = r.Style.NULL, required_pokemon = [Pokemon], target = Pokemon, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = Pokemon):
+    r.to_do.insert(position, PrintingStuff(text, style, required_pokemon, target, damage, status, modifier, modified_stat, to_switch_in))

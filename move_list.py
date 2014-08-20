@@ -1,7 +1,9 @@
 '''All of the moves in the game.'''
-from move_functions import Attack
-from move_functions import OHKO
+import move_functions
 import required_lists as r
+
+Attack = move_functions.Attack
+OHKO = move_functions.OHKO
 
 pound = Attack(
         name = "pound",

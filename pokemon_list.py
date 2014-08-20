@@ -23,6 +23,7 @@ Parameters listed below:
 
 
 from pokemon_functions import Pokemon
+import move_list
 import images
 from random import randint
 
@@ -71,3 +72,5 @@ class Ivysaur(Pokemon):
         images.IVYSAUR_BACK, images.IVYSAUR_FRONT, images.IVYSAUR_SMALL, images.GREEN,
 
         iv_list, name, level, exp, moveset, trainer, item)
+
+default_pokemon = Bulbasaur(" ", 0, 0, [], [0, 0, 0, 0, 0, 0])

@@ -2,11 +2,9 @@
 from random import randint
 import pygame
 import sys
-import enemies
 import player_party
 import required_lists as r
 import items
-import images
 import battle_functions as f
 import battle_blitting as b
 import printing as p
@@ -14,11 +12,8 @@ import printing as p
 '''
 TO DO LIST
 
-make every PrintingStuff statement have a user, and check for not user.faint before printing
-
 flinch doesn't carry over turn endings => have a reset function that executes at the end of the turn
 make b a class, make a class for battle variables (weather, mist, etc.)
-make 6boxes change color depending on a pokemon's fainted status
 make a move with no PP stay on the selection screen instead of wasting a turn.
 
 make it possible to print to multiple lines
