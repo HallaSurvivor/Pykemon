@@ -12,11 +12,10 @@ import printing as p
 '''
 TO DO LIST
 
-flinch doesn't carry over turn endings => have a reset function that executes at the end of the turn
 make b a class, make a class for battle variables (weather, mist, etc.)
 make a move with no PP stay on the selection screen instead of wasting a turn.
 
-replace all "break"s with "return 0" and add an "else: return 1" to detect if a function failed
+replace all "break"s with "return 0" and add an "else: print 'function name' failed" to detect if a function failed
 
 make it possible to print to multiple lines
 make the enemy AI more advanced
@@ -266,7 +265,7 @@ while r.in_battle == True:
 
                     if player_party.player_party[i].to_switch_in == True:
 
-                        r.add_to_print_buffer("{0}, I choose you!".format(player_party.player_party[i].name))
+                        p.add_to_print_buffer("{0}, I choose you!".format(player_party.player_party[i].name), required_pokemon = f.player_pokemon)
 
 
                         f.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
@@ -346,13 +345,7 @@ while r.in_battle == True:
             priority = 8
             b.game_state = b.Battle_States.printing
 
-
-        while priority == 10:
-            pass #use for feinting message?
-            #def checkhealth():
-                #if player.hp < 0:
-                    #priority = 10
-                    #last_priority = whatever
+            f.end_of_turn_reset()
 
 
     pygame.display.flip()

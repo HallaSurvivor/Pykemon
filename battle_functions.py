@@ -77,3 +77,9 @@ def check_enemy_health():
         player_pokemon.get_ev(enemy_pokemon)
 
 
+def end_of_turn_reset():
+    '''Reset the stats that get reset at the end of the turn when called.'''
+    player_pokemon.volatile["flinch"] = False
+    enemy_pokemon.volatile["flinch"] = False
+
+
