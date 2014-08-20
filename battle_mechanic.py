@@ -13,6 +13,8 @@ import battle_blitting as b
 '''
 TO DO LIST
 
+make every PrintingStuff statement have a user, and check for not user.faint before printing
+
 flinch doesn't carry over turn endings => have a reset function that executes at the end of the turn
 make b a class, make a class for battle variables (weather, mist, etc.)
 make 6boxes change color depending on a pokemon's fainted status
@@ -266,7 +268,7 @@ while r.in_battle == True:
 
                     if player_party.player_party[i].to_switch_in == True:
 
-                        r.to_do.append(r.PrintingStuff("{0}, I choose you!".format(player_party.player_party[i].name)))
+                        r.add_to_print_buffer("{0}, I choose you!".format(player_party.player_party[i].name))
 
 
                         f.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
@@ -341,7 +343,7 @@ while r.in_battle == True:
             r.to_do.append("check player volatile")
             r.to_do.append("check enemy volatile")
 
-            r.to_do.append(r.PrintingStuff(" "))
+            r.add_to_print_buffer(" ")
 
             priority = 8
             b.game_state = b.Battle_States.printing

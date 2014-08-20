@@ -64,9 +64,8 @@ def check_enemy_health():
         enemy_pokemon.faint()
         for i in range(len(enemies.current_enemy.party)):
             if not enemies.current_enemy.party[i].fainted:
-                required_lists.to_do.insert(2, required_lists.PrintingStuff("{0} sent out {1}!".format(enemies.current_enemy.name, enemies.current_enemy.party[i].name)))
+                required_lists.to_do.insert(2, required_lists.PrintingStuff("{0} sent out {1}!".format(enemies.current_enemy.name, enemies.current_enemy.party[i].name), style = required_lists.Style.switch_out, ))
                 enemy_pokemon = enemies.current_enemy.party[i]
-                print(enemy_pokemon.name)
                 return 0
 
         else:

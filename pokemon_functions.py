@@ -3,20 +3,20 @@ __author__ = "HallaSurvivor"
 import move_list
 from random import randint
 from math import floor
-import required_lists
+import required_lists as r
 
 
 class Pokemon(object):
     '''Base class for all pokemon.'''
     def calculate_real_stats(self):
         '''Calculates the pokemon's stats based on base stats, ivs, and evs.'''
-        self.hp_full = ((self.iv[0] + (2*self.base_hp)      + (self.ev[0]/4) + 100)*self.level/100 + 10)*required_lists.nature_modifiers[self.nature][0]
-        self.hp      = ((self.iv[0] + (2*self.base_hp)      + (self.ev[0]/4) + 100)*self.level/100 + 10)*required_lists.nature_modifiers[self.nature][0]
-        self.atk     = ((self.iv[1] + (2*self.base_atk)     + (self.ev[1]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][1]
-        self.defs    = ((self.iv[2] + (2*self.base_defs)    + (self.ev[2]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][2]
-        self.sp_atk  = ((self.iv[3] + (2*self.base_sp_atk)  + (self.ev[3]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][3]
-        self.sp_defs = ((self.iv[4] + (2*self.base_sp_defs) + (self.ev[4]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][4]
-        self.speed   = ((self.iv[5] + (2*self.base_speed)   + (self.ev[5]/4)      )*self.level/100 +  5)*required_lists.nature_modifiers[self.nature][5]
+        self.hp_full = ((self.iv[0] + (2*self.base_hp)      + (self.ev[0]/4) + 100)*self.level/100 + 10)*r.nature_modifiers[self.nature][0]
+        self.hp      = ((self.iv[0] + (2*self.base_hp)      + (self.ev[0]/4) + 100)*self.level/100 + 10)*r.nature_modifiers[self.nature][0]
+        self.atk     = ((self.iv[1] + (2*self.base_atk)     + (self.ev[1]/4)      )*self.level/100 +  5)*r.nature_modifiers[self.nature][1]
+        self.defs    = ((self.iv[2] + (2*self.base_defs)    + (self.ev[2]/4)      )*self.level/100 +  5)*r.nature_modifiers[self.nature][2]
+        self.sp_atk  = ((self.iv[3] + (2*self.base_sp_atk)  + (self.ev[3]/4)      )*self.level/100 +  5)*r.nature_modifiers[self.nature][3]
+        self.sp_defs = ((self.iv[4] + (2*self.base_sp_defs) + (self.ev[4]/4)      )*self.level/100 +  5)*r.nature_modifiers[self.nature][4]
+        self.speed   = ((self.iv[5] + (2*self.base_speed)   + (self.ev[5]/4)      )*self.level/100 +  5)*r.nature_modifiers[self.nature][5]
 
     def get_needed_exp(self):
         '''Determine how much exp is needed to level up.'''
@@ -116,7 +116,7 @@ class Pokemon(object):
         self.level = level
         self.exp = exp
         self.moveset = moveset
-        self.nature = required_lists.nature_list[randint(0, 24)]
+        self.nature = r.nature_list[randint(0, 24)]
         self.trainer = trainer
         self.item = item #held item
 
@@ -193,13 +193,13 @@ class Pokemon(object):
 
     def calculate_in_battle_stats(self):
         '''Calculate the stats based on the stage of each stat.'''
-        self.battle_atk = int(floor(self.atk * (required_lists.stage_conversion[self.stages[0]+6])))
-        self.battle_defs = int(floor(self.defs * (required_lists.stage_conversion[self.stages[1]+6])))
-        self.battle_sp_atk = int(floor(self.sp_atk * (required_lists.stage_conversion[self.stages[2]+6])))
-        self.battle_sp_defs = int(floor(self.sp_defs * (required_lists.stage_conversion[self.stages[3]+6])))
-        self.battle_speed = int(floor(self.speed * (required_lists.stage_conversion[self.stages[4]+6])))
-        self.accuracy = required_lists.accuracy_conversion[self.accuracy_stage + 6]
-        self.evasion = required_lists.accuracy_conversion[self.evasion_stage + 6]
+        self.battle_atk = int(floor(self.atk * (r.stage_conversion[self.stages[0]+6])))
+        self.battle_defs = int(floor(self.defs * (r.stage_conversion[self.stages[1]+6])))
+        self.battle_sp_atk = int(floor(self.sp_atk * (r.stage_conversion[self.stages[2]+6])))
+        self.battle_sp_defs = int(floor(self.sp_defs * (r.stage_conversion[self.stages[3]+6])))
+        self.battle_speed = int(floor(self.speed * (r.stage_conversion[self.stages[4]+6])))
+        self.accuracy = r.accuracy_conversion[self.accuracy_stage + 6]
+        self.evasion = r.accuracy_conversion[self.evasion_stage + 6]
         if self.status_nonvolatile == "burned":
             self.battle_atk /= 2
 
@@ -214,7 +214,7 @@ class Pokemon(object):
     def level_up(self):
         '''Increment the level of a pokemon by 1.'''
         self.level += 1
-        required_lists.to_do.append(required_lists.PrintingStuff("{0} leveled up!".format(self.name)))
+        r.add_to_print_buffer("{0} leveled up!".format(self.name))
         #blit a new box filled with stats
         self.calculate_real_stats
         self.get_needed_exp()
@@ -256,12 +256,12 @@ class Pokemon(object):
         print "checked status of {0}".format(self.name)
         '''Checks the status of a pokemon, and deals damage or decrements a turn counter accordingly.'''
         if self.status_nonvolatile == "burned":
-            required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} was hurt by burn".format(self.name), required_lists.Style.damage, target = self, damage = self.hp_full/8))
+            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by burn".format(self.name), r.Style.damage, target = self, damage = self.hp_full/8))
 
         elif self.status_nonvolatile == "frozen":
             if randint(0, 100) <= 20:
                 self.status_nonvolatile == "healthy"
-                required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} has thawed out".format(self.name)))
+                r.to_do.insert(1, r.PrintingStuff("{0} has thawed out".format(self.name)))
 
         elif self.status_nonvolatile == "paralyzed":
             if randint(0, 100) <= 25:
@@ -270,17 +270,17 @@ class Pokemon(object):
                 self.status_counter = 0
 
         elif self.status_nonvolatile == "poisoned":
-            required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} was hurt by poison".format(self.name), style = required_lists.Style.damage, target = self, damage = self.hp_full/8))
+            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/8))
 
         elif self.status_nonvolatile == "badly poisoned":
-            required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} was hurt by poison".format(self.name), style = required_lists.Style.damage, target = self, damage = self.hp_full/16*self.status_counter))
+            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/16*self.status_counter))
             self.status_counter += 1
 
 
         elif self.status_nonvolatile == "asleep":
             self.status_counter -= 1
             if self.status_counter == 0:
-                required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} woke up!".format(self.name)))
+                r.to_do.insert(1, r.PrintingStuff("{0} woke up!".format(self.name)))
                 self.status_nonvolatile = "healthy"
 
     def check_volatile_status(self):
@@ -310,11 +310,11 @@ class Pokemon(object):
             pass
 
         if self.volatile["partially trapped"] == True:
-            required_lists.to_do.insert(1, required_lists.PrintingStuff("{0} was hurt by {1}".format(self.name, self.caused_bind), target = self, damage = self.hp_full / 8)) #make "bind" a general case
+            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by {1}".format(self.name, self.caused_bind), target = self, damage = self.hp_full / 8)) #make "bind" a general case
             self.trapped_counter -= 1
             if self.trapped_counter == 0:
                 self.volatile["partially trapped"] = False
-                required_lists.to_do.append("{0} was released from {1}".format(self.name, "bind"))
+                r.to_do.append("{0} was released from {1}".format(self.name, "bind"))
 
         if self.volatile["parish song"] == True:
             pass

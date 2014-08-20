@@ -85,6 +85,7 @@ class Style(object):
     modify = 2
     status = 3
     nonvolatile = 4
+    switch_out = 5
 
 class Targets(object):
     player = 0
@@ -92,14 +93,16 @@ class Targets(object):
 
 
 class PrintingStuff(object):
-    def __init__(self, text, style = Style.NULL, target = object, damage = 0, status = "none", modifier = 0, modified_stat = "none"):
+    def __init__(self, text, style = Style.NULL, user = object, target = object, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = object):
         self.text = text
         self.style = style
+        self.user = user
         self.target = target
         self.damage = damage
         self.status = status
         self.modifier = modifier
         self.modified_stat = modified_stat
+        self.to_switch_in = to_switch_in
 
     def cause_damage(self):
         self.target.hp -= self.damage
@@ -123,6 +126,9 @@ class PrintingStuff(object):
         if self.status == "partially trapped":
             self.target.trapped_counter = randint(2, 5)
 
+    def switch(self):
+        pass
+
 
     def print_text(self):
         global box5data
@@ -143,6 +149,12 @@ class PrintingStuff(object):
                 self.target.stages[self.modified_stat] = -6
             else:
                 self.target.stages[self.modified_stat] += self.modifier
+
+        elif self.style == Style.switch_out:
+            pass
+
+def add_to_print_buffer(text, style = Style.NULL, user = object, target = object, damage = 0, status = "none", modifier = 0, modified_stat = "none", to_switch_in = object):
+    to_do.append(PrintingStuff(text, style, user, target, damage, status, modifier, modified_stat, to_switch_in))
 
 
 box_data = ["Fight", "Bag", "Pokemon", "Run", "", "", "", "", "", ""] #box 1, 2, 3, 4, a, b, c, d, e, f
