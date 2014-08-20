@@ -5,6 +5,7 @@ from random import uniform
 from math import floor
 import type_chain
 import required_lists as r
+import printing as p
 
 
 
@@ -70,29 +71,29 @@ class Attack(object):
 
                 if mod > 0:
                     if target.stages[i] == 6:
-                        r.add_to_print_buffer("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i]))
+                        p.add_to_print_buffer("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i]))
 
                     elif mod == 1:
-                        r.add_to_print_buffer("{name}'s {stat} rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 1, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 1, modified_stat = i)
 
                     elif mod == 2:
-                        r.add_to_print_buffer("{name}'s {stat} sharply rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 2, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} sharply rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 2, modified_stat = i)
 
                     elif mod == 3:
-                        r.add_to_print_buffer("{name}'s {stat} drastically rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 3, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} drastically rose!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = 3, modified_stat = i)
 
                 elif mod < 0:
                     if target.stages[i] == -6:
-                        r.add_to_print_buffer("{name}'s {stat} won't go any lower!".format(name = target.name, stat = r.stat_list[i]))
+                        p.add_to_print_buffer("{name}'s {stat} won't go any lower!".format(name = target.name, stat = r.stat_list[i]))
 
                     elif mod == -1:
-                        r.add_to_print_buffer("{name}'s {stat} fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -1, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -1, modified_stat = i)
 
                     elif mod == -2:
-                        r.add_to_print_buffer("{name}'s {stat} harshly fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -2, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} harshly fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -2, modified_stat = i)
 
                     elif mod == -3:
-                        r.add_to_print_buffer("{name}'s {stat} drastically fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -3, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} drastically fell!".format(name = target.name, stat = r.stat_list[i]), r.Style.modify, target = target, modifier = -3, modified_stat = i)
 
 
     def cause_status(self, target_position, user, battle_target):
@@ -106,9 +107,9 @@ class Attack(object):
             if self.status == r.nonvolatile[i]:
 
                 if target.status_nonvolatile == "healthy":
-                    r.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), style = r.Style.nonvolatile, target = target, status = self.status)
+                    p.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), style = r.Style.nonvolatile, target = target, status = self.status)
                 else:
-                    r.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = target.status_nonvolatile))
+                    p.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = target.status_nonvolatile))
 
         for i in range(len(r.volatile)):
             if self.status == r.volatile[i]:
@@ -116,9 +117,9 @@ class Attack(object):
                     if self.status == "partially trapped":
                         target.caused_bind = self.name
                     if self.status != "flinch":
-                       r.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), target = target, style = r.Style.status, status = self.status)
+                       p.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), target = target, style = r.Style.status, status = self.status)
                 else:
-                    r.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = self.status))
+                    p.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = self.status))
 
 
     def calc_damage(self, user, target):
@@ -131,9 +132,9 @@ class Attack(object):
         type_bonus2 = type_chain.type_comparison[self.move_type][target.type2]
         net_type_bonus = type_bonus1 * type_bonus2
         if net_type_bonus > 1:
-            r.add_to_print_buffer("It was super effective!")
+            p.add_to_print_buffer("It was super effective!")
         elif net_type_bonus < 1:
-            r.add_to_print_buffer("It was not very effective!")
+            p.add_to_print_buffer("It was not very effective!")
 
         crit_stage = user.crit_stage
         if self.increased_crit == True:
@@ -150,7 +151,7 @@ class Attack(object):
 
         if uniform(0, 1) <= crit_percent:
             crit = 1.5
-            r.add_to_print_buffer("It was a critical hit!")
+            p.add_to_print_buffer("It was a critical hit!")
         else:
             crit = 1
 
@@ -215,7 +216,7 @@ class Attack(object):
 
     def use(self, user, target):
         P = int(float(self.accuracy) * float(user.accuracy) / float(target.evasion) )
-        r.add_to_print_buffer("{pokemon} used {move}!".format(pokemon = user.name, move = self.name))
+        p.add_to_print_buffer("{pokemon} used {move}!".format(pokemon = user.name, move = self.name))
         use_state = "set last move"
 
         while use_state != "end":
@@ -228,7 +229,7 @@ class Attack(object):
 
             if use_state == "check flinch":
                 if user.volatile["flinch"] == True:
-                    r.add_to_print_buffer("{pokemon} flinched!".format(pokemon = user.name))
+                    p.add_to_print_buffer("{pokemon} flinched!".format(pokemon = user.name))
                     user.volatile["flinch"] = False
                     use_state = "end"
                 else:
@@ -246,7 +247,7 @@ class Attack(object):
 
             elif use_state == "use confused move":
                 damage = self.calc_confused_damage(user)
-                r.add_to_print_buffer("{pokemon} hurt itself in its confusion!".format(pokemon = user.name), style = r.Style.damage, target = user, damage = damage)
+                p.add_to_print_buffer("{pokemon} hurt itself in its confusion!".format(pokemon = user.name), style = r.Style.damage, target = user, damage = damage)
                 use_state = "end"
 
 
@@ -255,14 +256,14 @@ class Attack(object):
                     use_state = "use move"
                 else:
                     if user.status_nonvolatile == "frozen":
-                        r.add_to_print_buffer("{pokemon} was frozen and unable to move!".format(pokemon = user.name))
+                        p.add_to_print_buffer("{pokemon} was frozen and unable to move!".format(pokemon = user.name))
                         use_state = "end"
                     elif user.status_nonvolatile == "alseep":
-                        r.add_to_print_buffer("{pokemon} was sleeping and unable to move!".format(pokemon = user.name))
+                        p.add_to_print_buffer("{pokemon} was sleeping and unable to move!".format(pokemon = user.name))
                         use_state = "end"
                     elif user.status_nonvolatile == "paralyzed":
                         if user.status_counter == 1:
-                            r.add_to_print_buffer("{pokemon} was paralyzed and unable to move!".format(pokemon = user.name))
+                            p.add_to_print_buffer("{pokemon} was paralyzed and unable to move!".format(pokemon = user.name))
                             use_state = "end"
 
                         else:
@@ -278,7 +279,7 @@ class Attack(object):
                     user.lower_pp(self.name)
                     use_state = "check payday"
                 else:
-                    r.add_to_print_buffer("{move} has no PP left!".format(move = self.name))
+                    p.add_to_print_buffer("{move} has no PP left!".format(move = self.name))
                     use_state = "end"
 
 
@@ -293,7 +294,7 @@ class Attack(object):
                     use_state = "check skip turn"
 
                 else:
-                    r.add_to_print_buffer("It missed!")
+                    p.add_to_print_buffer("It missed!")
                     use_state = "end"
 
 
@@ -343,13 +344,13 @@ class Attack(object):
                     elif 833 < randint(0, 1000) <= 1000:
                         number_attacks = 5
 
-                    r.add_to_print_buffer("It hit {number} times!".format(number = self.multiple_attacks))
+                    p.add_to_print_buffer("It hit {number} times!".format(number = self.multiple_attacks))
                     use_state = "cause damage"
 
                 elif self.multiple_attacks > 1:
                     number_attacks = self.multiple_attacks
 
-                    r.add_to_print_buffer("It hit {number} times!".format(number = self.multiple_attacks))
+                    p.add_to_print_buffer("It hit {number} times!".format(number = self.multiple_attacks))
                     use_state = "cause damage"
 
                 else:
@@ -360,25 +361,25 @@ class Attack(object):
             elif use_state == "cause damage":
                 if number_attacks == 1:
                     damage = self.calc_damage(user, target)
-                    r.add_to_print_buffer(" ", style = r.Style.damage, target = target, damage = damage)
+                    p.add_to_print_buffer(" ", style = r.Style.damage, target = target, damage = damage)
 
                 else:
                     for i in range(number_attacks):
                         damage = self.calc_damage(user, target)
-                        r.add_to_print_buffer(" ", style = r.Style.damage, target = target, damage = damage)
+                        p.add_to_print_buffer(" ", style = r.Style.damage, target = target, damage = damage)
 
                 use_state = "calc recoil"
 
             elif use_state == "calc recoil":
                 recoil_damage = self.calc_recoil(damage)
                 if recoil_damage != 0:
-                    r.add_to_print_buffer("{pokemon} was hurt by recoil!".format(pokemon = user.name), style = r.Style.damage, target = user, damage = recoil_damage)
+                    p.add_to_print_buffer("{pokemon} was hurt by recoil!".format(pokemon = user.name), style = r.Style.damage, target = user, damage = recoil_damage)
                 use_state = "check regain health"
 
             elif use_state == "check regain health":
                 if self.regain_health == True:
                     regained_health = int(float(damage) / 2)
-                    r.add_to_print_buffer("{pokemon} had its energy drained!".format(pokemon = target.name), style = r.Style.damage, target = user, damage = -regained_health)
+                    p.add_to_print_buffer("{pokemon} had its energy drained!".format(pokemon = target.name), style = r.Style.damage, target = user, damage = -regained_health)
                 use_state = "modify status"
 
 

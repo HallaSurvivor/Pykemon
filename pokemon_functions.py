@@ -4,6 +4,7 @@ import move_list
 from random import randint
 from math import floor
 import required_lists as r
+import printing as p
 
 
 class Pokemon(object):
@@ -256,12 +257,12 @@ class Pokemon(object):
         print "checked status of {0}".format(self.name)
         '''Checks the status of a pokemon, and deals damage or decrements a turn counter accordingly.'''
         if self.status_nonvolatile == "burned":
-            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by burn".format(self.name), r.Style.damage, target = self, damage = self.hp_full/8))
+            p.insert_in_print_buffer(1, "{0} was hurt by burn".format(self.name), r.Style.damage, target = self, damage = self.hp_full/8)
 
         elif self.status_nonvolatile == "frozen":
             if randint(0, 100) <= 20:
                 self.status_nonvolatile == "healthy"
-                r.to_do.insert(1, r.PrintingStuff("{0} has thawed out".format(self.name)))
+                p.insert_in_print_buffer(1, "{0} has thawed out".format(self.name))
 
         elif self.status_nonvolatile == "paralyzed":
             if randint(0, 100) <= 25:
@@ -270,17 +271,17 @@ class Pokemon(object):
                 self.status_counter = 0
 
         elif self.status_nonvolatile == "poisoned":
-            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/8))
+            p.insert_in_print_buffer(1, "{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/8)
 
         elif self.status_nonvolatile == "badly poisoned":
-            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/16*self.status_counter))
+            p.insert_in_print_buffer(1, "{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/16*self.status_counter)
             self.status_counter += 1
 
 
         elif self.status_nonvolatile == "asleep":
             self.status_counter -= 1
             if self.status_counter == 0:
-                r.to_do.insert(1, r.PrintingStuff("{0} woke up!".format(self.name)))
+                p.insert_in_print_buffer(1, "{0} woke up!".format(self.name))
                 self.status_nonvolatile = "healthy"
 
     def check_volatile_status(self):
@@ -310,7 +311,7 @@ class Pokemon(object):
             pass
 
         if self.volatile["partially trapped"] == True:
-            r.to_do.insert(1, r.PrintingStuff("{0} was hurt by {1}".format(self.name, self.caused_bind), target = self, damage = self.hp_full / 8)) #make "bind" a general case
+            p.insert_in_print_buffer(1, "{0} was hurt by {1}".format(self.name, self.caused_bind), target = self, damage = self.hp_full / 8)
             self.trapped_counter -= 1
             if self.trapped_counter == 0:
                 self.volatile["partially trapped"] = False

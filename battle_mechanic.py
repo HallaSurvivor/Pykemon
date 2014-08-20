@@ -9,6 +9,7 @@ import items
 import images
 import battle_functions as f
 import battle_blitting as b
+import printing as p
 
 '''
 TO DO LIST
@@ -203,7 +204,7 @@ while r.in_battle == True:
     elif b.game_state == b.Battle_States.printing:
         if len(r.to_do) > 0:
 
-            if isinstance(r.to_do[0], r.PrintingStuff):
+            if isinstance(r.to_do[0], p.PrintingStuff):
                 wait_timer += 1
                 if wait_timer == 100:
                     b.update_box_5()
@@ -343,7 +344,7 @@ while r.in_battle == True:
             r.to_do.append("check player volatile")
             r.to_do.append("check enemy volatile")
 
-            r.add_to_print_buffer(" ")
+            p.add_to_print_buffer(" ")
 
             priority = 8
             b.game_state = b.Battle_States.printing

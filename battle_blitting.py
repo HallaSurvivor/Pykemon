@@ -3,6 +3,7 @@ import pygame
 import required_lists as r
 import images
 import battle_functions as f
+import printing as p
 
 
 screen = images.SCREEN
@@ -129,7 +130,7 @@ def update_box_5():
 
 
     else:
-        if isinstance(r.to_do[0], r.PrintingStuff):
+        if isinstance(r.to_do[0], p.PrintingStuff):
             r.to_do[0].print_text()
             r.to_do.insert(1, "check player health")
             r.to_do.insert(2, "check enemy health")
