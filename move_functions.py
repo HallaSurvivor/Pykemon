@@ -62,38 +62,34 @@ class Attack(object):
 
     def modify_stats(self, user, target):
         '''Modifies stats and prints the change to the screen.'''
-        #printing
-        print("called modify stats")
-
-
         for i in range(5):
                 mod = self.modify_list[i]
 
                 if mod > 0:
                     if target.stages[i] == 6:
-                        p.add_to_print_buffer("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user])
+                        p.add_to_print_buffer("{name}'s {stat} won't go any higher!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target])
 
                     elif mod == 1:
-                        p.add_to_print_buffer("{name}'s {stat} rose!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user], style = r.Style.modify, target = target, modifier = 1, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} rose!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target], style = r.Style.modify, target = target, modifier = 1, modified_stat = i)
 
                     elif mod == 2:
-                        p.add_to_print_buffer("{name}'s {stat} sharply rose!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user], style = r.Style.modify, target = target, modifier = 2, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} sharply rose!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target], style = r.Style.modify, target = target, modifier = 2, modified_stat = i)
 
                     elif mod == 3:
-                        p.add_to_print_buffer("{name}'s {stat} drastically rose!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user], style = r.Style.modify, target = target, modifier = 3, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} drastically rose!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target], style = r.Style.modify, target = target, modifier = 3, modified_stat = i)
 
                 elif mod < 0:
                     if target.stages[i] == -6:
-                        p.add_to_print_buffer("{name}'s {stat} won't go any lower!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user])
+                        p.add_to_print_buffer("{name}'s {stat} won't go any lower!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target])
 
                     elif mod == -1:
-                        p.add_to_print_buffer("{name}'s {stat} fell!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user], style = r.Style.modify, target = target, modifier = -1, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} fell!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target], style = r.Style.modify, target = target, modifier = -1, modified_stat = i)
 
                     elif mod == -2:
-                        p.add_to_print_buffer("{name}'s {stat} harshly fell!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user], style = r.Style.modify, target = target, modifier = -2, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} harshly fell!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target], style = r.Style.modify, target = target, modifier = -2, modified_stat = i)
 
                     elif mod == -3:
-                        p.add_to_print_buffer("{name}'s {stat} drastically fell!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user], style = r.Style.modify, target = target, modifier = -3, modified_stat = i)
+                        p.add_to_print_buffer("{name}'s {stat} drastically fell!".format(name = target.name, stat = r.stat_list[i]), required_pokemon = [user, target], style = r.Style.modify, target = target, modifier = -3, modified_stat = i)
 
 
     def cause_status(self, target_position, user, battle_target):
@@ -107,9 +103,9 @@ class Attack(object):
             if self.status == r.nonvolatile[i]:
 
                 if target.status_nonvolatile == "healthy":
-                    p.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), required_pokemon = [user], style = r.Style.nonvolatile, target = target, status = self.status)
+                    p.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), required_pokemon = [user, target], style = r.Style.nonvolatile, target = target, status = self.status)
                 else:
-                    p.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = target.status_nonvolatile), required_pokemon = [user])
+                    p.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = target.status_nonvolatile), required_pokemon = [user, target])
 
         for i in range(len(r.volatile)):
             if self.status == r.volatile[i]:
@@ -117,9 +113,9 @@ class Attack(object):
                     if self.status == "partially trapped":
                         target.caused_bind = self.name
                     if self.status != "flinch":
-                       p.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), required_pokemon = [user], target = target, style = r.Style.status, status = self.status)
+                       p.add_to_print_buffer("{pokemon} was {status}".format(pokemon = target.name, status = self.status), required_pokemon = [user, target], target = target, style = r.Style.status, status = self.status)
                 else:
-                    p.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = self.status), required_pokemon = [user])
+                    p.add_to_print_buffer("{pokemon} was already {status}".format(pokemon = target.name, status = self.status), required_pokemon = [user, target])
 
 
     def calc_damage(self, user, target):
@@ -294,7 +290,7 @@ class Attack(object):
                     use_state = "check skip turn"
 
                 else:
-                    p.add_to_print_buffer("It missed!")
+                    p.add_to_print_buffer("It missed!", required_pokemon = [user])
                     use_state = "end"
 
 

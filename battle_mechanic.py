@@ -16,6 +16,8 @@ flinch doesn't carry over turn endings => have a reset function that executes at
 make b a class, make a class for battle variables (weather, mist, etc.)
 make a move with no PP stay on the selection screen instead of wasting a turn.
 
+replace all "break"s with "return 0" and add an "else: return 1" to detect if a function failed
+
 make it possible to print to multiple lines
 make the enemy AI more advanced
 add in attack animations
@@ -339,12 +341,10 @@ while r.in_battle == True:
             r.to_do.append("check player volatile")
             r.to_do.append("check enemy volatile")
 
-            p.add_to_print_buffer(" ")
+            p.add_to_print_buffer(" ", required_pokemon = [f.enemies.default])
 
             priority = 8
             b.game_state = b.Battle_States.printing
-
-            print f.player_pokemon.stages
 
 
         while priority == 10:

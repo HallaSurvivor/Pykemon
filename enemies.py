@@ -2,6 +2,8 @@
 from generator import generate
 import move_list
 
+default = generate("bulbasaur", [])
+
 class Enemy(object):
     '''Defines an enemy.'''
     def __init__(self, name, party):

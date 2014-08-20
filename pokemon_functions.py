@@ -215,7 +215,7 @@ class Pokemon(object):
     def level_up(self):
         '''Increment the level of a pokemon by 1.'''
         self.level += 1
-        r.add_to_print_buffer("{0} leveled up!".format(self.name))
+        r.add_to_print_buffer("{0} leveled up!".format(self.name), required_pokemon = [self])
         #blit a new box filled with stats
         self.calculate_real_stats
         self.get_needed_exp()
@@ -254,15 +254,14 @@ class Pokemon(object):
                 self.level_up()
 
     def check_status(self):
-        print "checked status of {0}".format(self.name)
         '''Checks the status of a pokemon, and deals damage or decrements a turn counter accordingly.'''
         if self.status_nonvolatile == "burned":
-            p.insert_in_print_buffer(1, "{0} was hurt by burn".format(self.name), r.Style.damage, target = self, damage = self.hp_full/8)
+            p.insert_in_print_buffer(1, "{0} was hurt by burn".format(self.name), r.Style.damage, target = self, damage = self.hp_full/8, required_pokemon = [self])
 
         elif self.status_nonvolatile == "frozen":
             if randint(0, 100) <= 20:
                 self.status_nonvolatile == "healthy"
-                p.insert_in_print_buffer(1, "{0} has thawed out".format(self.name))
+                p.insert_in_print_buffer(1, "{0} has thawed out".format(self.name), required_pokemon = [self])
 
         elif self.status_nonvolatile == "paralyzed":
             if randint(0, 100) <= 25:
@@ -271,17 +270,17 @@ class Pokemon(object):
                 self.status_counter = 0
 
         elif self.status_nonvolatile == "poisoned":
-            p.insert_in_print_buffer(1, "{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/8)
+            p.insert_in_print_buffer(1, "{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/8, required_pokemon = [self])
 
         elif self.status_nonvolatile == "badly poisoned":
-            p.insert_in_print_buffer(1, "{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/16*self.status_counter)
+            p.insert_in_print_buffer(1, "{0} was hurt by poison".format(self.name), style = r.Style.damage, target = self, damage = self.hp_full/16*self.status_counter, required_pokemon = [self])
             self.status_counter += 1
 
 
         elif self.status_nonvolatile == "asleep":
             self.status_counter -= 1
             if self.status_counter == 0:
-                p.insert_in_print_buffer(1, "{0} woke up!".format(self.name))
+                p.insert_in_print_buffer(1, "{0} woke up!".format(self.name), required_pokemon = [self])
                 self.status_nonvolatile = "healthy"
 
     def check_volatile_status(self):
@@ -311,11 +310,11 @@ class Pokemon(object):
             pass
 
         if self.volatile["partially trapped"] == True:
-            p.insert_in_print_buffer(1, "{0} was hurt by {1}".format(self.name, self.caused_bind), target = self, damage = self.hp_full / 8)
+            p.insert_in_print_buffer(1, "{0} was hurt by {1}".format(self.name, self.caused_bind), target = self, damage = self.hp_full / 8, required_pokemon = [self])
             self.trapped_counter -= 1
             if self.trapped_counter == 0:
                 self.volatile["partially trapped"] = False
-                r.to_do.append("{0} was released from {1}".format(self.name, "bind"))
+                r.to_do.append("{0} was released from {1}".format(self.name, self.caused_bind), required_pokemon = [self])
 
         if self.volatile["parish song"] == True:
             pass

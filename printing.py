@@ -24,15 +24,12 @@ class PrintingStuff(object):
         '''Causes a nonvolatile status ailment to the target.'''
         self.target.status_counter = 1
         self.target.status_nonvolatile = self.status
-        print self.target.status_nonvolatile
 
         if self.status == "badly poisoned":
             self.target.status_counter = 1
 
         elif self.status == "alseep":
             self.target.status_counter = randint(1, 3)
-
-        print("caused status")
 
     def cause_status(self):
         '''Causes a volatile status to the target.'''

@@ -131,9 +131,15 @@ def update_box_5():
 
     else:
         if isinstance(r.to_do[0], p.PrintingStuff):
-            r.to_do[0].print_text()
-            r.to_do.insert(1, "check player health")
-            r.to_do.insert(2, "check enemy health")
+            for i in range(len(r.to_do[0].required_pokemon)):
+                if r.to_do[0].required_pokemon[i].fainted == True:
+                    del r.to_do[0]
+                    print "deleted"
+                    return 0
+            else:
+                r.to_do[0].print_text()
+                r.to_do.insert(1, "check player health")
+                r.to_do.insert(2, "check enemy health")
 
         elif r.to_do[0] == "check player status":
             f.player_pokemon.check_status()
