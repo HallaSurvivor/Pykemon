@@ -9,8 +9,6 @@ def load(image_name):
 pygame.init()
 
 #pokemon
-BULBASAUR_BACK = load("bulbasaur_back.png")
-BULBASAUR_FRONT = load("bulbasaur_front.png")
 BULBASAUR_SMALL = load("bulbasaur_small.png")
 
 IVYSAUR_BACK = load("blastoise_back.png")

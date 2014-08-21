@@ -1,4 +1,4 @@
-'''Handles everything that happens during a single battle sequence.'''
+"""Handles everything that happens during a single battle sequence."""
 from random import randint
 import pygame
 import sys

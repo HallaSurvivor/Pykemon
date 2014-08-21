@@ -24,6 +24,7 @@ Parameters listed below:
 
 from pokemon_functions import Pokemon
 import move_list
+import animations
 import images
 from random import randint
 
@@ -46,7 +47,7 @@ class Bulbasaur(Pokemon):
 
         ["Tackle"], ["Tackle"], ["Tackle"],
 
-        images.BULBASAUR_BACK, images.BULBASAUR_FRONT, images.BULBASAUR_SMALL, images.GREEN,
+        animations.bulbasaur_back, animations.bulbasaur_front, images.BULBASAUR_SMALL, images.GREEN,
 
         iv_list, name, level, exp, moveset, trainer, item)
 

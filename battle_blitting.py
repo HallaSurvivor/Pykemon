@@ -122,6 +122,7 @@ def render_box_5():
     box5_text_rect.top = box5.top + 15
     screen.blit(box5_text_image, box5_text_rect)
 
+
 def update_box_5():
     '''Updates the text in box5 alongisde the hp of the pokemon and the status images'''
     if len(r.to_do) == 0:
@@ -134,7 +135,7 @@ def update_box_5():
             for i in range(len(r.to_do[0].required_pokemon)):
                 if r.to_do[0].required_pokemon[i].fainted == True:
                     del r.to_do[0]
-                    print "deleted"
+                    print("deleted")
                     return 0
             else:
                 r.to_do[0].print_text()
@@ -245,8 +246,10 @@ def select_box(move):
 
 def blit_pokemon():
     '''Blit the actual pokemon sprites in their proper places.'''
-    screen.blit(f.player_pokemon.player_sprite, images.PLAYERSPRITEPOS)
-    screen.blit(f.enemy_pokemon.enemy_sprite, images.ENEMYSPRITEPOS)
+    f.enemy_pokemon.enemy_sprite.play()
+    f.player_pokemon.player_sprite.play()
+    f.player_pokemon.player_sprite.blit(screen, images.PLAYERSPRITEPOS)
+    f.enemy_pokemon.enemy_sprite.blit(screen, images.ENEMYSPRITEPOS)
 
 def blit_numerical_hp():
     '''Blit the actual hp value to the screen for the player pokemon.'''
