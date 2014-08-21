@@ -1,71 +1,69 @@
-'''Import all the sprites and store them as public variables.'''
+"""Import all the sprites and store them as public variables."""
 #Thanks to pokemondb for the majority of these sprites. :)
 import pygame
 import os
 
-def load(image_name):
-    return pygame.image.load(os.path.join("sprites", image_name))
+def load(image_name, subfolder = "NULL"):
+    if subfolder == "NULL":
+        return pygame.image.load(os.path.join("sprites", image_name))
+    else:
+        return pygame.image.load(os.path.join("sprites", subfolder, image_name))
 
 pygame.init()
 
 #pokemon
-BULBASAUR_SMALL = load("bulbasaur_small.png")
+BULBASAUR_SMALL = load("bulbasaur_small.png", "pokemon")
+IVYSAUR_SMALL = load("ivysaur_small.png", "pokemon")
 
-IVYSAUR_BACK = load("blastoise_back.png")
-IVYSAUR_FRONT = load("blastoise_front.png")
-IVYSAUR_SMALL = load("ivysaur_small.png")
-
-MUDKIP_FRONT = load("mudkip_front.png")
-MUDKIP_BACK = load("mudkip_back.png")
 
 #backgrounds
-GRASS_BATTLE = load("grass_battle.png")
+GRASS_BATTLE = load("grass_battle.png", "battle backgrounds")
 
 #boxes
-BOX = load("box.png")
-SQUAREBOX = load("squarebox.png")
-TEXTBOX = load("text_box.png")
-POKEMONBOX = load("pokemon_box.png")
-FAINTEDPOKEMONBOX = load("fainted_pokemon_box.png")
-BACK = load("back.png")
+BOX = load("box.png", "move boxes")
+SQUAREBOX = load("squarebox.png", "pokemon boxes")
+TEXTBOX = load("text_box.png", "misc")
+POKEMONBOX = load("pokemon_box.png", "pokemon boxes")
+FAINTEDPOKEMONBOX = load("fainted_pokemon_box.png", "pokemon boxes")
+BACK = load("back.png", "misc")
 
 
-NORMAL_BOX = load("box_normal.png")
-FIGHTING_BOX = load("box_fighting.png")
-FLYING_BOX = load("box_flying.png")
-POISON_BOX = load("box_poison.png")
-GROUND_BOX = load("box_ground.png")
-ROCK_BOX = load("box_rock.png")
-BUG_BOX = load("box_bug.png")
-GHOST_BOX = load("box_ghost.png")
-STEEL_BOX = load("box_steel.png")
-FIRE_BOX = load("box_fire.png")
-WATER_BOX = load("box_water.png")
-GRASS_BOX = load("box_grass.png")
-ELECTRIC_BOX = load("box_electric.png")
-PSYCHIC_BOX = load("box_psychic.png")
-ICE_BOX = load("box_ice.png")
-DRAGON_BOX = load("box_dragon.png")
-DARK_BOX = load("box_dark.png")
-FAIRY_BOX = load("box_fairy.png")
+NORMAL_BOX = load("box_normal.png", "move boxes")
+FIGHTING_BOX = load("box_fighting.png", "move boxes")
+FLYING_BOX = load("box_flying.png", "move boxes")
+POISON_BOX = load("box_poison.png", "move boxes")
+GROUND_BOX = load("box_ground.png", "move boxes")
+ROCK_BOX = load("box_rock.png", "move boxes")
+BUG_BOX = load("box_bug.png", "move boxes")
+GHOST_BOX = load("box_ghost.png", "move boxes")
+STEEL_BOX = load("box_steel.png", "move boxes")
+FIRE_BOX = load("box_fire.png", "move boxes")
+WATER_BOX = load("box_water.png", "move boxes")
+GRASS_BOX = load("box_grass.png", "move boxes")
+ELECTRIC_BOX = load("box_electric.png", "move boxes")
+PSYCHIC_BOX = load("box_psychic.png", "move boxes")
+ICE_BOX = load("box_ice.png", "move boxes")
+DRAGON_BOX = load("box_dragon.png", "move boxes")
+DARK_BOX = load("box_dark.png", "move boxes")
+FAIRY_BOX = load("box_fairy.png", "move boxes")
 
-PLAYER_HP_BOX = load("player_hp.png")
-ENEMY_HP_BOX = load("enemy_hp.png")
-HP_GREEN = load("hp_green.png")
-HP_YELLOW = load("hp_yellow.png")
-EXP_BAR = load("exp_bar.png")
+PLAYER_HP_BOX = load("player_hp.png", "pokemon boxes")
+ENEMY_HP_BOX = load("enemy_hp.png", "pokemon boxes")
+HP_GREEN = load("hp_green.png", "misc")
+HP_YELLOW = load("hp_yellow.png", "misc")
+EXP_BAR = load("exp_bar.png", "misc")
 
-BRN = load("brn.png")
-PAR = load("par.png")
-FRZ = load("frz.png")
-PSN = load("psn.png")
-SLP = load("slp.png")
-FNT = load("fnt.png")
+BRN = load("brn.png", "status ailments")
+PAR = load("par.png", "status ailments")
+FRZ = load("frz.png", "status ailments")
+PSN = load("psn.png", "status ailments")
+SLP = load("slp.png", "status ailments")
+FNT = load("fnt.png", "status ailments")
 
-MALE = load("male.png")
-FEMALE = load("female.png")
-GENDERLESS = load("genderless.png")
-genders = {"male":MALE, "female":FEMALE, "genderless":GENDERLESS}
+MALE = load("male.png", "misc")
+FEMALE = load("female.png", "misc")
+GENDERLESS = load("genderless.png", "misc")
+genders = {"male": MALE, "female": FEMALE, "genderless": GENDERLESS}
 
 
 status_icons = [BRN, FRZ, PAR, PSN, PSN, SLP]

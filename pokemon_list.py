@@ -24,7 +24,7 @@ Parameters listed below:
 
 from pokemon_functions import Pokemon
 import move_list
-import animations
+import pokemon_sprites as s
 import images
 from random import randint
 
@@ -47,9 +47,10 @@ class Bulbasaur(Pokemon):
 
         ["Tackle"], ["Tackle"], ["Tackle"],
 
-        animations.bulbasaur_back, animations.bulbasaur_front, images.BULBASAUR_SMALL, images.GREEN,
+        s.bulbasaur_back, s.bulbasaur_front, images.BULBASAUR_SMALL, images.GREEN,
 
         iv_list, name, level, exp, moveset, trainer, item)
+
 
 class Ivysaur(Pokemon):
     def __init__(self, name, level, exp, moveset, iv_list, trainer = "wild", item = "none"):
@@ -70,7 +71,7 @@ class Ivysaur(Pokemon):
 
         ["Tackle"], ["Tackle"], ["Tackle"],
 
-        images.IVYSAUR_BACK, images.IVYSAUR_FRONT, images.IVYSAUR_SMALL, images.GREEN,
+        s.ivysaur_back, s.ivysaur_front, images.IVYSAUR_SMALL, images.GREEN,
 
         iv_list, name, level, exp, moveset, trainer, item)
 

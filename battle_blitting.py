@@ -1,4 +1,4 @@
-'''Handles all of the graphics in the battle screen.'''
+"""Handles all of the graphics in the battle screen."""
 import pygame
 import required_lists as r
 import images
