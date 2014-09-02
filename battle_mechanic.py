@@ -47,8 +47,7 @@ wait_timer = 0
 
 f.auto_choose_pokemon()
 
-
-while r.in_battle == True:
+while r.in_battle is True:
 
     b.blit_battle_screen()
 
@@ -58,6 +57,7 @@ while r.in_battle == True:
 
     b.blit_back_button()
 
+    # Make this part of an "initial send out" function.
     f.player_pokemon.calculate_in_battle_stats()
     f.enemy_pokemon.calculate_in_battle_stats()
 
@@ -166,7 +166,6 @@ while r.in_battle == True:
     elif b.game_state == b.Battle_States.pokemon_select:
 
 
-
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
 
@@ -188,7 +187,7 @@ while r.in_battle == True:
                 for num in range(len(player_party.player_party)):
                     if r.six_boxes[num].collidepoint(pos):
 
-                        if f.player_pokemon.name != r.box_data[num + 4]: #if the clicked pokemon isn't already out
+                        if f.player_pokemon.name != r.box_data[num + 4]:  #if the clicked pokemon isn't already out
                             if not player_party.player_party[num].fainted:
                                 f.player_pokemon.to_switch_out = True
                                 player_party.player_party[num].to_switch_in = True
@@ -213,7 +212,6 @@ while r.in_battle == True:
             b.game_state = b.Battle_States.first_select
             b.reset_labels()
 
-
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
 
@@ -223,8 +221,8 @@ while r.in_battle == True:
                 pygame.quit()
                 sys.exit(0)
 
-            elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1)\
-             or (event.type == pygame.KEYDOWN):
+            elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) \
+                    or (event.type == pygame.KEYDOWN):
 
                 if len(r.to_do) > 0:
                     wait_timer = 0
@@ -237,7 +235,7 @@ while r.in_battle == True:
     elif b.game_state == b.Battle_States.executing:
 
         enemy_to_do = randint(0, 3)
-    #priority 8 through -8 execute in descending order, then the loop repeats
+        #priority 8 through -8 execute in descending order, then the loop repeats
         while priority == 8:
             #custap berry
             '''
@@ -258,20 +256,18 @@ while r.in_battle == True:
 
         while priority == 6:
 
-            if f.player_pokemon.to_switch_out == True:
+            if f.player_pokemon.to_switch_out is True:
                 f.player_pokemon.reset_all_stats()
 
                 for i in range(len(player_party.player_party)):
 
-                    if player_party.player_party[i].to_switch_in == True:
+                    if player_party.player_party[i].to_switch_in is True:
+                        p.add_to_print_buffer("{0}, I choose you!".format(player_party.player_party[i].name),
+                                              required_pokemon=[f.player_pokemon],
+                                              to_switch_in=player_party.player_party[i])
 
-                        p.add_to_print_buffer("{0}, I choose you!".format(player_party.player_party[i].name), required_pokemon = f.player_pokemon)
-
-
-                        f.player_pokemon.to_switch_out = False #make a method that resets all the stats that are reset upon leaving battle
+                        f.player_pokemon.to_switch_out = False
                         player_party.player_party[i].to_switch_in = False
-                        f.player_pokemon = player_party.player_party[i]
-                        f.player_pokemon.calculate_in_battle_stats()
                         break
 
             #switching out, itemes, escaping, Focus Punch Charge, mega evo
@@ -280,7 +276,7 @@ while r.in_battle == True:
 
         while priority == 5:
             #if player_pokemon.moveset[player_to_do].name == "helping hand":
-             #   use_attack(player_pokemon, enemy_pokemon, player_to_do)
+            #   use_attack(player_pokemon, enemy_pokemon, player_to_do)
             priority = 4
 
         while priority == 4:
@@ -294,7 +290,7 @@ while r.in_battle == True:
         while priority == 2:
             #extreme speed, feint, follow me, rage powder
             #if player_pokemon.moveset[player_to_do].name == "extreme speed":
-             #   use_attack(player_pokemon, enemy_pokemon, player_to_do)
+            #   use_attack(player_pokemon, enemy_pokemon, player_to_do)
             priority = 1
 
         while priority == 1:
@@ -310,7 +306,7 @@ while r.in_battle == True:
             priority = -2
 
         while priority == -2:
-            priority = -3 #priority 2 actually does nothing... idk why
+            priority = -3  #priority 2 actually does nothing... idk why
 
         while priority == -3:
             #focus punch
@@ -333,20 +329,18 @@ while r.in_battle == True:
             priority = -8
 
         while priority == -8:
-
             r.to_do.append("check player status")
             r.to_do.append("check enemy status")
 
             r.to_do.append("check player volatile")
             r.to_do.append("check enemy volatile")
 
-            p.add_to_print_buffer(" ", required_pokemon = [f.enemies.default])
+            p.add_to_print_buffer(" ", required_pokemon=[f.enemies.default])
 
             priority = 8
             b.game_state = b.Battle_States.printing
 
             f.end_of_turn_reset()
-
 
     pygame.display.flip()
 else:

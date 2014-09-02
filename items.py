@@ -4,7 +4,7 @@ import move_list
 
 
 
-#slots
+# slots
 items = []
 pokeballs = []
 tmhm = []
@@ -15,7 +15,7 @@ bag_labels = ["items", "pokeballs", "TM/HM", "berries", "key items"]
 
 TM_list = [
 
-            ]
+]
 
 
 #uses:

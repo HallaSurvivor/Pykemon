@@ -1,13 +1,15 @@
 """Import all the sprites and store them as public variables."""
-#Thanks to pokemondb for the majority of these sprites. :)
+# Thanks to pokemondb for the majority of these sprites. :)
 import pygame
 import os
 
-def load(image_name, subfolder = "NULL"):
+
+def load(image_name, subfolder="NULL"):
     if subfolder == "NULL":
         return pygame.image.load(os.path.join("sprites", image_name))
     else:
         return pygame.image.load(os.path.join("sprites", subfolder, image_name))
+
 
 pygame.init()
 
@@ -26,7 +28,6 @@ TEXTBOX = load("text_box.png", "misc")
 POKEMONBOX = load("pokemon_box.png", "pokemon boxes")
 FAINTEDPOKEMONBOX = load("fainted_pokemon_box.png", "pokemon boxes")
 BACK = load("back.png", "misc")
-
 
 NORMAL_BOX = load("box_normal.png", "move boxes")
 FIGHTING_BOX = load("box_fighting.png", "move boxes")
@@ -64,7 +65,6 @@ MALE = load("male.png", "misc")
 FEMALE = load("female.png", "misc")
 GENDERLESS = load("genderless.png", "misc")
 genders = {"male": MALE, "female": FEMALE, "genderless": GENDERLESS}
-
 
 status_icons = [BRN, FRZ, PAR, PSN, PSN, SLP]
 
@@ -132,8 +132,10 @@ SCREEN = pygame.display.set_mode(SCREENSIZE)
 arial24 = pygame.font.SysFont(None, 24)
 arial17 = pygame.font.SysFont(None, 17)
 
-def render_text(text, color = BLACK):
+
+def render_text(text, color=BLACK):
     return arial24.render(text, 1, color)
 
-def render_small_text(text, color = BLACK):
+
+def render_small_text(text, color=BLACK):
     return arial17.render(text, 1, color)

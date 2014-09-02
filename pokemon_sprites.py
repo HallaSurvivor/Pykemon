@@ -3,6 +3,7 @@ import pyganim
 import pygame
 from PIL import Image, ImageSequence
 
+
 def import_gif(gif):
     PIL_gif = Image.open(gif)
     sprite_list = []

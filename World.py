@@ -1,6 +1,5 @@
 __author__ = 'HallaSurvivor'
 
-
 from .pokemon_list import *
 from .enemies import *
 from .battle_mechanic import *
@@ -9,6 +8,7 @@ from random import randint
 import math
 import os
 from . import sprites
+
 
 def battle_start(enemy):
     global in_battle
@@ -24,8 +24,9 @@ def battle_start(enemy):
     else:
         turn = 0
 
+
 available_pokemon = [Charmander, Bulbasaur, Squirtle]
-#PyGame stuff
+# PyGame stuff
 
 # Define colors
 BLACK = ( 0, 0, 0)
@@ -54,21 +55,21 @@ clock = pygame.time.Clock()
 
 # -------- Main Program Loop -----------
 while not done:
-# --- Main event loop
-    for event in pygame.event.get(): # User did something
-        if event.type == pygame.QUIT: # If user clicked close
-            done = True # Flag that we are done so we exit this loop
-# --- Game logic
+    # --- Main event loop
+    for event in pygame.event.get():  # User did something
+        if event.type == pygame.QUIT:  # If user clicked close
+            done = True  # Flag that we are done so we exit this loop
+        # --- Game logic
 
-# --- Drawing code
+        # --- Drawing code
     screen.fill(WHITE)
     screen.blit(sprites.sprites.Bulbasaur_back, BOTTOM_LEFT)
     screen.blit(sprites.sprites.Squirtle_front, TOP_RIGHT)
 
-# --- Go ahead and update the screen with what we've drawn.
+    # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
 
-# --- Limit to 60 frames per second
+    # --- Limit to 60 frames per second
     clock.tick(60)
 # Close the window and quit.
 # If you forget this line, the program will 'hang'
